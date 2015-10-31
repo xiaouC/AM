@@ -1,1 +1,5 @@
 *.swp
+gen/
+bin/
+datetimepicker-library/gen/
+datetimepicker-library/bin/

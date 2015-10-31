@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_height="fill_parent"
+    android:layout_width="300px"
+    android:orientation="vertical"
+    android:background="@color/white"
+    >
+    <Button
+        android:id="@+id/btn_1"
+        style="@style/alert_dialog_calls_and_notifications_arrive"
+        android:text="Always interrupt"
+        />
+    <Button
+        android:id="@+id/btn_2"
+        style="@style/alert_dialog_calls_and_notifications_arrive"
+        android:text="Allow only priority interruptions"
+        />
+    <Button
+        android:id="@+id/btn_3"
+        style="@style/alert_dialog_calls_and_notifications_arrive"
+        android:text="Don't interrupt"
+        android:layout_marginBottom="20px"
+        />
+</LinearLayout>

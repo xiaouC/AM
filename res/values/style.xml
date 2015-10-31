@@ -1,0 +1,168 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="BT_Call_Guardian_Mode" parent="@android:style/Theme.Holo.DialogWhenLarge">
+        <item name="android:windowFrame">@null</item><!--边框-->
+        <item name="android:windowIsFloating">true</item><!--是否浮现在activity之上-->
+        <item name="android:windowIsTranslucent">false</item><!--半透明-->
+        <item name="android:windowNoTitle">true</item><!--无标题-->
+        <item name="android:backgroundDimEnabled">true</item><!--模糊-->
+    </style>
+    <style name="alert_waiting" parent="@android:style/Theme.Holo.DialogWhenLarge">
+        <item name="android:windowFrame">@null</item><!--边框-->
+        <item name="android:windowIsFloating">true</item><!--是否浮现在activity之上-->
+        <item name="android:windowIsTranslucent">true</item><!--半透明-->
+        <item name="android:windowNoTitle">true</item><!--无标题-->
+        <item name="android:backgroundDimEnabled">true</item><!--模糊-->
+        <item name="android:windowBackground">@color/transparent</item><!--背景透明-->
+    </style>
+    <style name="calls_and_notifications_arrive" parent="@android:style/Theme.Holo.DialogWhenLarge">
+        <item name="android:windowFrame">@null</item><!--边框-->
+        <item name="android:windowIsFloating">true</item><!--是否浮现在activity之上-->
+        <item name="android:windowIsTranslucent">false</item><!--半透明-->
+        <item name="android:windowNoTitle">true</item><!--无标题-->
+        <item name="android:backgroundDimEnabled">false</item><!--模糊-->
+    </style>
+    <style name="linear_layout_file_title">
+        <item name="android:layout_width">fill_parent</item>
+        <item name="android:layout_height">fill_parent</item>
+        <item name="android:orientation">vertical</item>
+        <item name="android:background">@color/title_red</item>
+    </style>
+    <style name="linear_layout_title">
+        <item name="android:layout_width">fill_parent</item>
+        <item name="android:layout_height">92px</item>
+        <item name="android:orientation">horizontal</item>
+        <item name="android:background">@color/title_red</item>
+    </style>
+    <style name="linear_layout_common">
+        <item name="android:layout_width">fill_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:orientation">horizontal</item>
+        <item name="android:background">@color/white</item>
+    </style>
+    <style name="linear_layout_item">
+        <item name="android:layout_width">fill_parent</item>
+        <item name="android:layout_height">92px</item>
+        <item name="android:orientation">horizontal</item>
+        <item name="android:background">@color/white</item>
+    </style>
+    <style name="linear_layout_fill">
+        <item name="android:layout_width">fill_parent</item>
+        <item name="android:layout_height">fill_parent</item>
+        <item name="android:orientation">horizontal</item>
+        <item name="android:background">@color/white</item>
+    </style>
+    <style name="text_view_title">
+        <item name="android:layout_width">fill_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textSize">18px</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="android:gravity">left</item>
+        <item name="android:layout_gravity">center</item>
+        <item name="android:layout_marginLeft">7px</item>
+        <item name="android:layout_marginTop">20px</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+    <style name="item_button">
+        <item name="android:layout_width">fill_parent</item>
+        <item name="android:layout_height">92px</item>
+        <item name="android:gravity">left</item>
+        <item name="android:layout_gravity">center</item>
+        <item name="android:paddingLeft">42px</item>
+        <item name="android:paddingTop">24px</item>
+        <item name="android:background">@drawable/item_button_long</item>
+        <item name="android:textSize">18px</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+    <style name="item_button_2">
+        <item name="android:layout_width">fill_parent</item>
+        <item name="android:layout_height">92px</item>
+        <item name="android:gravity">left</item>
+        <item name="android:layout_gravity">center</item>
+        <item name="android:paddingLeft">36px</item>
+        <item name="android:paddingTop">20px</item>
+        <item name="android:background">@drawable/item_button_short</item>
+        <item name="android:textSize">18px</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+    <style name="back_button">
+        <item name="android:layout_width">48dp</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:gravity">center</item>
+        <item name="android:layout_gravity">center</item>
+        <item name="android:layout_marginTop">20px</item>
+        <item name="android:background">@drawable/back_button</item>
+    </style>
+    <style name="item_image_view">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_gravity">center</item>
+        <item name="android:layout_marginLeft">21px</item>
+    </style>
+    <style name="list_view_common">
+        <item name="android:layout_width">fill_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+    </style>
+    <style name="linear_layout_number" parent="@style/linear_layout_common">
+        <item name="android:layout_marginLeft">0px</item>
+        <item name="android:layout_marginTop">20px</item>
+    </style>
+    <style name="input_number_button_num">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginRight">0px</item>
+    </style>
+    <style name="switch_button">
+        <item name="android:thumb">@drawable/thumb</item>
+        <item name="android:track">@drawable/track</item>
+        <item name="android:gravity">center</item>
+        <item name="android:layout_gravity">center</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">32px</item>
+        <item name="android:textOn"></item>
+        <item name="android:textOff"></item>
+        <item name="android:switchMinWidth">54px</item>
+        <item name="android:layout_marginRight">20px</item>
+    </style>
+    <style name="alert_dialog_file_title">
+        <item name="android:orientation">vertical</item>
+        <item name="android:layout_width">410px</item>
+        <item name="android:layout_height">fill_parent</item>
+        <item name="android:background">@color/white</item>
+    </style>
+    <style name="alert_dialog_title_text">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginLeft">42px</item>
+        <item name="android:layout_marginTop">24px</item>
+        <item name="android:textColor">@color/black</item>
+        <item name="android:gravity">left</item>
+        <item name="android:textSize">30px</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+    <style name="alert_dialog_button">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+    </style>
+    <style name="alert_dialog_calls_and_notifications_arrive">
+        <item name="android:layout_width">fill_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textSize">24px</item>
+        <item name="android:gravity">left</item>
+        <item name="android:paddingTop">15px</item>
+        <item name="android:paddingLeft">30px</item>
+        <item name="android:layout_marginBottom">10px</item>
+        <item name="android:background">@color/transparent</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+    <style name="check_box">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textColor">@color/black</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textSize">24px</item>
+        <item name="android:paddingLeft">20px</item>
+        <item name="android:layout_marginLeft">50px</item>
+        <item name="android:layout_marginTop">10px</item>
+    </style>
+</resources>

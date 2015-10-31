@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    style="@style/linear_layout_file_title"
+    >
+    <LinearLayout 
+        style="@style/linear_layout_title"
+        >
+        <TextView
+            android:id="@+id/title_text"
+            style="@style/text_view_title"
+            android:layout_marginLeft="27px"
+            />
+    </LinearLayout>
+    <ListView
+        android:id="@+id/item_list"
+        style="@style/list_view_common"
+        >
+    </ListView>
+    <LinearLayout 
+        style="@style/linear_layout_fill"
+        />
+</LinearLayout>
+
