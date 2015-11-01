@@ -71,13 +71,6 @@ public class YYDataSource {
                 main_activity.yy_show_alert_dialog.hideWaitingAlertDialog();
             }
         });
-
-        /*
-        getDTAMSetting( new onTreatMsgLinstener() {
-            public void onSuccessfully() {}
-            public void onFailure() {}
-        });
-        */
     }
 
     public int getMessageCount() {
@@ -157,7 +150,7 @@ public class YYDataSource {
                 msgListener.onSuccessfully();
             }
             public void onFailure() {
-                Toast.makeText( main_activity, "request message list : failure", Toast.LENGTH_LONG ).show();
+                Toast.makeText( main_activity, "get message list failed", Toast.LENGTH_LONG ).show();
                 msgListener.onFailure();
             }
         });
@@ -224,11 +217,8 @@ public class YYDataSource {
                     // 处理失败
                     treat_msg_linstener.onFailure();
                 }
-
-				Toast.makeText( main_activity, "request outgoing msg operation : successfully", Toast.LENGTH_LONG ).show();
             }
             public void onFailure() {
-				Toast.makeText( main_activity, "request outgoing msg operation : failure", Toast.LENGTH_LONG ).show();
                 treat_msg_linstener.onFailure();
             }
         });
@@ -238,7 +228,6 @@ public class YYDataSource {
         main_activity.yy_command.executeSettingsBaseCommand( YYCommand.ANSWER_MACHINE_GDTS_RESULT, new YYCommand.onCommandListener() {
             public void onSend() {
                 main_activity.sendBroadcast( new Intent( YYCommand.ANSWER_MACHINE_GDTS ) );
-                Toast.makeText( main_activity, "request get DTAM setting : send", Toast.LENGTH_SHORT ).show();
                 Log.v( "cconn", "ANSWER_MACHINE_GDTS_RESULT send" );
             }
             public void onRecv( String data, String data2 ) {
@@ -250,11 +239,9 @@ public class YYDataSource {
 
                 treat_msg_linstener.onSuccessfully();
 
-				Toast.makeText( main_activity, "request get DTAM setting : successfully", Toast.LENGTH_LONG ).show();
                 Log.v( "cconn", "ANSWER_MACHINE_GDTS_RESULT success" );
             }
             public void onFailure() {
-				Toast.makeText( main_activity, "request get DTAM setting : failure", Toast.LENGTH_LONG ).show();
                 Log.v( "cconn", "ANSWER_MACHINE_GDTS_RESULT failed" );
                 treat_msg_linstener.onFailure();
             }
@@ -271,7 +258,6 @@ public class YYDataSource {
                 datmIntent.putExtra( "answer_mode", String.format( "%d", nAnswerMode ) );
                 datmIntent.putExtra( "remote_pin", "AAAA" );
                 main_activity.sendBroadcast( datmIntent );
-                Toast.makeText( main_activity, "request set DTAM setting : send", Toast.LENGTH_SHORT ).show();
             }
             public void onRecv( String data, String data2 ) {
                 if( data.equals( "SUCCESS" ) ) {
@@ -279,12 +265,11 @@ public class YYDataSource {
                 }
                 else {
                     // 失败
+                    Toast.makeText( main_activity, "update answer machine settings failed", Toast.LENGTH_LONG ).show();
                 }
-
-				Toast.makeText( main_activity, "request set DTAM setting : successfully", Toast.LENGTH_LONG ).show();
             }
             public void onFailure() {
-				Toast.makeText( main_activity, "request set DTAM setting : failure", Toast.LENGTH_LONG ).show();
+				Toast.makeText( main_activity, "update answer machine settings failed", Toast.LENGTH_LONG ).show();
             }
         });
     }

@@ -13,6 +13,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.ImageView;
 import android.util.Log;
+import android.widget.Toast;
 
 public class OutgoingMessagesView extends YYViewBackList {
     public OutgoingMessagesView() {
@@ -135,6 +136,7 @@ public class OutgoingMessagesView extends YYViewBackList {
                             public void onSuccessfully() {
                             }
                             public void onFailure() {
+                                Toast.makeText( main_activity, "stop play outgoing message failed", Toast.LENGTH_SHORT ).show();
                             }
                         });
                     }
@@ -142,6 +144,7 @@ public class OutgoingMessagesView extends YYViewBackList {
                 });
             }
             public void onFailure() {
+                Toast.makeText( main_activity, "play outgoing message failed", Toast.LENGTH_SHORT ).show();
             }
         });
     }
@@ -167,6 +170,7 @@ public class OutgoingMessagesView extends YYViewBackList {
                         recordMessage();
                     }
                     public void onFailure() {
+                        Toast.makeText( main_activity, "delete outgoing message failed", Toast.LENGTH_SHORT ).show();
                     }
                 });
             }
@@ -186,6 +190,7 @@ public class OutgoingMessagesView extends YYViewBackList {
                                 playMessage();
                             }
                             public void onFailure() {
+                                Toast.makeText( main_activity, "change outgoing message failed", Toast.LENGTH_SHORT ).show();
                                 main_activity.yy_data_source.setOutgoingIsUseDefaultMessage( false );
                                 playMessage();
                             }
@@ -195,6 +200,7 @@ public class OutgoingMessagesView extends YYViewBackList {
                 });
             }
             public void onFailure() {
+                Toast.makeText( main_activity, "record outgoing message failed", Toast.LENGTH_SHORT ).show();
             }
         });
     }

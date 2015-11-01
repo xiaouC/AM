@@ -14,6 +14,7 @@ import android.widget.TextView;
 import android.widget.ImageView;
 import android.content.Intent;
 import android.util.Log;
+import android.widget.Toast;
 
 public class AnswerMachineView extends YYViewBase {
     private MessagesView msg_view;
@@ -199,6 +200,7 @@ public class AnswerMachineView extends YYViewBase {
                                 settings_view.setView( true, yy_view_self.getViewBackHandler() );
                             }
                             public void onFailure() {
+                                Toast.makeText( main_activity, "get answer machine settings failed", Toast.LENGTH_LONG ).show();
                             }
                         });
                     }

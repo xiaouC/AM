@@ -165,11 +165,8 @@ public class YYInputNumberPINView extends YYViewBase {
                         banbIntent.putExtra( "old", origin_pin );
                         banbIntent.putExtra( "new", first_pin );
                         main_activity.sendBroadcast( banbIntent );
-                        Toast.makeText( main_activity, "request change pin number : send", Toast.LENGTH_SHORT ).show();
                     }
                     public void onRecv( String data, String data2 ) {
-                        Toast.makeText( main_activity, "request change pin number : successfully", Toast.LENGTH_LONG ).show();
-
                         // 
                         if( data.equals( "SUCCESS" ) ) {
                             in_pin_handler.onSuccessful( first_pin );
@@ -187,7 +184,7 @@ public class YYInputNumberPINView extends YYViewBase {
                         }
                     }
                     public void onFailure() {
-                        Toast.makeText( main_activity, "request change pin number : failure", Toast.LENGTH_LONG ).show();
+                        Toast.makeText( main_activity, "change pin number failed", Toast.LENGTH_LONG ).show();
                     }
                 });
             }
@@ -234,7 +231,7 @@ public class YYInputNumberPINView extends YYViewBase {
                     }
                 }
                 public void onFailure() {
-                    Toast.makeText( main_activity, "request pin number : failure", Toast.LENGTH_LONG ).show();
+                    Toast.makeText( main_activity, "get pin number failed", Toast.LENGTH_LONG ).show();
                 }
             });
 
