@@ -66,9 +66,15 @@ public class YYDataSource {
 
                 main_activity.answer_machine_view.updateView();
                 main_activity.yy_show_alert_dialog.hideWaitingAlertDialog();
+
+                // 在这个回来后，马上请求
+                requestOutgoingIsUseDefaultMessage();
             }
             public void onFailure() {
                 main_activity.yy_show_alert_dialog.hideWaitingAlertDialog();
+
+                // 在这个回来后，马上请求
+                requestOutgoingIsUseDefaultMessage();
             }
         });
     }
@@ -278,8 +284,47 @@ public class YYDataSource {
         return bOutgoingIsUseDefaultMessage;
     }
 
+    public void requestOutgoingIsUseDefaultMessage() {
+        main_activity.yy_command.executeSettingsBaseCommand( YYCommand.ANSWER_MACHINE_GDMS_RESULT, new YYCommand.onCommandListener() {
+            public void onSend() {
+                Intent dmIntent = new Intent( YYCommand.ANSWER_MACHINE_GDMS );
+                dmIntent.putExtra( "data", "2" );
+                main_activity.sendBroadcast( dmIntent );
+            }
+            public void onRecv( String data, String data2 ) {
+                String[] results = data.split( "," );
+
+                bOutgoingIsUseDefaultMessage = results[0].equals( "00" );
+            }
+            public void onFailure() {
+            }
+        });
+
+    }
+
     public void setOutgoingIsUseDefaultMessage( Boolean bUseDefaultMessage ) {
         bOutgoingIsUseDefaultMessage = bUseDefaultMessage;
+
+        main_activity.yy_command.executeSettingsBaseCommand( YYCommand.ANSWER_MACHINE_SDMS_RESULT, new YYCommand.onCommandListener() {
+            public void onSend() {
+                Intent dmIntent = new Intent( YYCommand.ANSWER_MACHINE_SDMS );
+                dmIntent.putExtra( "status", bOutgoingIsUseDefaultMessage ? "0" : "1" );
+                dmIntent.putExtra( "type", "2" );
+                main_activity.sendBroadcast( dmIntent );
+            }
+            public void onRecv( String data, String data2 ) {
+                if( data.equals( "SUCCESS" ) ) {
+                    // 成功
+                }
+                else {
+                    // 失败
+                    Toast.makeText( main_activity, "operation failed", Toast.LENGTH_LONG ).show();
+                }
+            }
+            public void onFailure() {
+				Toast.makeText( main_activity, "operation failed", Toast.LENGTH_LONG ).show();
+            }
+        });
     }
 
     public boolean getIsFirstTimeUseRemoteAccess() {
