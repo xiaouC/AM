@@ -43,7 +43,7 @@ public class AnswerMachineView extends YYViewBase {
         {
             vb_handler = new onViewBackHandler() {
                 public void onBack() {
-                    if( main_activity.yy_command.answer_machine_link ) {
+                    //if( main_activity.yy_command.answer_machine_link ) {
                         main_activity.yy_show_alert_dialog.showWaitingAlertDialog();
                         main_activity.yy_command.disconnectAnswerMachine( new YYCommand.onConnLisenter() {
                             public void onSuccessfully() {
@@ -63,13 +63,13 @@ public class AnswerMachineView extends YYViewBase {
                                 });
                             }
                         });
-                    }
-                    else {
-                        main_activity.yy_data_source.refreshMessageCount( new YYDataSource.onTreatMsgLinstener() {
-                            public void onSuccessfully() { yy_view_self.setView( false, null ); }
-                            public void onFailure() { yy_view_self.setView( false, null ); }
-                        });
-                    }
+                    //}
+                    //else {
+                    //    main_activity.yy_data_source.refreshMessageCount( new YYDataSource.onTreatMsgLinstener() {
+                    //        public void onSuccessfully() { yy_view_self.setView( false, null ); }
+                    //        public void onFailure() { yy_view_self.setView( false, null ); }
+                    //    });
+                    //}
                 }
             };
         }

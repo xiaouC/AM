@@ -70,9 +70,9 @@ public class YYCommand {
     public final static String CALL_GUARDIAN_SCCP = "andorid.intent.action.call.guardian.sccp";
     public final static String CALL_GUARDIAN_SCCP_RESULT = "com.action.dect.call.guardian.sccp.result";
 
-    public boolean settings_base_link = false;
-    public boolean call_list_link = false;
-    public boolean answer_machine_link = false;
+    //public boolean settings_base_link = false;
+    //public boolean call_list_link = false;
+    //public boolean answer_machine_link = false;
 
     // 
     public YYCommand( AnswerMachineActivity activity ) {
@@ -454,7 +454,7 @@ public class YYCommand {
             public void onRecv( String data, String data2 ) {
                 Log.v( "cconn", "connect settings base success" );
 
-                settings_base_link = true;
+                //settings_base_link = true;
                 conn_lisenter.onSuccessfully();
             }
             public void onFailure() {
@@ -475,7 +475,7 @@ public class YYCommand {
             public void onRecv( String data, String data2 ) {
                 Log.v( "cconn", "connect answer machine success" );
 
-                answer_machine_link = true;
+                //answer_machine_link = true;
                 conn_lisenter.onSuccessfully();
             }
             public void onFailure() {
@@ -503,7 +503,7 @@ public class YYCommand {
 
     public void disconnectSettingsBase( final onConnLisenter disconnect_lisenter ) {
         Log.v( "cconn", "disconnect settings base" );
-        if( settings_base_link ) {
+        //if( settings_base_link ) {
             executeCommand( YYCommand.SETTINGS_BASE_BTCR_RESULT, new YYCommand.onCommandListener() {
                 public void onSend() {
                     Log.v( "cconn", "disconnect settings base begin" );
@@ -511,7 +511,7 @@ public class YYCommand {
                 }
                 public void onRecv( String data, String data2 ) {
                     Log.v( "cconn", "disconnect settings base success" );
-                    settings_base_link = false;
+                    //settings_base_link = false;
                     disconnect_lisenter.onSuccessfully();
                 }
                 public void onFailure() {
@@ -519,15 +519,15 @@ public class YYCommand {
                     Toast.makeText( main_activity, "disconnect settings base link failed!", Toast.LENGTH_LONG ).show();
                 }
             });
-        }
-        else {
-            disconnect_lisenter.onSuccessfully();
-        }
+        //}
+        //else {
+        //    disconnect_lisenter.onSuccessfully();
+        //}
     }
 
     public void disconnectAnswerMachine( final onConnLisenter disconnect_lisenter ) {
         Log.v( "cconn", "disconnect answer machine" );
-        if( answer_machine_link ) {
+        //if( answer_machine_link ) {
             executeCommand( YYCommand.ANSWER_MACHINE_BTCR_RESULT, new YYCommand.onCommandListener() {
                 public void onSend() {
                     Log.v( "cconn", "disconnect answer machine begin" );
@@ -535,7 +535,7 @@ public class YYCommand {
                 }
                 public void onRecv( String data, String data2 ) {
                     Log.v( "cconn", "disconnect answer machine success" );
-                    answer_machine_link = false;
+                    //answer_machine_link = false;
                     disconnect_lisenter.onSuccessfully();
                 }
                 public void onFailure() {
@@ -543,10 +543,10 @@ public class YYCommand {
                     Toast.makeText( main_activity, "disconnect answer machine link failed!", Toast.LENGTH_LONG ).show();
                 }
             });
-        }
-        else {
-            disconnect_lisenter.onSuccessfully();
-        }
+        //}
+        //else {
+        //    disconnect_lisenter.onSuccessfully();
+        //}
     }
 
 }
