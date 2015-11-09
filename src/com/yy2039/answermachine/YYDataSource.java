@@ -59,16 +59,27 @@ public class YYDataSource {
                 main_activity.sendBroadcast( new Intent( YYCommand.COMMAD_PAGE_MSG_COUNT ) );
             }
             public void onRecv( String data, String data2 ) {
-                String[] results = data.split( "," );
+                if( data == null ) {
+                    String text = String.format( "%s recv : null", YYCommand.PAGE_MSG_COUNT_RESULT );
+                    Toast.makeText( main_activity, text, Toast.LENGTH_LONG ).show();
+                }
+                else {
+                    String[] results = data.split( "," );
+                    if( results.length < 2 ) {
+                        String text = String.format( "%s recv data error : %s", YYCommand.PAGE_MSG_COUNT_RESULT, data );
+                        Toast.makeText( main_activity, text, Toast.LENGTH_LONG ).show();
+                    }
+                    else {
+                        nMsgCount = Integer.valueOf( results[0] );
+                        nNewMsgCount = Integer.valueOf( results[1] );
 
-                nMsgCount = Integer.valueOf( results[0] );
-                nNewMsgCount = Integer.valueOf( results[1] );
+                        main_activity.answer_machine_view.updateView();
+                        main_activity.yy_show_alert_dialog.hideWaitingAlertDialog();
+                    }
 
-                main_activity.answer_machine_view.updateView();
-                main_activity.yy_show_alert_dialog.hideWaitingAlertDialog();
-
-                // 在这个回来后，马上请求
-                requestOutgoingIsUseDefaultMessage();
+                    // 在这个回来后，马上请求
+                    requestOutgoingIsUseDefaultMessage();
+                }
             }
             public void onFailure() {
                 main_activity.yy_show_alert_dialog.hideWaitingAlertDialog();
@@ -99,13 +110,24 @@ public class YYDataSource {
                 main_activity.sendBroadcast( new Intent( YYCommand.COMMAD_PAGE_MSG_COUNT ) );
             }
             public void onRecv( String data, String data2 ) {
-                String[] results = data.split( "," );
+                if( data == null ) {
+                    String text = String.format( "%s recv : null", YYCommand.PAGE_MSG_COUNT_RESULT );
+                    Toast.makeText( main_activity, text, Toast.LENGTH_LONG ).show();
+                }
+                else {
+                    String[] results = data.split( "," );
+                    if( results.length < 2 ) {
+                        String text = String.format( "%s recv data error : %s", YYCommand.PAGE_MSG_COUNT_RESULT, data );
+                        Toast.makeText( main_activity, text, Toast.LENGTH_LONG ).show();
+                    }
+                    else {
+                        nMsgCount = Integer.valueOf( results[0] );
+                        nNewMsgCount = Integer.valueOf( results[1] );
 
-                nMsgCount = Integer.valueOf( results[0] );
-                nNewMsgCount = Integer.valueOf( results[1] );
-
-                msg_lisenter.onSuccessfully();
-                main_activity.yy_show_alert_dialog.hideWaitingAlertDialog();
+                        msg_lisenter.onSuccessfully();
+                        main_activity.yy_show_alert_dialog.hideWaitingAlertDialog();
+                    }
+                }
             }
             public void onFailure() {
                 msg_lisenter.onFailure();
@@ -124,36 +146,47 @@ public class YYDataSource {
                 main_activity.sendBroadcast( new Intent( YYCommand.ANSWER_MACHINE_GMSL ) );
             }
             public void onRecv( String data, String data2 ) {
-                String[] results = data2.split( "," );
-
-                msg_list.clear();
-
-                int count = results.length / 5;
-                for( int i=0; i < count; ++i ) {
-                    if( results[i*5+0].equals( "" ) ) {
-                        continue;
-                    }
-
-                    Log.v( "cconn", "msg_index : " + results[i*5+0] );
-                    final String msg_index = results[i*5+0];
-                    final int msg_type = Integer.valueOf( results[i*5+1] );
-                    final String msg_name = results[i*5+2];
-                    final String msg_number = results[i*5+3];
-                    final String msg_datetime = results[i*5+4];
-                    final String year = msg_datetime.substring( 0, 4 );
-                    final String month = msg_datetime.substring( 4, 6 );
-                    final String day = msg_datetime.substring( 6, 8 );
-                    final String hour = msg_datetime.substring( 8, 10 );
-                    final String min = msg_datetime.substring( 10 );
-                    msg_list.add( new onMsgInfo() {
-                        public String getMsgIndex() { return msg_index; }
-                        public int getMsgType() { return msg_type; }
-                        public String getMsgName() { return msg_name; }
-                        public String getMsgNumber() { return msg_number; }
-                        public String getMsgDateTime() { return String.format( "%s/%s/%s %s:%s", month, day, year, hour, min ); }
-                    });
+                if( data2 == null ) {
+                    String text = String.format( "%s recv : null", YYCommand.ANSWER_MACHINE_GMSL_RESULT );
+                    Toast.makeText( main_activity, text, Toast.LENGTH_LONG ).show();
                 }
-                msgListener.onSuccessfully();
+                else {
+                    String[] results = data2.split( "," );
+
+                    msg_list.clear();
+
+                    try {
+                        int count = results.length / 5;
+                        for( int i=0; i < count; ++i ) {
+                            if( results[i*5+0].equals( "" ) ) {
+                                continue;
+                            }
+
+                            Log.v( "cconn", "msg_index : " + results[i*5+0] );
+                            final String msg_index = results[i*5+0];
+                            final int msg_type = Integer.valueOf( results[i*5+1] );
+                            final String msg_name = results[i*5+2];
+                            final String msg_number = results[i*5+3];
+                            final String msg_datetime = results[i*5+4];
+                            final String year = msg_datetime.substring( 0, 4 );
+                            final String month = msg_datetime.substring( 4, 6 );
+                            final String day = msg_datetime.substring( 6, 8 );
+                            final String hour = msg_datetime.substring( 8, 10 );
+                            final String min = msg_datetime.substring( 10 );
+                            msg_list.add( new onMsgInfo() {
+                                public String getMsgIndex() { return msg_index; }
+                                public int getMsgType() { return msg_type; }
+                                public String getMsgName() { return msg_name; }
+                                public String getMsgNumber() { return msg_number; }
+                                public String getMsgDateTime() { return String.format( "%s/%s/%s %s:%s", month, day, year, hour, min ); }
+                            });
+                        }
+                        msgListener.onSuccessfully();
+                    } catch ( Exception e ) {
+                        String text = String.format( "%s recv data2 error : %s", YYCommand.ANSWER_MACHINE_GMSL_RESULT, data2 );
+                        Toast.makeText( main_activity, text, Toast.LENGTH_LONG ).show();
+                    }
+                }
             }
             public void onFailure() {
                 Toast.makeText( main_activity, "get message list failed", Toast.LENGTH_LONG ).show();
@@ -179,7 +212,7 @@ public class YYDataSource {
                 Log.v( "cconn", "treatMsg data2 : " + data2 );
                 Log.v( "prot", "treatMsg data : " + data );
                 Log.v( "prot", "treatMsg data2 : " + data2 );
-                if( data.equals( "SUCCESS" ) ) {
+                if( data != null && data.equals( "SUCCESS" ) ) {
                     // 处理成功
                     treat_msg_linstener.onSuccessfully();
                 }
@@ -215,7 +248,7 @@ public class YYDataSource {
                 main_activity.sendBroadcast( msgIntent );
             }
             public void onRecv( String data, String data2 ) {
-                if( data.equals( "SUCCESS" ) ) {
+                if( data != null && data.equals( "SUCCESS" ) ) {
                     // 处理成功
                     treat_msg_linstener.onSuccessfully();
                 }
@@ -237,13 +270,30 @@ public class YYDataSource {
                 Log.v( "cconn", "ANSWER_MACHINE_GDTS_RESULT send" );
             }
             public void onRecv( String data, String data2 ) {
-                String[] results = data.split( "," );
-                bIsUseRemoteAccess = ( Integer.valueOf( results[0] ) == 0 ? true : false ); // 0 : on, 1 : off
-                nAnswerDelayType = Integer.valueOf( results[1] );
-                nRecordingQuality = Integer.valueOf( results[2] );
-                nAnswerMode = Integer.valueOf( results[3] );
+                if( data == null ) {
+                    String text = String.format( "%s recv : null", YYCommand.ANSWER_MACHINE_GDTS_RESULT );
+                    Toast.makeText( main_activity, text, Toast.LENGTH_LONG ).show();
+                }
+                else {
+                    String[] results = data.split( "," );
+                    if( results.length < 4 ) {
+                        String text = String.format( "%s recv data error : %s", YYCommand.ANSWER_MACHINE_GDTS_RESULT, data );
+                        Toast.makeText( main_activity, text, Toast.LENGTH_LONG ).show();
+                    }
+                    else {
+                        try {
+                            bIsUseRemoteAccess = ( Integer.valueOf( results[0] ) == 0 ? true : false ); // 0 : on, 1 : off
+                            nAnswerDelayType = Integer.valueOf( results[1] );
+                            nRecordingQuality = Integer.valueOf( results[2] );
+                            nAnswerMode = Integer.valueOf( results[3] );
 
-                treat_msg_linstener.onSuccessfully();
+                            treat_msg_linstener.onSuccessfully();
+                        } catch ( Exception e ) {
+                            String text = String.format( "%s recv data error : %s", YYCommand.ANSWER_MACHINE_GDTS_RESULT, data );
+                            Toast.makeText( main_activity, text, Toast.LENGTH_LONG ).show();
+                        }
+                    }
+                }
 
                 Log.v( "cconn", "ANSWER_MACHINE_GDTS_RESULT success" );
             }
@@ -266,7 +316,7 @@ public class YYDataSource {
                 main_activity.sendBroadcast( datmIntent );
             }
             public void onRecv( String data, String data2 ) {
-                if( data.equals( "SUCCESS" ) ) {
+                if( data != null && data.equals( "SUCCESS" ) ) {
                     // 成功
                 }
                 else {
@@ -292,9 +342,25 @@ public class YYDataSource {
                 main_activity.sendBroadcast( dmIntent );
             }
             public void onRecv( String data, String data2 ) {
-                String[] results = data.split( "," );
-
-                bOutgoingIsUseDefaultMessage = results[0].equals( "00" );
+                if( data == null ) {
+                    String text = String.format( "%s recv : null", YYCommand.ANSWER_MACHINE_GDMS_RESULT );
+                    Toast.makeText( main_activity, text, Toast.LENGTH_LONG ).show();
+                }
+                else {
+                    String[] results = data.split( "," );
+                    if( results.length < 1 ) {
+                        String text = String.format( "%s recv data error : %s", YYCommand.ANSWER_MACHINE_GDMS_RESULT, data );
+                        Toast.makeText( main_activity, text, Toast.LENGTH_LONG ).show();
+                    }
+                    else {
+                        try {
+                            bOutgoingIsUseDefaultMessage = results[0].equals( "00" );
+                        } catch ( Exception e ) {
+                            String text = String.format( "%s recv data error : %s", YYCommand.ANSWER_MACHINE_GDMS_RESULT, data );
+                            Toast.makeText( main_activity, text, Toast.LENGTH_LONG ).show();
+                        }
+                    }
+                }
             }
             public void onFailure() {
             }
@@ -313,7 +379,7 @@ public class YYDataSource {
                 main_activity.sendBroadcast( dmIntent );
             }
             public void onRecv( String data, String data2 ) {
-                if( data.equals( "SUCCESS" ) ) {
+                if( data != null && data.equals( "SUCCESS" ) ) {
                     // 成功
                 }
                 else {
