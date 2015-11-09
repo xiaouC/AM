@@ -95,7 +95,7 @@ public class AnswerMachineActivity extends FragmentActivity
 		// TODO Auto-generated method stub
 		super.onDestroy();
 
-		unregisterReceiver( yy_command.commandReceiver );
+        yy_command.unregisterReceiver();
 	}
 
     // 
