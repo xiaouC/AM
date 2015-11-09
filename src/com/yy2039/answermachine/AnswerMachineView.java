@@ -105,35 +105,46 @@ public class AnswerMachineView extends YYViewBase {
                                 main_activity.sendBroadcast( new Intent( YYCommand.ANSWER_MACHINE_GMSL ) );
                             }
                             public void onRecv( String data, String data2 ) {
-                                String[] results = data2.split( "," );
-
-                                main_activity.yy_data_source.msg_list.clear();
-
-                                int count = results.length / 5;
-                                for( int i=0; i < count; ++i ) {
-                                    if( results[i*5+0].equals( "" ) ) {
-                                        continue;
-                                    }
-
-                                    final String msg_index = results[i*5+0];
-                                    final int msg_type = Integer.valueOf( results[i*5+1] );
-                                    final String msg_name = results[i*5+2];
-                                    final String msg_number = results[i*5+3];
-                                    final String msg_datetime = results[i*5+4];
-                                    final String year = msg_datetime.substring( 0, 4 );
-                                    final String month = msg_datetime.substring( 4, 6 );
-                                    final String day = msg_datetime.substring( 6, 8 );
-                                    final String hour = msg_datetime.substring( 8, 10 );
-                                    final String min = msg_datetime.substring( 10 );
-                                    main_activity.yy_data_source.msg_list.add( new YYDataSource.onMsgInfo() {
-                                        public String getMsgIndex() { return msg_index; }
-                                        public int getMsgType() { return msg_type; }
-                                        public String getMsgName() { return msg_name; }
-                                        public String getMsgNumber() { return msg_number; }
-                                        public String getMsgDateTime() { return String.format( "%s/%s/%s %s:%s", month, day, year, hour, min ); }
-                                    });
+                                if( data2 == null ) {
+                                    String text = String.format( "%s recv : null", YYCommand.ANSWER_MACHINE_GMSL_RESULT );
+                                    Toast.makeText( main_activity, text, Toast.LENGTH_LONG ).show();
                                 }
-                                msg_view.setView( true, yy_view_self.getViewBackHandler() );
+                                else {
+                                    String[] results = data2.split( "," );
+
+                                    main_activity.yy_data_source.msg_list.clear();
+
+                                    try {
+                                        int count = results.length / 5;
+                                        for( int i=0; i < count; ++i ) {
+                                            if( results[i*5+0].equals( "" ) ) {
+                                                continue;
+                                            }
+
+                                            final String msg_index = results[i*5+0];
+                                            final int msg_type = Integer.valueOf( results[i*5+1] );
+                                            final String msg_name = results[i*5+2];
+                                            final String msg_number = results[i*5+3];
+                                            final String msg_datetime = results[i*5+4];
+                                            final String year = msg_datetime.substring( 0, 4 );
+                                            final String month = msg_datetime.substring( 4, 6 );
+                                            final String day = msg_datetime.substring( 6, 8 );
+                                            final String hour = msg_datetime.substring( 8, 10 );
+                                            final String min = msg_datetime.substring( 10 );
+                                            main_activity.yy_data_source.msg_list.add( new YYDataSource.onMsgInfo() {
+                                                public String getMsgIndex() { return msg_index; }
+                                                public int getMsgType() { return msg_type; }
+                                                public String getMsgName() { return msg_name; }
+                                                public String getMsgNumber() { return msg_number; }
+                                                public String getMsgDateTime() { return String.format( "%s/%s/%s %s:%s", month, day, year, hour, min ); }
+                                            });
+                                        }
+                                        msg_view.setView( true, yy_view_self.getViewBackHandler() );
+                                    } catch ( IllegalArgumentException e ) {
+                                        String text = String.format( "%s recv data2 error : %s", YYCommand.ANSWER_MACHINE_GMSL_RESULT, data2 );
+                                        Toast.makeText( main_activity, text, Toast.LENGTH_LONG ).show();
+                                    }
+                                }
                             }
                             public void onFailure() {
                             }

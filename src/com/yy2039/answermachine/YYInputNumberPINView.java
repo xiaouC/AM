@@ -167,20 +167,26 @@ public class YYInputNumberPINView extends YYViewBase {
                         main_activity.sendBroadcast( banbIntent );
                     }
                     public void onRecv( String data, String data2 ) {
-                        // 
-                        if( data.equals( "SUCCESS" ) ) {
-                            in_pin_handler.onSuccessful( first_pin );
+                        if( data == null ) {
+                            String text = String.format( "%s recv : null", YYCommand.CALL_GUARDIAN_SCCP_RESULT );
+                            Toast.makeText( main_activity, text, Toast.LENGTH_LONG ).show();
                         }
                         else {
-                            input_numbers.clear();
+                            // 
+                            if( data.equals( "SUCCESS" ) ) {
+                                in_pin_handler.onSuccessful( first_pin );
+                            }
+                            else {
+                                input_numbers.clear();
 
-                            tv_tips.setText( "Incorrect PIN entered" );
-                            iv.setImageResource( R.drawable.pin_number_t_5 );
+                                tv_tips.setText( "Incorrect PIN entered" );
+                                iv.setImageResource( R.drawable.pin_number_t_5 );
 
-                            btn_next_1.setImageDrawable( main_activity.getResources().getDrawable( R.drawable.pin_number_next_gray ) );
+                                btn_next_1.setImageDrawable( main_activity.getResources().getDrawable( R.drawable.pin_number_next_gray ) );
 
-                            btn_next_1.setClickable( false );
-                            btn_next_2.setClickable( false );
+                                btn_next_1.setClickable( false );
+                                btn_next_2.setClickable( false );
+                            }
                         }
                     }
                     public void onFailure() {
@@ -214,20 +220,26 @@ public class YYInputNumberPINView extends YYViewBase {
                     main_activity.sendBroadcast( banbIntent );
                 }
                 public void onRecv( String data, String data2 ) {
-                    // 
-                    if( data.equals( "EQUAL" ) ) {
-                        in_pin_handler.onSuccessful( first_pin );
+                    if( data == null ) {
+                        String text = String.format( "%s recv : null", YYCommand.CALL_GUARDIAN_CMPC_RESULT );
+                        Toast.makeText( main_activity, text, Toast.LENGTH_LONG ).show();
                     }
                     else {
-                        input_numbers.clear();
+                        // 
+                        if( data.equals( "EQUAL" ) ) {
+                            in_pin_handler.onSuccessful( first_pin );
+                        }
+                        else {
+                            input_numbers.clear();
 
-                        tv_tips.setText( "Incorrect PIN entered" );
-                        iv.setImageResource( R.drawable.pin_number_t_5 );
+                            tv_tips.setText( "Incorrect PIN entered" );
+                            iv.setImageResource( R.drawable.pin_number_t_5 );
 
-                        btn_next_1.setImageDrawable( main_activity.getResources().getDrawable( R.drawable.pin_number_next_gray ) );
+                            btn_next_1.setImageDrawable( main_activity.getResources().getDrawable( R.drawable.pin_number_next_gray ) );
 
-                        btn_next_1.setClickable( false );
-                        btn_next_2.setClickable( false );
+                            btn_next_1.setClickable( false );
+                            btn_next_2.setClickable( false );
+                        }
                     }
                 }
                 public void onFailure() {

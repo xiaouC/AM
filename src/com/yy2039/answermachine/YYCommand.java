@@ -192,7 +192,7 @@ public class YYCommand {
                 Log.v( "cconn", "ANSWER_MACHINE_GMSL_RESULT 5555555555555555555555555555555555555555555555555555555" );
                 Log.v( "cconn", "data : " + data );
                 Log.v( "cconn", "data2 : " + data2 );
-				if( data.equals( RESULT_LINK ) ) {
+				if( data != null && data.equals( RESULT_LINK ) ) {
                     if( cur_command_info != null ) {
                         cur_command_info.command_listener.onRecv( data, data2 );
                     }
@@ -251,7 +251,7 @@ public class YYCommand {
 
         action_list.put( SETTINGS_BASE_BTCL_RESULT, new onRecvActionListener() {
             public void onExecute( String data, String data2 ) {
-				if( data.equals( RESULT_LINK ) ) {
+				if( data != null && data.equals( RESULT_LINK ) ) {
                     if( cur_command_info != null ) {
                         cur_command_info.command_listener.onRecv( data, data2 );
                     }
