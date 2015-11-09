@@ -110,8 +110,20 @@ public class YYCommand {
             Log.v( "cconn", "onReceive +++++++++++++++++++++++++++++++++++ data : " + data );
             Log.v( "cconn", "onReceive +++++++++++++++++++++++++++++++++++ data2 : " + data2 );
 
-            onRecvActionListener ral = action_list.get( action );
-            ral.onExecute( data, data2 );
+
+            if( cur_command_info != null ) {
+                if( cur_command_info.command_name.equals( action ) ) {
+                    onRecvActionListener ral = action_list.get( action );
+                    ral.onExecute( data, data2 );
+                }
+            }
+            else {
+                onRecvActionListener ral = action_list.get( action );
+                ral.onExecute( data, data2 );
+            }
+
+            //onRecvActionListener ral = action_list.get( action );
+            //ral.onExecute( data, data2 );
         }
     };
 
