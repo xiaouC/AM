@@ -163,11 +163,12 @@ public class OutgoingMessagesView extends YYViewBackList {
                 ImageButton btn_cancel = (ImageButton)view.findViewById( R.id.ALERT_DIALOG_CANCEL );
                 btn_cancel.setImageDrawable( main_activity.getResources().getDrawable( R.drawable.alert_attention_ok ) );
             }
-            public void onOK() { playMessage(); }
+            //public void onOK() { playMessage(); }
+            public void onOK() { }
             public void onCancel() {
                 main_activity.yy_data_source.treatOutgoingMsg( YYDataSource.OUTGOING_MSG_OPERATION_DELETE, new YYDataSource.onTreatMsgLinstener() {
                     public void onSuccessfully() {
-                        recordMessage();
+                        //recordMessage();
                     }
                     public void onFailure() {
                         Toast.makeText( main_activity, "delete outgoing message failed", Toast.LENGTH_SHORT ).show();
@@ -186,17 +187,17 @@ public class OutgoingMessagesView extends YYViewBackList {
                     public void onOK() {
                         main_activity.yy_data_source.treatOutgoingMsg( YYDataSource.OUTGOING_MSG_OPERATION_STOP_CHANGE, new YYDataSource.onTreatMsgLinstener() {
                             public void onSuccessfully() {
-                                main_activity.yy_data_source.setOutgoingIsUseDefaultMessage( false );
+                                main_activity.yy_data_source.initOutgoingIsUseDefaultMessage( false );
                                 playMessage();
                             }
                             public void onFailure() {
                                 Toast.makeText( main_activity, "change outgoing message failed", Toast.LENGTH_SHORT ).show();
-                                main_activity.yy_data_source.setOutgoingIsUseDefaultMessage( false );
+                                main_activity.yy_data_source.initOutgoingIsUseDefaultMessage( false );
                                 playMessage();
                             }
                         });
                     }
-                    public void onCancel() { main_activity.yy_data_source.setOutgoingIsUseDefaultMessage( true ); }
+                    public void onCancel() { main_activity.yy_data_source.initOutgoingIsUseDefaultMessage( true ); }
                 });
             }
             public void onFailure() {
