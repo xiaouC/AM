@@ -12,6 +12,8 @@ import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.ImageView;
+import android.widget.Toast;
+import android.content.Intent;
 import android.util.Log;
 
 public class SettingsView extends YYViewBackList {
@@ -39,29 +41,50 @@ public class SettingsView extends YYViewBackList {
                 btn_obj.setOnClickListener( new View.OnClickListener() {
                     @Override
                     public void onClick( View v ) {
-                        final String pin_type = main_activity.yy_data_source.getIsFirstTimeUseRemoteAccess() ? "first" : "enter";
-                        main_activity.yy_input_number_pin_view.showInputNumberView( "Confirm your PIN", "", yy_view_self.getViewBackHandler(), pin_type, new YYInputNumberPINView.onYYInputNumberPINHandler() {
-                            public void onSuccessful( String number ) {
-                                YYViewBase.onBackClick();
+                        main_activity.yy_command.executeSettingsBaseCommand( YYCommand.CALL_GUARDIAN_GDES_RESULT, new YYCommand.onCommandListener() {
+                            public void onSend() {
+                                main_activity.sendBroadcast( new Intent( YYCommand.CALL_GUARDIAN_GDES ) );
+                                Log.v( "cconn", "CALL_GUARDIAN_GDES_RESULT : send" );
+                            }
+                            public void onRecv( String data, String data2 ) {
+                                Log.v( "cconn", "CALL_GUARDIAN_GDES_RESULT : recv data : " + data );
+                                Log.v( "cconn", "CALL_GUARDIAN_GDES_RESULT : recv data2 : " + data2 );
+                                if( data == null ) {
+                                    String text = String.format( "%s recv : null", YYCommand.CALL_GUARDIAN_GDES_RESULT );
+                                    Toast.makeText( main_activity, text, Toast.LENGTH_LONG ).show();
+                                }
+                                else {
+                                    final String pin_type = data.equals( "01" ) ? "first" : "enter";
+                                    main_activity.yy_input_number_pin_view.showInputNumberView( "Confirm your PIN", "", yy_view_self.getViewBackHandler(), pin_type, new YYInputNumberPINView.onYYInputNumberPINHandler() {
+                                        public void onSuccessful( String number ) {
+                                            YYViewBase.onBackClick();
 
-                                remote_access_view.setView( true, yy_view_self.getViewBackHandler() );
+                                            remote_access_view.setView( true, yy_view_self.getViewBackHandler() );
 
-                                if( pin_type.equals( "first" ) ) {
-                                    main_activity.yy_data_source.setIsFirstTimeUseRemoteAccess( false );
+                                            if( pin_type.equals( "first" ) ) {
+                                                main_activity.yy_data_source.setIsFirstTimeUseRemoteAccess( false );
 
-                                    main_activity.yy_show_alert_dialog.showAlertDialog( R.layout.alert_attention_2, new YYShowAlertDialog.onAlertDialogHandler() {
-                                        public void onInit( AlertDialog ad, View view ) {
-                                            String text1 = "Please remember this Access PIN is used for both remote access and outgoing call control";
-                                            TextView tv = (TextView)view.findViewById( R.id.attention_text );
-                                            tv.setText( text1 );
+                                                main_activity.yy_show_alert_dialog.showAlertDialog( R.layout.alert_attention_2, new YYShowAlertDialog.onAlertDialogHandler() {
+                                                    public void onInit( AlertDialog ad, View view ) {
+                                                        String text1 = "Please remember this Access PIN is used for both remote access and outgoing call control";
+                                                        TextView tv = (TextView)view.findViewById( R.id.attention_text );
+                                                        tv.setText( text1 );
+                                                    }
+                                                    public void onOK() { }
+                                                    public void onCancel() { }
+                                                });
+                                            }
                                         }
-                                        public void onOK() { }
-                                        public void onCancel() { }
+                                        public boolean onCheckNumber( String number ) {
+                                            return true;
+                                        }
                                     });
                                 }
                             }
-                            public boolean onCheckNumber( String number ) {
-                                return true;
+                            public void onFailure() {
+                                Log.v( "cconn", "CALL_GUARDIAN_GDES_RESULT : failed " );
+                                String text = String.format( "%s recv failed", YYCommand.CALL_GUARDIAN_GDES_RESULT );
+                                Toast.makeText( main_activity, text, Toast.LENGTH_LONG ).show();
                             }
                         });
                     }
