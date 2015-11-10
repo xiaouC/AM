@@ -1,4 +1,4 @@
-package com.yy2039.answermachine_1;
+package com.yy2039.answermachine;
 
 public class YYInputNumberCallbackView extends YYInputNumberView {
     public YYInputNumberCallbackView() {

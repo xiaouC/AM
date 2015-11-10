@@ -1,4 +1,4 @@
-package com.yy2039.answermachine_1;
+package com.yy2039.answermachine;
 
 import android.view.View;
 import android.widget.ImageButton;
