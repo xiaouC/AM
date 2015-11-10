@@ -140,6 +140,7 @@ public class YYCommand {
                 throw e;
             }
         }
+        Log.v( "cconn", "unregisterReceiver +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++" );
     }
 
     public List<CommandInfo> request_command_list = new ArrayList<CommandInfo>();
@@ -167,6 +168,7 @@ public class YYCommand {
             IntentFilter filter = new IntentFilter();
             filter.addAction( cur_command_info.command_name );
             main_activity.registerReceiver( commandReceiver, filter );
+            Log.v( "cconn", "registerReceiver : " + cur_command_info.command_name );
 
             cur_command_info.command_listener.onSend();
         }
@@ -379,14 +381,14 @@ public class YYCommand {
                                 // 处理完后，马上断开
                                 disconnectSettingsBase( new onConnLisenter() {
                                     public void onSuccessfully() {
+                                        main_activity.yy_show_alert_dialog.hideWaitingAlertDialog();
                                         cmd_listener.onRecv( recv_data, recv_data2 );
                                         Log.v( "cconn", "hideWaitingAlertDialog 55555555555555555555555555555555555" );
-                                        main_activity.yy_show_alert_dialog.hideWaitingAlertDialog();
                                     }
                                     public void onFailure() {
+                                        main_activity.yy_show_alert_dialog.hideWaitingAlertDialog();
                                         cmd_listener.onRecv( recv_data, recv_data2 );
                                         Log.v( "cconn", "hideWaitingAlertDialog 55555555555555555555555555555555555" );
-                                        main_activity.yy_show_alert_dialog.hideWaitingAlertDialog();
                                     }
                                 });
                             }
@@ -394,23 +396,23 @@ public class YYCommand {
                                 // 处理完后，马上断开
                                 disconnectSettingsBase( new onConnLisenter() {
                                     public void onSuccessfully() {
+                                        main_activity.yy_show_alert_dialog.hideWaitingAlertDialog();
                                         cmd_listener.onFailure();
                                         Log.v( "cconn", "hideWaitingAlertDialog 55555555555555555555555555555555555" );
-                                        main_activity.yy_show_alert_dialog.hideWaitingAlertDialog();
                                     }
                                     public void onFailure() {
+                                        main_activity.yy_show_alert_dialog.hideWaitingAlertDialog();
                                         cmd_listener.onFailure();
                                         Log.v( "cconn", "hideWaitingAlertDialog 55555555555555555555555555555555555" );
-                                        main_activity.yy_show_alert_dialog.hideWaitingAlertDialog();
                                     }
                                 });
                             }
                         });
                     }
                     public void onFailure() {
+                        main_activity.yy_show_alert_dialog.hideWaitingAlertDialog();
                         Toast.makeText( main_activity, "settings base link failed!", Toast.LENGTH_LONG ).show();
                         Log.v( "cconn", "hideWaitingAlertDialog 55555555555555555555555555555555555" );
-                        main_activity.yy_show_alert_dialog.hideWaitingAlertDialog();
                     }
                 });
             }
@@ -428,14 +430,14 @@ public class YYCommand {
         executeCommand( cmd_result, new onCommandListener() {
             public void onSend() { cmd_listener.onSend(); }
             public void onRecv( String data, String data2 ) {
+                main_activity.yy_show_alert_dialog.hideWaitingAlertDialog();
                 cmd_listener.onRecv( data, data2 );
                 Log.v( "cconn", "hideWaitingAlertDialog 333333333333333333333333333333333333333333333333" );
-                main_activity.yy_show_alert_dialog.hideWaitingAlertDialog();
             }
             public void onFailure() {
+                main_activity.yy_show_alert_dialog.hideWaitingAlertDialog();
                 cmd_listener.onFailure();
                 Log.v( "cconn", "hideWaitingAlertDialog 333333333333333333333333333333333333333333333333" );
-                main_activity.yy_show_alert_dialog.hideWaitingAlertDialog();
             }
         });
     }
@@ -450,21 +452,21 @@ public class YYCommand {
                         executeCommand( cmd_result, new onCommandListener() {
                             public void onSend() { cmd_listener.onSend(); }
                             public void onRecv( String data, String data2 ) {
+                                main_activity.yy_show_alert_dialog.hideWaitingAlertDialog();
                                 cmd_listener.onRecv( data, data2 );
                                 Log.v( "cconn", "hideWaitingAlertDialog 444444444444444444444444444444444444444444444444" );
-                                main_activity.yy_show_alert_dialog.hideWaitingAlertDialog();
                             }
                             public void onFailure() {
+                                main_activity.yy_show_alert_dialog.hideWaitingAlertDialog();
                                 cmd_listener.onFailure();
                                 Log.v( "cconn", "hideWaitingAlertDialog 444444444444444444444444444444444444444444444444" );
-                                main_activity.yy_show_alert_dialog.hideWaitingAlertDialog();
                             }
                         });
                     }
                     public void onFailure() {
+                        main_activity.yy_show_alert_dialog.hideWaitingAlertDialog();
                         Toast.makeText( main_activity, "answer machine link failed!", Toast.LENGTH_LONG ).show();
                         Log.v( "cconn", "hideWaitingAlertDialog 444444444444444444444444444444444444444444444444" );
-                        main_activity.yy_show_alert_dialog.hideWaitingAlertDialog();
                     }
                 });
             }
