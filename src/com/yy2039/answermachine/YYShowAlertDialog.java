@@ -19,6 +19,8 @@ import android.util.TypedValue;
 import android.graphics.Typeface;
 import android.view.WindowManager;
 import android.graphics.drawable.AnimationDrawable;
+import android.content.DialogInterface;
+import android.view.KeyEvent;
 
 public class YYShowAlertDialog {
     private AnswerMachineActivity main_activity;
@@ -250,6 +252,19 @@ public class YYShowAlertDialog {
         builder.setView( view );
         //builder.setCancelable( false );
         builder.setCancelable( true );
+
+        builder.setOnKeyListener( new DialogInterface.OnKeyListener() {
+            @Override
+            public boolean onKey( DialogInterface dialog, int keyCode, KeyEvent event) {
+                if( keyCode == KeyEvent.KEYCODE_BACK ) {
+                    main_activity.yy_command.unregisterReceiver();
+                    main_activity.yy_command.cur_command_info = null;
+                    main_activity.yy_command.realExecuteCommand();
+                }
+                return false;
+            }
+        });
+
 
         waiting_ad = builder.create();
 
