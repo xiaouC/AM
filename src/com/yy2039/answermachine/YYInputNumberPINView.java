@@ -162,7 +162,7 @@ public class YYInputNumberPINView extends YYViewBase {
                 main_activity.yy_command.executeSettingsBaseCommand( YYCommand.CALL_GUARDIAN_SCCP_RESULT, new YYCommand.onCommandListener() {
                     public void onSend() {
                         Intent banbIntent = new Intent( YYCommand.CALL_GUARDIAN_SCCP );
-                        banbIntent.putExtra( "old", origin_pin );
+                        banbIntent.putExtra( "old", "0000" );
                         banbIntent.putExtra( "new", first_pin );
                         main_activity.sendBroadcast( banbIntent );
                     }
@@ -213,6 +213,10 @@ public class YYInputNumberPINView extends YYViewBase {
         }
 
         if( yy_pin_type == "enter" ) {
+            first_pin = "";
+            for( int i=0; i < input_numbers.size(); ++i )
+                first_pin = first_pin + input_numbers.get( i );
+
             main_activity.yy_command.executeSettingsBaseCommand( YYCommand.CALL_GUARDIAN_CMPC_RESULT, new YYCommand.onCommandListener() {
                 public void onSend() {
                     Intent banbIntent = new Intent( YYCommand.CALL_GUARDIAN_CMPC );
