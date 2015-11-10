@@ -48,7 +48,6 @@
             android:textSize="24px"
             android:gravity="center"
             android:textColor="#7D7D7D"
-            android:textStyle="bold"
             android:layout_marginBottom="10px"
             />
     </LinearLayout>
