@@ -55,13 +55,12 @@
     <style name="text_view_title">
         <item name="android:layout_width">fill_parent</item>
         <item name="android:layout_height">wrap_content</item>
-        <item name="android:textSize">18px</item>
+        <item name="android:textSize">26px</item>
         <item name="android:textColor">@color/white</item>
         <item name="android:gravity">left</item>
         <item name="android:layout_gravity">center</item>
         <item name="android:layout_marginLeft">7px</item>
         <item name="android:layout_marginTop">20px</item>
-        <item name="android:textStyle">bold</item>
     </style>
     <style name="item_button">
         <item name="android:layout_width">fill_parent</item>
@@ -71,8 +70,7 @@
         <item name="android:paddingLeft">42px</item>
         <item name="android:paddingTop">24px</item>
         <item name="android:background">@drawable/item_button_long</item>
-        <item name="android:textSize">18px</item>
-        <item name="android:textStyle">bold</item>
+        <item name="android:textSize">22px</item>
     </style>
     <style name="item_button_2">
         <item name="android:layout_width">fill_parent</item>
@@ -82,8 +80,7 @@
         <item name="android:paddingLeft">36px</item>
         <item name="android:paddingTop">20px</item>
         <item name="android:background">@drawable/item_button_short</item>
-        <item name="android:textSize">18px</item>
-        <item name="android:textStyle">bold</item>
+        <item name="android:textSize">22px</item>
     </style>
     <style name="back_button">
         <item name="android:layout_width">48dp</item>
@@ -138,7 +135,6 @@
         <item name="android:textColor">@color/black</item>
         <item name="android:gravity">left</item>
         <item name="android:textSize">30px</item>
-        <item name="android:textStyle">bold</item>
     </style>
     <style name="alert_dialog_button">
         <item name="android:layout_width">wrap_content</item>
@@ -153,14 +149,12 @@
         <item name="android:paddingLeft">30px</item>
         <item name="android:layout_marginBottom">10px</item>
         <item name="android:background">@color/transparent</item>
-        <item name="android:textStyle">bold</item>
     </style>
     <style name="check_box">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:textColor">@color/black</item>
-        <item name="android:textStyle">bold</item>
-        <item name="android:textSize">24px</item>
+        <item name="android:textSize">26px</item>
         <item name="android:paddingLeft">20px</item>
         <item name="android:layout_marginLeft">50px</item>
         <item name="android:layout_marginTop">10px</item>

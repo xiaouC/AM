@@ -27,7 +27,6 @@
             android:layout_marginLeft="20px"
             android:text="off"
             android:textSize="28px"
-            android:textStyle="bold"
             />
         <TextView
             android:layout_width="wrap_content"
