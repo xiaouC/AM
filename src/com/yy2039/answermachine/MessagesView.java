@@ -35,7 +35,11 @@ public class MessagesView extends YYViewBackList {
                 public void item_handle( Object view_obj ) {
                     Button btn_obj = (Button)view_obj;
 
-                    btn_obj.setText( YYViewBase.transferText( item_info.getMsgName(), item_info.getMsgDateTime() ) );
+                    String name = item_info.getMsgName();
+                    if( name.equals( "" ) ) {
+                        name = item_info.getMsgNumber();
+                    }
+                    btn_obj.setText( YYViewBase.transferText( name, item_info.getMsgDateTime() ) );
                     btn_obj.setOnClickListener( new View.OnClickListener() {
                         public void onClick( View v ) {
                             msg_op_view.msg_index = index;
@@ -140,7 +144,11 @@ public class MessagesView extends YYViewBackList {
         public void deleteMessage() {
             main_activity.yy_show_alert_dialog.showAlertDialog( R.layout.alert_attention, new YYShowAlertDialog.onAlertDialogHandler() {
                 public void onInit( AlertDialog ad, View view ) {
-                    String text1 = String.format( "Are you sure that you want to delete the message you have received from %s?", msg_info.getMsgName() );
+                    String name = msg_info.getMsgName();
+                    if( name.equals( "" ) ) {
+                        name = msg_info.getMsgNumber();
+                    }
+                    String text1 = String.format( "Are you sure that you want to delete the message you have received from %s?", name );
                     TextView tv = (TextView)view.findViewById( R.id.attention_text );
                     tv.setText( text1 );
 
