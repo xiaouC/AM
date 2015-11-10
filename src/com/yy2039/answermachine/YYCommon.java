@@ -1,4 +1,4 @@
-package com.yy2039.answermachine;
+package com.yy2039.answermachine_1;
 
 public class YYCommon {
     public final static Integer ANSWER_DELAY_2_RINGS =  0;
