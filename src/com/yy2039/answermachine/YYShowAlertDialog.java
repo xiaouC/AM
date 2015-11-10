@@ -260,7 +260,7 @@ public class YYShowAlertDialog {
                     if( main_activity.yy_command.cur_command_info != null ) {
                         main_activity.yy_command.unregisterReceiver();
                         main_activity.yy_command.cur_command_info = null;
-                        main_activity.yy_command.realExecuteCommand();
+                        main_activity.yy_command.request_command_list.clear();
                     }
                 }
                 return false;
