@@ -257,9 +257,11 @@ public class YYShowAlertDialog {
             @Override
             public boolean onKey( DialogInterface dialog, int keyCode, KeyEvent event) {
                 if( keyCode == KeyEvent.KEYCODE_BACK ) {
-                    main_activity.yy_command.unregisterReceiver();
-                    main_activity.yy_command.cur_command_info = null;
-                    main_activity.yy_command.realExecuteCommand();
+                    if( main_activity.yy_command.cur_command_info != null ) {
+                        main_activity.yy_command.unregisterReceiver();
+                        main_activity.yy_command.cur_command_info = null;
+                        main_activity.yy_command.realExecuteCommand();
+                    }
                 }
                 return false;
             }
