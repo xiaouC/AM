@@ -33,6 +33,11 @@ public class AnswerMachineView extends YYViewBase {
 
         // 
         fillListView();
+
+        main_activity.yy_data_source.refreshMessageCount( new YYDataSource.onTreatMsgLinstener() {
+            public void onSuccessfully() { updateView(); }
+            public void onFailure() { updateView(); }
+        });
     }
 
     public String getViewTitle() { return "Answer Machine"; }
@@ -44,25 +49,7 @@ public class AnswerMachineView extends YYViewBase {
             vb_handler = new onViewBackHandler() {
                 public void onBack() {
                     //if( main_activity.yy_command.answer_machine_link ) {
-                        main_activity.yy_show_alert_dialog.showWaitingAlertDialog();
-                        main_activity.yy_command.disconnectAnswerMachine( new YYCommand.onConnLisenter() {
-                            public void onSuccessfully() {
-                                main_activity.yy_show_alert_dialog.hideWaitingAlertDialog();
-
-                                main_activity.yy_data_source.refreshMessageCount( new YYDataSource.onTreatMsgLinstener() {
-                                    public void onSuccessfully() { yy_view_self.setView( false, null ); }
-                                    public void onFailure() { yy_view_self.setView( false, null ); }
-                                });
-                            }
-                            public void onFailure() {
-                                main_activity.yy_show_alert_dialog.hideWaitingAlertDialog();
-
-                                main_activity.yy_data_source.refreshMessageCount( new YYDataSource.onTreatMsgLinstener() {
-                                    public void onSuccessfully() { yy_view_self.setView( false, null ); }
-                                    public void onFailure() { yy_view_self.setView( false, null ); }
-                                });
-                            }
-                        });
+                        yy_view_self.setView( false, null );
                     //}
                     //else {
                     //    main_activity.yy_data_source.refreshMessageCount( new YYDataSource.onTreatMsgLinstener() {
@@ -181,7 +168,43 @@ public class AnswerMachineView extends YYViewBase {
                 btn_obj.setOnClickListener( new View.OnClickListener() {
                     @Override
                     public void onClick( View v ) {
-                        outgoing_msg_view.setView( true, yy_view_self.getViewBackHandler() );
+                        main_activity.yy_command.executeSettingsBaseCommand( YYCommand.ANSWER_MACHINE_GDMS_RESULT, new YYCommand.onCommandListener() {
+                            public void onSend() {
+                                Intent dmIntent = new Intent( YYCommand.ANSWER_MACHINE_GDMS );
+                                dmIntent.putExtra( "data", "2" );
+                                main_activity.sendBroadcast( dmIntent );
+
+                                Log.v( "cconn", "requestOutgoingIsUseDefaultMessage send" );
+                            }
+                            public void onRecv( String data, String data2 ) {
+                                Log.v( "cconn", "requestOutgoingIsUseDefaultMessage recv : " + data );
+                                if( data == null ) {
+                                    String text = String.format( "%s recv : null", YYCommand.ANSWER_MACHINE_GDMS_RESULT );
+                                    Toast.makeText( main_activity, text, Toast.LENGTH_LONG ).show();
+                                }
+                                else {
+                                    String[] results = data.split( "," );
+                                    if( results.length < 1 ) {
+                                        String text = String.format( "%s recv data error : %s", YYCommand.ANSWER_MACHINE_GDMS_RESULT, data );
+                                        Toast.makeText( main_activity, text, Toast.LENGTH_LONG ).show();
+                                    }
+                                    else {
+                                        try {
+                                            Boolean bIsDefault = results[0].equals( "00" );
+                                            main_activity.yy_data_source.initOutgoingIsUseDefaultMessage( bIsDefault );
+                                        } catch ( Exception e ) {
+                                            String text = String.format( "%s recv data error : %s", YYCommand.ANSWER_MACHINE_GDMS_RESULT, data );
+                                            Toast.makeText( main_activity, text, Toast.LENGTH_LONG ).show();
+                                        }
+                                    }
+                                }
+
+                                outgoing_msg_view.setView( true, yy_view_self.getViewBackHandler() );
+                            }
+                            public void onFailure() {
+                                Log.v( "cconn", "requestOutgoingIsUseDefaultMessage failed" );
+                            }
+                        });
                     }
                 });
             }

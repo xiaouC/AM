@@ -51,43 +51,6 @@ public class YYDataSource {
         nAnswerDelayType = YYCommon.ANSWER_DELAY_2_RINGS;
         nRecordingQuality = YYCommon.RECORDING_QUALITY_HIGH;
         nAnswerMode = YYCommon.ANSWER_MODE_ANSWER_AND_RECORD;
-
-        // 
-        main_activity.yy_command.executeCommand( YYCommand.PAGE_MSG_COUNT_RESULT, new YYCommand.onCommandListener() {
-            public void onSend() {
-                main_activity.yy_show_alert_dialog.showWaitingAlertDialog();
-                main_activity.sendBroadcast( new Intent( YYCommand.COMMAD_PAGE_MSG_COUNT ) );
-            }
-            public void onRecv( String data, String data2 ) {
-                if( data == null ) {
-                    String text = String.format( "%s recv : null", YYCommand.PAGE_MSG_COUNT_RESULT );
-                    Toast.makeText( main_activity, text, Toast.LENGTH_LONG ).show();
-                }
-                else {
-                    String[] results = data.split( "," );
-                    if( results.length < 2 ) {
-                        String text = String.format( "%s recv data error : %s", YYCommand.PAGE_MSG_COUNT_RESULT, data );
-                        Toast.makeText( main_activity, text, Toast.LENGTH_LONG ).show();
-                    }
-                    else {
-                        nMsgCount = Integer.valueOf( results[0] );
-                        nNewMsgCount = Integer.valueOf( results[1] );
-
-                        main_activity.answer_machine_view.updateView();
-                        main_activity.yy_show_alert_dialog.hideWaitingAlertDialog();
-                    }
-
-                    // 在这个回来后，马上请求
-                    requestOutgoingIsUseDefaultMessage();
-                }
-            }
-            public void onFailure() {
-                main_activity.yy_show_alert_dialog.hideWaitingAlertDialog();
-
-                // 在这个回来后，马上请求
-                requestOutgoingIsUseDefaultMessage();
-            }
-        });
     }
 
     public int getMessageCount() {
@@ -334,38 +297,8 @@ public class YYDataSource {
         return bOutgoingIsUseDefaultMessage;
     }
 
-    public void requestOutgoingIsUseDefaultMessage() {
-        main_activity.yy_command.executeSettingsBaseCommand( YYCommand.ANSWER_MACHINE_GDMS_RESULT, new YYCommand.onCommandListener() {
-            public void onSend() {
-                Intent dmIntent = new Intent( YYCommand.ANSWER_MACHINE_GDMS );
-                dmIntent.putExtra( "data", "2" );
-                main_activity.sendBroadcast( dmIntent );
-            }
-            public void onRecv( String data, String data2 ) {
-                if( data == null ) {
-                    String text = String.format( "%s recv : null", YYCommand.ANSWER_MACHINE_GDMS_RESULT );
-                    Toast.makeText( main_activity, text, Toast.LENGTH_LONG ).show();
-                }
-                else {
-                    String[] results = data.split( "," );
-                    if( results.length < 1 ) {
-                        String text = String.format( "%s recv data error : %s", YYCommand.ANSWER_MACHINE_GDMS_RESULT, data );
-                        Toast.makeText( main_activity, text, Toast.LENGTH_LONG ).show();
-                    }
-                    else {
-                        try {
-                            bOutgoingIsUseDefaultMessage = results[0].equals( "00" );
-                        } catch ( Exception e ) {
-                            String text = String.format( "%s recv data error : %s", YYCommand.ANSWER_MACHINE_GDMS_RESULT, data );
-                            Toast.makeText( main_activity, text, Toast.LENGTH_LONG ).show();
-                        }
-                    }
-                }
-            }
-            public void onFailure() {
-            }
-        });
-
+    public void initOutgoingIsUseDefaultMessage( Boolean bUseDefaultMessage ) {
+        bOutgoingIsUseDefaultMessage = bUseDefaultMessage;
     }
 
     public void setOutgoingIsUseDefaultMessage( Boolean bUseDefaultMessage ) {
