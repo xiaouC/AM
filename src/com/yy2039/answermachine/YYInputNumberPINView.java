@@ -162,8 +162,7 @@ public class YYInputNumberPINView extends YYViewBase {
                 main_activity.yy_command.executeSettingsBaseCommand( YYCommand.CALL_GUARDIAN_SCCP_RESULT, new YYCommand.onCommandListener() {
                     public void onSend() {
                         Intent banbIntent = new Intent( YYCommand.CALL_GUARDIAN_SCCP );
-                        banbIntent.putExtra( "old", "0000" );
-                        banbIntent.putExtra( "new", first_pin );
+                        banbIntent.putExtra( "data", "0000" + first_pin );
                         main_activity.sendBroadcast( banbIntent );
                     }
                     public void onRecv( String data, String data2 ) {
