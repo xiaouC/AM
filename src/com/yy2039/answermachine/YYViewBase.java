@@ -75,6 +75,7 @@ public class YYViewBase {
         {
             vb_handler = new onViewBackHandler() {
                 public void onBack() {
+                    main_activity.yy_schedule.cancelAllSchedule();
                     yy_view_self.setView( false, null );
                 }
             };

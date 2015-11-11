@@ -34,35 +34,19 @@ public class AnswerMachineView extends YYViewBase {
         // 
         fillListView();
 
-        main_activity.yy_data_source.refreshMessageCount( new YYDataSource.onTreatMsgLinstener() {
-            public void onSuccessfully() { updateView(); }
-            public void onFailure() { updateView(); }
+        // 0.1 秒后才请求
+        main_activity.yy_schedule.scheduleOnceTime( 100, new YYSchedule.onScheduleAction() {
+            public void doSomething() {
+                Log.v( "cconn", "scheduleOnceTime refreshMessageCount +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++" );
+                main_activity.yy_data_source.refreshMessageCount( new YYDataSource.onTreatMsgLinstener() {
+                    public void onSuccessfully() { updateView(); }
+                    public void onFailure() { updateView(); }
+                });
+            }
         });
     }
 
     public String getViewTitle() { return "Answer Machine"; }
-
-    // 返回到自己界面
-    public onViewBackHandler getViewBackHandler() {
-        if( vb_handler == null )
-        {
-            vb_handler = new onViewBackHandler() {
-                public void onBack() {
-                    //if( main_activity.yy_command.answer_machine_link ) {
-                        yy_view_self.setView( false, null );
-                    //}
-                    //else {
-                    //    main_activity.yy_data_source.refreshMessageCount( new YYDataSource.onTreatMsgLinstener() {
-                    //        public void onSuccessfully() { yy_view_self.setView( false, null ); }
-                    //        public void onFailure() { yy_view_self.setView( false, null ); }
-                    //    });
-                    //}
-                }
-            };
-        }
-
-        return vb_handler;
-    }
 
     public List<Map<Integer,YYListAdapter.onYYListItemHandler>> getItemListData() {
         List<Map<Integer,YYListAdapter.onYYListItemHandler>> ret_data = new ArrayList<Map<Integer,YYListAdapter.onYYListItemHandler>>();

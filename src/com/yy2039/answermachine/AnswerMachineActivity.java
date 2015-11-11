@@ -29,6 +29,7 @@ public class AnswerMachineActivity extends FragmentActivity
     public static AnswerMachineActivity main_activity;
 
     public YYCommon yy_common;
+    public YYSchedule yy_schedule;
     public YYDataSource yy_data_source;
     public YYCommand yy_command;
     public YYShowAlertDialog yy_show_alert_dialog;
@@ -46,6 +47,7 @@ public class AnswerMachineActivity extends FragmentActivity
         main_activity = this;
 
         yy_common = new YYCommon();
+        yy_schedule = new YYSchedule( this );
         yy_command = new YYCommand( this );
         yy_show_alert_dialog = new YYShowAlertDialog( this );
         yy_data_source = new YYDataSource( this );
@@ -95,6 +97,7 @@ public class AnswerMachineActivity extends FragmentActivity
 		// TODO Auto-generated method stub
 		super.onDestroy();
 
+        yy_schedule.cancelAllSchedule();
         yy_command.unregisterReceiver();
 	}
 
