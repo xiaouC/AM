@@ -202,12 +202,12 @@ public class YYDataSource {
     public final static Integer OUTGOING_MSG_TYPE_ANNOUNCE_MSG = 3;
 
     // 在这里，nMsgType 一定使用 2
-    public void treatOutgoingMsg( final int nOpType, final onTreatMsgLinstener treat_msg_linstener ) {
+    public void treatOutgoingMsg( final int nOpType, final int nMsgType, final onTreatMsgLinstener treat_msg_linstener ) {
         main_activity.yy_command.executeAnswerMachineCommand( YYCommand.ANSWER_MACHINE_COOM_RESULT, new YYCommand.onCommandListener() {
             public void onSend() {
                 Intent msgIntent = new Intent( YYCommand.ANSWER_MACHINE_COOM );
                 msgIntent.putExtra( "operation", String.format( "%d", nOpType ) );
-                msgIntent.putExtra( "type", "2" );
+                msgIntent.putExtra( "type", String.format( "%d", nMsgType ) );
                 main_activity.sendBroadcast( msgIntent );
             }
             public void onRecv( String data, String data2 ) {
