@@ -174,6 +174,7 @@ public class SettingsView extends YYViewBackList {
         });
         ret_data.add( map );
 
+        /*
         //////////////////////////////////////////////////////////////////////////////////////////////////////////////
         // Recording quality
         map = new HashMap<Integer,YYListAdapter.onYYListItemHandler>();
@@ -219,6 +220,7 @@ public class SettingsView extends YYViewBackList {
             }
         });
         ret_data.add( map );
+        */
 
         //////////////////////////////////////////////////////////////////////////////////////////////////////////////
         // Answer mode
