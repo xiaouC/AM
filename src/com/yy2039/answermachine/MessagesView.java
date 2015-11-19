@@ -130,14 +130,31 @@ public class MessagesView extends YYViewBackList {
                         @Override
                         public void onClick( View v ) {
                             main_activity.yy_input_number_callback_view.showInputNumberView( msg_info.getMsgName(), msg_info.getMsgNumber(), yy_view_self.getViewBackHandler(), new YYInputNumberView.onYYInputNumberHandler() {
-                                public void onSave( String number ) {
-                                    Intent intent1 = new Intent( "com.mid.phone.psvo" );
-                                    intent1.putExtra( "number", number );
-                                    intent1.putExtra( "name", msg_info.getMsgName() );
-                                    intent1.putExtra( "callout", true );
-                                    intent1.putExtra( "quickdial", false );
-                                    intent1.setFlags( Intent.FLAG_ACTIVITY_NEW_TASK );
-                                    main_activity.startActivity( intent1 );
+                                public void onSave( final String number ) {
+                                    main_activity.yy_command.disconnectAllLink( new YYCommand.onConnLisenter() {
+                                        public void onSuccessfully() {
+                                            Intent intent1 = new Intent( "com.mid.phone.psvo" );
+                                            intent1.putExtra( "number", number );
+                                            intent1.putExtra( "name", msg_info.getMsgName() );
+                                            intent1.putExtra( "callout", true );
+                                            intent1.putExtra( "quickdial", true );
+                                            intent1.setFlags( Intent.FLAG_ACTIVITY_NEW_TASK );
+                                            main_activity.startActivity( intent1 );
+
+                                            main_activity.finish();
+                                        }
+                                        public void onFailure() {
+                                            Intent intent1 = new Intent( "com.mid.phone.psvo" );
+                                            intent1.putExtra( "number", number );
+                                            intent1.putExtra( "name", msg_info.getMsgName() );
+                                            intent1.putExtra( "callout", true );
+                                            intent1.putExtra( "quickdial", true );
+                                            intent1.setFlags( Intent.FLAG_ACTIVITY_NEW_TASK );
+                                            main_activity.startActivity( intent1 );
+
+                                            main_activity.finish();
+                                        }
+                                    });
                                 }
                             });
                         }

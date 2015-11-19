@@ -244,12 +244,32 @@ public class OutgoingMessagesView extends YYViewBackList {
                             main_activity.yy_data_source.treatOutgoingMsg( YYDataSource.OUTGOING_MSG_OPERATION_STOP_CHANGE, nMsgType, new YYDataSource.onTreatMsgLinstener() {
                                 public void onSuccessfully() {
                                     main_activity.yy_data_source.initOutgoingIsUseDefaultMessage( false );
-                                    playMessage();
+
+                                    yy_view_self.yy_list_adapter.list_data = yy_view_self.getItemListData();
+
+                                    YYListAdapter.updateListViewTask task = new YYListAdapter.updateListViewTask();
+                                    task.execute();
+
+                                    main_activity.yy_schedule.scheduleOnceTime( 1000, new YYSchedule.onScheduleAction() {
+                                        public void doSomething() {
+                                            playMessage();
+                                        }
+                                    });
                                 }
                                 public void onFailure() {
                                     Toast.makeText( main_activity, "change outgoing message failed", Toast.LENGTH_SHORT ).show();
                                     main_activity.yy_data_source.initOutgoingIsUseDefaultMessage( false );
-                                    playMessage();
+
+                                    yy_view_self.yy_list_adapter.list_data = yy_view_self.getItemListData();
+
+                                    YYListAdapter.updateListViewTask task = new YYListAdapter.updateListViewTask();
+                                    task.execute();
+
+                                    main_activity.yy_schedule.scheduleOnceTime( 1000, new YYSchedule.onScheduleAction() {
+                                        public void doSomething() {
+                                            playMessage();
+                                        }
+                                    });
                                 }
                             });
                         }
