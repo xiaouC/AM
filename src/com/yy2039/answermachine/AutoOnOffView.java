@@ -10,6 +10,7 @@ import android.widget.Switch;
 import android.widget.CompoundButton;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.fourmob.datetimepicker.date.DatePickerDialog;
 import com.fourmob.datetimepicker.date.DatePickerDialog.OnDateSetListener;
@@ -17,14 +18,13 @@ import com.sleepbot.datetimepicker.time.RadialPickerLayout;
 import com.sleepbot.datetimepicker.time.TimePickerDialog;
 import java.util.Calendar;
 
-public class AutoOnOffView extends YYViewBack implements TimePickerDialog.OnTimeSetListener {
+public class AutoOnOffView extends YYViewBackList implements TimePickerDialog.OnTimeSetListener {
     public static final String TIMEPICKER_TAG = "timepicker";
     public TimePickerDialog timePickerDialog;
     private boolean is_pick_start_time;
     private boolean bIsInitSwitchBtnState;
 
     AutoOnOffView() {
-        view_layout_res_id = R.layout.title_back_listview_1;
         is_pick_start_time = true;
 
         Calendar calendar = Calendar.getInstance();
@@ -35,50 +35,7 @@ public class AutoOnOffView extends YYViewBack implements TimePickerDialog.OnTime
             tpd.setOnTimeSetListener( this );
     }
 
-    public void setView( boolean bIsPush, onViewBackHandler handler ) {
-        super.setView( bIsPush, handler );
-
-        bIsInitSwitchBtnState = true;
-
-        // 
-        Switch btn_obj = (Switch)main_activity.findViewById( R.id.button_state );
-        btn_obj.setOnCheckedChangeListener( new CompoundButton.OnCheckedChangeListener() {
-            public void onCheckedChanged( CompoundButton buttonView, boolean isChecked ) {
-                if( !bIsInitSwitchBtnState ) {
-                    main_activity.yy_data_source.setAutoOnOff( isChecked );
-                }
-
-                updateState();
-            }
-        });
-
-        fillListView();
-
-        btn_obj.setChecked( main_activity.yy_data_source.getAutoOnOff() );
-
-        bIsInitSwitchBtnState = false;
-    }
-
     public String getViewTitle() { return "Auto on/off"; }
-
-    public void updateState() {
-        // "on" or "off"
-        TextView tv_state = (TextView)main_activity.findViewById( R.id.state_text );
-        tv_state.setText( main_activity.yy_data_source.getAutoOnOff() ? "on" : "off" );
-
-        // tips
-        TextView tv_tips = (TextView)main_activity.findViewById( R.id.tips_text );
-        if( main_activity.yy_data_source.getAutoOnOff() )
-            tv_tips.setText( "" );
-        else
-            tv_tips.setText( "" );
-
-        // list view
-        yy_list_adapter.list_data = getItemListData();
-
-        YYListAdapter.updateListViewTask task = new YYListAdapter.updateListViewTask();
-        task.execute();
-    }
 
     public void initItemData( List<Map<Integer,YYListAdapter.onYYListItemHandler>> item_list_data, final onUpdateTextHandler update_text_handler, final View.OnClickListener click_listener ) {
         Map<Integer,YYListAdapter.onYYListItemHandler> map = new HashMap<Integer,YYListAdapter.onYYListItemHandler>();
@@ -99,57 +56,70 @@ public class AutoOnOffView extends YYViewBack implements TimePickerDialog.OnTime
         List<Map<Integer,YYListAdapter.onYYListItemHandler>> ret_data = new ArrayList<Map<Integer,YYListAdapter.onYYListItemHandler>>();
 
         //////////////////////////////////////////////////////////////////////////////////////////////////////////////
-        if( main_activity.yy_data_source.getAutoOnOff() )
-        {
-            //////////////////////////////////////////////////////////////////////////////////////////////////////////////
-            // on once / Daily / Monday-Friday / Saturday / Sunday
-            initItemData( ret_data, getUpdateTextHandler_DateTime(), new View.OnClickListener() {
-                public void onClick( View v ) {
-                    List<YYShowAlertDialog.onAlertDialogRadioItemHandler> item_list_data = new ArrayList<YYShowAlertDialog.onAlertDialogRadioItemHandler>();
+        // off / on once / Daily / Monday-Friday / Saturday / Sunday
+        initItemData( ret_data, getUpdateTextHandler_DateTime(), new View.OnClickListener() {
+            public void onClick( View v ) {
+                List<YYShowAlertDialog.onAlertDialogRadioItemHandler> item_list_data = new ArrayList<YYShowAlertDialog.onAlertDialogRadioItemHandler>();
 
-                    item_list_data.add( new YYShowAlertDialog.onAlertDialogRadioItemHandler() {
-                        public String getRadioText() { return "On once"; }
-                        public void onRadioClick() { yy_view_self.yy_temp_data.put( "date_time_type", YYDataSource.DATE_TIME_TYPE_ON_ONCE ); }
-                        public boolean isRadioChecked() { return main_activity.yy_data_source.getDateTimeType() == YYDataSource.DATE_TIME_TYPE_ON_ONCE; }
-                    });
-                    item_list_data.add( new YYShowAlertDialog.onAlertDialogRadioItemHandler() {
-                        public String getRadioText() { return "Daily"; }
-                        public void onRadioClick() { yy_view_self.yy_temp_data.put( "date_time_type", YYDataSource.DATE_TIME_TYPE_DAILY ); }
-                        public boolean isRadioChecked() { return main_activity.yy_data_source.getDateTimeType() == YYDataSource.DATE_TIME_TYPE_DAILY; }
-                    });
-                    item_list_data.add( new YYShowAlertDialog.onAlertDialogRadioItemHandler() {
-                        public String getRadioText() { return "Monday-Friday"; }
-                        public void onRadioClick() { yy_view_self.yy_temp_data.put( "date_time_type", YYDataSource.DATE_TIME_TYPE_MONDAY_FRIDAY ); }
-                        public boolean isRadioChecked() { return main_activity.yy_data_source.getDateTimeType() == YYDataSource.DATE_TIME_TYPE_MONDAY_FRIDAY; }
-                    });
-                    item_list_data.add( new YYShowAlertDialog.onAlertDialogRadioItemHandler() {
-                        public String getRadioText() { return "Saturday"; }
-                        public void onRadioClick() { yy_view_self.yy_temp_data.put( "date_time_type", YYDataSource.DATE_TIME_TYPE_SATURDAY ); }
-                        public boolean isRadioChecked() { return main_activity.yy_data_source.getDateTimeType() == YYDataSource.DATE_TIME_TYPE_SATURDAY; }
-                    });
-                    item_list_data.add( new YYShowAlertDialog.onAlertDialogRadioItemHandler() {
-                        public String getRadioText() { return "Sunday"; }
-                        public void onRadioClick() { yy_view_self.yy_temp_data.put( "date_time_type", YYDataSource.DATE_TIME_TYPE_SUNDAY ); }
-                        public boolean isRadioChecked() { return main_activity.yy_data_source.getDateTimeType() == YYDataSource.DATE_TIME_TYPE_SUNDAY; }
-                    });
+                item_list_data.add( new YYShowAlertDialog.onAlertDialogRadioItemHandler() {
+                    public String getRadioText() { return "Off"; }
+                    public void onRadioClick() { yy_view_self.yy_temp_data.put( "date_time_type", YYDataSource.DATE_TIME_TYPE_OFF ); }
+                    public boolean isRadioChecked() { return main_activity.yy_data_source.getDateTimeType() == YYDataSource.DATE_TIME_TYPE_OFF; }
+                });
+                item_list_data.add( new YYShowAlertDialog.onAlertDialogRadioItemHandler() {
+                    public String getRadioText() { return "On once"; }
+                    public void onRadioClick() { yy_view_self.yy_temp_data.put( "date_time_type", YYDataSource.DATE_TIME_TYPE_ON_ONCE ); }
+                    public boolean isRadioChecked() { return main_activity.yy_data_source.getDateTimeType() == YYDataSource.DATE_TIME_TYPE_ON_ONCE; }
+                });
+                item_list_data.add( new YYShowAlertDialog.onAlertDialogRadioItemHandler() {
+                    public String getRadioText() { return "Daily"; }
+                    public void onRadioClick() { yy_view_self.yy_temp_data.put( "date_time_type", YYDataSource.DATE_TIME_TYPE_DAILY ); }
+                    public boolean isRadioChecked() { return main_activity.yy_data_source.getDateTimeType() == YYDataSource.DATE_TIME_TYPE_DAILY; }
+                });
+                item_list_data.add( new YYShowAlertDialog.onAlertDialogRadioItemHandler() {
+                    public String getRadioText() { return "Monday-Friday"; }
+                    public void onRadioClick() { yy_view_self.yy_temp_data.put( "date_time_type", YYDataSource.DATE_TIME_TYPE_MONDAY_FRIDAY ); }
+                    public boolean isRadioChecked() { return main_activity.yy_data_source.getDateTimeType() == YYDataSource.DATE_TIME_TYPE_MONDAY_FRIDAY; }
+                });
+                item_list_data.add( new YYShowAlertDialog.onAlertDialogRadioItemHandler() {
+                    public String getRadioText() { return "Saturday"; }
+                    public void onRadioClick() { yy_view_self.yy_temp_data.put( "date_time_type", YYDataSource.DATE_TIME_TYPE_SATURDAY ); }
+                    public boolean isRadioChecked() { return main_activity.yy_data_source.getDateTimeType() == YYDataSource.DATE_TIME_TYPE_SATURDAY; }
+                });
+                item_list_data.add( new YYShowAlertDialog.onAlertDialogRadioItemHandler() {
+                    public String getRadioText() { return "Sunday"; }
+                    public void onRadioClick() { yy_view_self.yy_temp_data.put( "date_time_type", YYDataSource.DATE_TIME_TYPE_SUNDAY ); }
+                    public boolean isRadioChecked() { return main_activity.yy_data_source.getDateTimeType() == YYDataSource.DATE_TIME_TYPE_SUNDAY; }
+                });
 
-                    main_activity.yy_show_alert_dialog.showRadioGroupAlertDialog( "Auto on", item_list_data, new YYShowAlertDialog.onAlertDialogClickHandler() {
-                        public void onOK() {
-                            Integer nCurSel = (Integer)yy_view_self.yy_temp_data.get( "date_time_type" );
-                            if( nCurSel != null ) {
-                                main_activity.yy_data_source.setDateTimeType( nCurSel );
+                main_activity.yy_show_alert_dialog.showRadioGroupAlertDialog( "Auto on/off", item_list_data, new YYShowAlertDialog.onAlertDialogClickHandler() {
+                    public void onOK() {
+                        Integer nCurSel = (Integer)yy_view_self.yy_temp_data.get( "date_time_type" );
+                        if( nCurSel != null ) {
+                            main_activity.yy_data_source.setDateTimeType( nCurSel );
 
-                                yy_view_self.yy_list_adapter.list_data = yy_view_self.getItemListData();
+                            main_activity.yy_data_source.updateAutoOnOffDataTime( new YYDataSource.onTreatMsgLinstener() {
+                                public void onSuccessfully() {
+                                }
+                                public void onFailure() {
+                                    Toast.makeText( main_activity, "update auto on/off status failed", Toast.LENGTH_LONG ).show();
+                                }
+                            });
 
-                                YYListAdapter.updateListViewTask task = new YYListAdapter.updateListViewTask();
-                                task.execute();
-                            }
+                            yy_view_self.yy_list_adapter.list_data = yy_view_self.getItemListData();
+
+                            YYListAdapter.updateListViewTask task = new YYListAdapter.updateListViewTask();
+                            task.execute();
                         }
-                        public void onCancel() { }
-                    });
-                }
-            });
+                    }
+                    public void onCancel() { }
+                });
+            }
+        });
 
+        //////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        if( main_activity.yy_data_source.getDateTimeType() != YYDataSource.DATE_TIME_TYPE_OFF )
+        {
             initItemData( ret_data, getUpdateTextHandler_OnTime(), new View.OnClickListener() {
                 public void onClick( View v ) {
                     is_pick_start_time = true;
@@ -176,24 +146,27 @@ public class AutoOnOffView extends YYViewBack implements TimePickerDialog.OnTime
     public onUpdateTextHandler getUpdateTextHandler_DateTime() {
         return new onUpdateTextHandler() {
             public SpannableString getText() {
-                String text1 = "On once";
-                String text2 = "";
+                String text1 = "on/off";
+                String text2 = "Off";
                 switch( main_activity.yy_data_source.getDateTimeType() )
                 {
+                    case YYDataSource.DATE_TIME_TYPE_OFF:
+                        text2 = "Off";
+                        break;
                     case YYDataSource.DATE_TIME_TYPE_ON_ONCE:
-                        text1 = "On once";
+                        text2 = "On once";
                         break;
                     case YYDataSource.DATE_TIME_TYPE_DAILY:
-                        text1 = "Daily";
+                        text2 = "Daily";
                         break;
                     case YYDataSource.DATE_TIME_TYPE_MONDAY_FRIDAY:
-                        text1 = "Monday-Friday";
+                        text2 = "Monday-Friday";
                         break;
                     case YYDataSource.DATE_TIME_TYPE_SATURDAY:
-                        text1 = "Saturday";
+                        text2 = "Saturday";
                         break;
                     case YYDataSource.DATE_TIME_TYPE_SUNDAY:
-                        text1 = "Sunday";
+                        text2 = "Sunday";
                         break;
                 }
 
@@ -234,6 +207,14 @@ public class AutoOnOffView extends YYViewBack implements TimePickerDialog.OnTime
             main_activity.yy_data_source.setAutoOffHour( hourOfDay );
             main_activity.yy_data_source.setAutoOffMinue( minute );
         }
+
+        main_activity.yy_data_source.updateAutoOnOffDataTime( new YYDataSource.onTreatMsgLinstener() {
+            public void onSuccessfully() {
+            }
+            public void onFailure() {
+                Toast.makeText( main_activity, "update auto on/off status failed", Toast.LENGTH_LONG ).show();
+            }
+        });
 
         // list view
         yy_list_adapter.list_data = getItemListData();

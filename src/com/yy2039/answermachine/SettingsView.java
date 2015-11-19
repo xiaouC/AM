@@ -294,7 +294,54 @@ public class SettingsView extends YYViewBackList {
                 btn_obj.setOnClickListener( new View.OnClickListener() {
                     @Override
                     public void onClick( View v ) {
-                        auto_on_off_view.setView( true, yy_view_self.getViewBackHandler() );
+                        main_activity.yy_command.executeSettingsBaseCommand( YYCommand.ANSWER_MACHINE_GATS_RESULT, new YYCommand.onCommandListener() {
+                            public void onSend() {
+                                main_activity.sendBroadcast( new Intent( YYCommand.ANSWER_MACHINE_GATS ) );
+                                Log.v( "cconn", "ANSWER_MACHINE_GATS send" );
+                            }
+                            public void onRecv( String data, String data2 ) {
+                                Log.v( "cconn", "ANSWER_MACHINE_GATS : recv data : " + data );
+                                Log.v( "cconn", "ANSWER_MACHINE_GATS : recv data2 : " + data2 );
+                                if( data == null ) {
+                                    String text = String.format( "%s recv : null", YYCommand.CALL_GUARDIAN_GDES_RESULT );
+                                    Toast.makeText( main_activity, text, Toast.LENGTH_LONG ).show();
+                                }
+                                else {
+                                    String[] results = data.split( "," );
+                                    if( results.length < 2 ) {
+                                        String text = String.format( "%s recv data error : %s", YYCommand.CALL_GUARDIAN_GDES_RESULT, data );
+                                        Toast.makeText( main_activity, text, Toast.LENGTH_LONG ).show();
+                                    } else {
+                                        try {
+                                            main_activity.yy_data_source.initDateTimeType( Integer.parseInt( results[0] ) );
+
+                                            char[] ch_custom_1 = results[1].toCharArray();
+                                            String s1 = String.valueOf( ch_custom_1[0] ) + String.valueOf( ch_custom_1[1] );
+                                            String s2 = String.valueOf( ch_custom_1[2] ) + String.valueOf( ch_custom_1[3] );
+                                            int nOnHour = Integer.parseInt( s1 );
+                                            int nOnMinue = Integer.parseInt( s2 );
+                                            main_activity.yy_data_source.initAutoOnTime( nOnHour, nOnMinue );
+
+                                            String s3 = String.valueOf( ch_custom_1[4] ) + String.valueOf( ch_custom_1[5] );
+                                            String s4 = String.valueOf( ch_custom_1[6] ) + String.valueOf( ch_custom_1[7] );
+                                            int nOffHour = Integer.parseInt( s3 );
+                                            int nOffMinue = Integer.parseInt( s4 );
+                                            main_activity.yy_data_source.initAutoOffTime( nOffHour, nOffMinue );
+
+                                            auto_on_off_view.setView( true, yy_view_self.getViewBackHandler() );
+                                        } catch ( Exception e ) {
+                                            String text = String.format( "%s recv data error : %s", YYCommand.CALL_GUARDIAN_GDES_RESULT, data );
+                                            Toast.makeText( main_activity, text, Toast.LENGTH_LONG ).show();
+                                        }
+                                    }
+                                }
+                            }
+                            public void onFailure() {
+                                Log.v( "cconn", "ANSWER_MACHINE_GATS failed" );
+                                String text = String.format( "request %s failed", YYCommand.CALL_GUARDIAN_GDES_RESULT );
+                                Toast.makeText( main_activity, text, Toast.LENGTH_LONG ).show();
+                            }
+                        });
                     }
                 });
             }

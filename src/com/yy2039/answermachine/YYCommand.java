@@ -370,7 +370,26 @@ public class YYCommand {
                 realExecuteCommand();
             }
         });
+        action_list.put( ANSWER_MACHINE_GATS_RESULT, new onRecvActionListener() {
+            public void onExecute( String data, String data2 ) {
+                if( cur_command_info != null ) {
+                    cur_command_info.command_listener.onRecv( data, data2 );
+                }
 
+                cur_command_info = null;
+                realExecuteCommand();
+            }
+        });
+        action_list.put( ANSWER_MACHINE_SATS_RESULT, new onRecvActionListener() {
+            public void onExecute( String data, String data2 ) {
+                if( cur_command_info != null ) {
+                    cur_command_info.command_listener.onRecv( data, data2 );
+                }
+
+                cur_command_info = null;
+                realExecuteCommand();
+            }
+        });
         //// 注册
         //IntentFilter filter = new IntentFilter();
         //for( Map.Entry<String,onRecvActionListener> entry : action_list.entrySet() ) {

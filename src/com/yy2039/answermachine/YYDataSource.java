@@ -376,26 +376,23 @@ public class YYDataSource {
         setDTAMSetting();
     }
 
-    private boolean bAutoOnOff = false;
-    public boolean getAutoOnOff() {
-        return bAutoOnOff;
-    }
+    public final static int DATE_TIME_TYPE_OFF = 0;
+    public final static int DATE_TIME_TYPE_ON_ONCE = 1;
+    public final static int DATE_TIME_TYPE_DAILY = 2;
+    public final static int DATE_TIME_TYPE_MONDAY_FRIDAY = 3;
+    public final static int DATE_TIME_TYPE_SATURDAY = 4;
+    public final static int DATE_TIME_TYPE_SUNDAY = 5;
 
-    public void setAutoOnOff( boolean bOnOff ) {
-        bAutoOnOff = bOnOff;
-    }
-
-    private int nDateTimeType = 0;
-    public final static int DATE_TIME_TYPE_ON_ONCE = 0;
-    public final static int DATE_TIME_TYPE_DAILY = 1;
-    public final static int DATE_TIME_TYPE_MONDAY_FRIDAY = 2;
-    public final static int DATE_TIME_TYPE_SATURDAY = 3;
-    public final static int DATE_TIME_TYPE_SUNDAY = 4;
+    private int nDateTimeType = DATE_TIME_TYPE_OFF;
     public int getDateTimeType() {
         return nDateTimeType;
     }
 
     public void setDateTimeType( int nType ) {
+        nDateTimeType = nType;
+    }
+
+    public void initDateTimeType( int nType ) {
         nDateTimeType = nType;
     }
 
@@ -426,5 +423,40 @@ public class YYDataSource {
     }
     public void setAutoOffMinue( int nMinue ) {
         nOffMinue = nMinue;
+    }
+    public void initAutoOnTime( int nHour, int nMinue ) {
+        nOnHour = nHour;
+        nOnMinue = nMinue;
+    }
+
+    public void initAutoOffTime( int nHour, int nMinue ) {
+        nOffHour = nHour;
+        nOffMinue = nMinue;
+    }
+
+    public void updateAutoOnOffDataTime( final onTreatMsgLinstener update_linstener ) {
+        main_activity.yy_command.executeSettingsBaseCommand( YYCommand.ANSWER_MACHINE_SATS_RESULT, new YYCommand.onCommandListener() {
+            public void onSend() {
+                Intent banbIntent = new Intent( YYCommand.ANSWER_MACHINE_SATS );
+                banbIntent.putExtra( "status", String.format( "%d", nDateTimeType ) );
+                banbIntent.putExtra( "on_off_time", String.format( "%02d%02d%02d%02d", nOnHour, nOnMinue, nOffHour, nOffMinue ) );
+                main_activity.sendBroadcast( banbIntent );
+                Log.v( "cconn", "ANSWER_MACHINE_SATS send" );
+            }
+            public void onRecv( String data, String data2 ) {
+                Log.v( "cconn", "ANSWER_MACHINE_GATS : recv data : " + data );
+                Log.v( "cconn", "ANSWER_MACHINE_GATS : recv data2 : " + data2 );
+                if( data == null || !data.equals( "SUCCESS" ) ) {
+                    update_linstener.onFailure();
+                }
+                else {
+                    update_linstener.onSuccessfully();
+                }
+            }
+            public void onFailure() {
+                Log.v( "cconn", "ANSWER_MACHINE_GATS failed" );
+                update_linstener.onFailure();
+            }
+        });
     }
 }
