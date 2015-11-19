@@ -57,8 +57,16 @@ public class YYDataSource {
         return nMsgCount;
     }
 
+    public void setMessageCount( int nCount ) {
+        nMsgCount = nCount;
+    }
+
     public int getNewMessageCount() {
         return nNewMsgCount;
+    }
+
+    public void setNewMessageCount( int nCount ) {
+        nNewMsgCount = nCount;
     }
 
     public interface onTreatMsgLinstener {

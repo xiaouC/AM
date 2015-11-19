@@ -7,16 +7,67 @@ import java.util.ArrayList;
 
 import android.view.View;
 import android.app.AlertDialog;
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.ImageView;
-import android.content.Intent;
 import android.util.Log;
 import android.widget.Toast;
 
 public class AnswerMachineView extends YYViewBase {
+	private BroadcastReceiver amReceiver = new BroadcastReceiver() {
+		public void onReceive(Context context, Intent intent) {
+			String action = intent.getAction();
+			String data = intent.getExtras().getString("data");
+			String data2 = intent.getExtras().getString("data2");
+            Log.v( "cconn", "amReceiver +++++++++++++++++++++++++++++++++++ action : " + action );
+            Log.v( "cconn", "amReceiver +++++++++++++++++++++++++++++++++++ data : " + data );
+            Log.v( "cconn", "amReceiver +++++++++++++++++++++++++++++++++++ data2 : " + data2 );
+
+            if( data == null ) {
+                String text = String.format( "%s recv : null", YYCommand.PAGE_MSG_COUNT_RESULT );
+                Toast.makeText( main_activity, text, Toast.LENGTH_LONG ).show();
+            }
+            else {
+                String[] results = data.split( "," );
+                if( results.length < 2 ) {
+                    String text = String.format( "%s recv data error : %s", YYCommand.PAGE_MSG_COUNT_RESULT, data );
+                    Toast.makeText( main_activity, text, Toast.LENGTH_LONG ).show();
+                }
+                else {
+                    main_activity.yy_data_source.setMessageCount( Integer.valueOf( results[0] ) );
+                    main_activity.yy_data_source.setNewMessageCount( Integer.valueOf( results[1] ) );
+
+                    updateView();
+                }
+            }
+        }
+    };
+
+    public void startListen() {
+        IntentFilter filter = new IntentFilter();
+        filter.addAction( YYCommand.PAGE_MSG_COUNT_RESULT );
+        main_activity.registerReceiver( amReceiver, filter );
+    }
+
+    public void cancelListen() {
+        try {
+            main_activity.unregisterReceiver( amReceiver );
+        } catch ( IllegalArgumentException e ) {
+            if( e.getMessage().contains( "Receiver not registered" ) ) {
+                // Ignore this exception. This is exactly what is desired
+            } else {
+                // unexpected, re-throw
+                throw e;
+            }
+        }
+    }
+
     private MessagesView msg_view;
     private OutgoingMessagesView outgoing_msg_view;
     private SettingsView settings_view;
@@ -44,6 +95,8 @@ public class AnswerMachineView extends YYViewBase {
                 });
             }
         });
+
+        startListen();
     }
 
     public String getViewTitle() { return "Answer Machine"; }
@@ -110,6 +163,9 @@ public class AnswerMachineView extends YYViewBase {
                                                 public String getMsgDateTime() { return String.format( "%s/%s/%s %s:%s", month, day, year, hour, min ); }
                                             });
                                         }
+
+                                        cancelListen();
+
                                         msg_view.setView( true, yy_view_self.getViewBackHandler() );
                                     } catch ( Exception e ) {
                                         String text = String.format( "%s recv data2 error : %s", YYCommand.ANSWER_MACHINE_GMSL_RESULT, data2 );
@@ -119,14 +175,6 @@ public class AnswerMachineView extends YYViewBase {
                             }
                             public void onFailure() {
                             }
-
-                            //main_activity.yy_data_source.getMessageList( new YYDataSource.onTreatMsgLinstener() {
-                            //    public void onSuccessfully() {
-                            //        msg_view.setView( true, yy_view_self.getViewBackHandler() );
-                            //    }
-                            //    public void onFailure() {
-                            //    }
-                            //});
                         });
                     }
                 });
@@ -183,6 +231,8 @@ public class AnswerMachineView extends YYViewBase {
                                     }
                                 }
 
+                                cancelListen();
+
                                 outgoing_msg_view.setView( true, yy_view_self.getViewBackHandler() );
                             }
                             public void onFailure() {
@@ -215,6 +265,8 @@ public class AnswerMachineView extends YYViewBase {
                     public void onClick( View v ) {
                         main_activity.yy_data_source.getDTAMSetting( new YYDataSource.onTreatMsgLinstener() {
                             public void onSuccessfully() {
+                                cancelListen();
+
                                 settings_view.setView( true, yy_view_self.getViewBackHandler() );
                             }
                             public void onFailure() {

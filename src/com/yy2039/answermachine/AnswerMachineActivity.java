@@ -118,6 +118,7 @@ public class AnswerMachineActivity extends FragmentActivity
 		// TODO Auto-generated method stub
         yy_schedule.cancelAllSchedule();
         yy_command.unregisterReceiver();
+        answer_machine_view.cancelListen();
 
         //NotificationManager nm = (NotificationManager)getSystemService( Context.NOTIFICATION_SERVICE );
         //nm.cancel( NOTIFICATION_ID_ICON );
