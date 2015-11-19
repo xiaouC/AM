@@ -52,7 +52,7 @@
             android:id="@+id/tips_text"
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
-            android:text="BT Call Guardian\r\nYou will need Caller Dispaly to use\r\n BT Call Guardian and other Call control\r\n features.Please contact your telephone\r\n service provide for more information."
+            android:text=""
             android:textSize="10pt"
             android:gravity="center"
             />

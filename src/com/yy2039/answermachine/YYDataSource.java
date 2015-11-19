@@ -375,4 +375,56 @@ public class YYDataSource {
 
         setDTAMSetting();
     }
+
+    private boolean bAutoOnOff = false;
+    public boolean getAutoOnOff() {
+        return bAutoOnOff;
+    }
+
+    public void setAutoOnOff( boolean bOnOff ) {
+        bAutoOnOff = bOnOff;
+    }
+
+    private int nDateTimeType = 0;
+    public final static int DATE_TIME_TYPE_ON_ONCE = 0;
+    public final static int DATE_TIME_TYPE_DAILY = 1;
+    public final static int DATE_TIME_TYPE_MONDAY_FRIDAY = 2;
+    public final static int DATE_TIME_TYPE_SATURDAY = 3;
+    public final static int DATE_TIME_TYPE_SUNDAY = 4;
+    public int getDateTimeType() {
+        return nDateTimeType;
+    }
+
+    public void setDateTimeType( int nType ) {
+        nDateTimeType = nType;
+    }
+
+    private int nOnHour = 22;
+    private int nOnMinue = 0;
+    private int nOffHour = 22;
+    private int nOffMinue = 0;
+    public int getAutoOnHour() {
+        return nOnHour;
+    }
+    public int getAutoOnMinue() {
+        return nOnMinue;
+    }
+    public void setAutoOnHour( int nHour ) {
+        nOnHour = nHour;
+    }
+    public void setAutoOnMinue( int nMinue ) {
+        nOnMinue = nMinue;
+    }
+    public int getAutoOffHour() {
+        return nOffHour;
+    }
+    public int getAutoOffMinue() {
+        return nOffMinue;
+    }
+    public void setAutoOffHour( int nHour ) {
+        nOffHour = nHour;
+    }
+    public void setAutoOffMinue( int nMinue ) {
+        nOffMinue = nMinue;
+    }
 }

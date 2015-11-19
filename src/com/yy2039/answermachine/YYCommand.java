@@ -78,6 +78,12 @@ public class YYCommand {
     //public boolean call_list_link = false;
     //public boolean answer_machine_link = false;
 
+    public final static String ANSWER_MACHINE_GATS = "andorid.intent.action.answer.machine.gats";
+    public final static String ANSWER_MACHINE_GATS_RESULT = "com.action.dect.answer.machine.gats.result";
+
+    public final static String ANSWER_MACHINE_SATS = "andorid.intent.action.answer.machine.sats";
+    public final static String ANSWER_MACHINE_SATS_RESULT = "com.action.dect.answer.machine.sats.result";
+
     // 
     public YYCommand( AnswerMachineActivity activity ) {
         main_activity = activity;

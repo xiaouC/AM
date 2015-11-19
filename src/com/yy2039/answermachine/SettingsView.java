@@ -280,6 +280,85 @@ public class SettingsView extends YYViewBackList {
         });
         ret_data.add( map );
 
+        //////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        // Auto on/off
+        map = new HashMap<Integer,YYListAdapter.onYYListItemHandler>();
+        map.put( R.id.item_button, new YYListAdapter.onYYListItemHandler() {
+            @Override
+            public void item_handle( Object view_obj ) {
+                Button btn_obj = (Button)view_obj;
+
+                btn_obj.setText( YYViewBase.transferText( "Auto on/off", "" ) );
+                btn_obj.setOnClickListener( new View.OnClickListener() {
+                    @Override
+                    public void onClick( View v ) {
+                        List<YYShowAlertDialog.onAlertDialogRadioItemHandler> item_list_data = new ArrayList<YYShowAlertDialog.onAlertDialogRadioItemHandler>();
+
+                        item_list_data.add( new YYShowAlertDialog.onAlertDialogRadioItemHandler() {
+                            public String getRadioText() { return "2 rings"; }
+                            public void onRadioClick() { yy_view_self.yy_temp_data.put( "answer_delay", YYCommon.ANSWER_DELAY_2_RINGS ); }
+                            public boolean isRadioChecked() { return main_activity.yy_data_source.getAnswerDelayType() == YYCommon.ANSWER_DELAY_2_RINGS; }
+                        });
+                        item_list_data.add( new YYShowAlertDialog.onAlertDialogRadioItemHandler() {
+                            public String getRadioText() { return "3 rings"; }
+                            public void onRadioClick() { yy_view_self.yy_temp_data.put( "answer_delay", YYCommon.ANSWER_DELAY_3_RINGS ); }
+                            public boolean isRadioChecked() { return main_activity.yy_data_source.getAnswerDelayType() == YYCommon.ANSWER_DELAY_3_RINGS; }
+                        });
+                        item_list_data.add( new YYShowAlertDialog.onAlertDialogRadioItemHandler() {
+                            public String getRadioText() { return "4 rings"; }
+                            public void onRadioClick() { yy_view_self.yy_temp_data.put( "answer_delay", YYCommon.ANSWER_DELAY_4_RINGS ); }
+                            public boolean isRadioChecked() { return main_activity.yy_data_source.getAnswerDelayType() == YYCommon.ANSWER_DELAY_4_RINGS; }
+                        });
+                        item_list_data.add( new YYShowAlertDialog.onAlertDialogRadioItemHandler() {
+                            public String getRadioText() { return "5 rings"; }
+                            public void onRadioClick() { yy_view_self.yy_temp_data.put( "answer_delay", YYCommon.ANSWER_DELAY_5_RINGS ); }
+                            public boolean isRadioChecked() { return main_activity.yy_data_source.getAnswerDelayType() == YYCommon.ANSWER_DELAY_5_RINGS; }
+                        });
+                        item_list_data.add( new YYShowAlertDialog.onAlertDialogRadioItemHandler() {
+                            public String getRadioText() { return "6 rings"; }
+                            public void onRadioClick() { yy_view_self.yy_temp_data.put( "answer_delay", YYCommon.ANSWER_DELAY_6_RINGS ); }
+                            public boolean isRadioChecked() { return main_activity.yy_data_source.getAnswerDelayType() == YYCommon.ANSWER_DELAY_6_RINGS; }
+                        });
+                        item_list_data.add( new YYShowAlertDialog.onAlertDialogRadioItemHandler() {
+                            public String getRadioText() { return "7 rings"; }
+                            public void onRadioClick() { yy_view_self.yy_temp_data.put( "answer_delay", YYCommon.ANSWER_DELAY_7_RINGS ); }
+                            public boolean isRadioChecked() { return main_activity.yy_data_source.getAnswerDelayType() == YYCommon.ANSWER_DELAY_7_RINGS; }
+                        });
+                        item_list_data.add( new YYShowAlertDialog.onAlertDialogRadioItemHandler() {
+                            public String getRadioText() { return "8 rings"; }
+                            public void onRadioClick() { yy_view_self.yy_temp_data.put( "answer_delay", YYCommon.ANSWER_DELAY_8_RINGS ); }
+                            public boolean isRadioChecked() { return main_activity.yy_data_source.getAnswerDelayType() == YYCommon.ANSWER_DELAY_8_RINGS; }
+                        });
+                        item_list_data.add( new YYShowAlertDialog.onAlertDialogRadioItemHandler() {
+                            public String getRadioText() { return "9 rings"; }
+                            public void onRadioClick() { yy_view_self.yy_temp_data.put( "answer_delay", YYCommon.ANSWER_DELAY_9_RINGS ); }
+                            public boolean isRadioChecked() { return main_activity.yy_data_source.getAnswerDelayType() == YYCommon.ANSWER_DELAY_9_RINGS; }
+                        });
+                        item_list_data.add( new YYShowAlertDialog.onAlertDialogRadioItemHandler() {
+                            public String getRadioText() { return "10 rings"; }
+                            public void onRadioClick() { yy_view_self.yy_temp_data.put( "answer_delay", YYCommon.ANSWER_DELAY_10_RINGS ); }
+                            public boolean isRadioChecked() { return main_activity.yy_data_source.getAnswerDelayType() == YYCommon.ANSWER_DELAY_10_RINGS; }
+                        });
+
+                        main_activity.yy_show_alert_dialog.showRadioGroupAlertDialog( "Answer delay", item_list_data, new YYShowAlertDialog.onAlertDialogClickHandler() {
+                            public void onOK() {
+                                Integer nDelayType = (Integer)yy_view_self.yy_temp_data.get( "answer_delay" );
+                                if( nDelayType != null ) {
+                                    main_activity.yy_data_source.setAnswerDelayType( nDelayType );
+
+                                    YYListAdapter.updateListViewTask task = new YYListAdapter.updateListViewTask();
+                                    task.execute();
+                                }
+                            }
+                            public void onCancel() { }
+                        });
+                    }
+                });
+            }
+        });
+        ret_data.add( map );
+
+
         return ret_data;
     }
 
