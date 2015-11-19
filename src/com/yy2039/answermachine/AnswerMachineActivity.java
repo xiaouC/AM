@@ -30,6 +30,7 @@ public class AnswerMachineActivity extends FragmentActivity
 {
     // 
     public static AnswerMachineActivity main_activity;
+    public boolean bIsDestroy = false;
 
     public YYCommon yy_common;
     public YYSchedule yy_schedule;
@@ -112,6 +113,8 @@ public class AnswerMachineActivity extends FragmentActivity
 	@Override
 	protected void onDestroy()
 	{
+        bIsDestroy = true;
+
 		// TODO Auto-generated method stub
         yy_schedule.cancelAllSchedule();
         yy_command.unregisterReceiver();
