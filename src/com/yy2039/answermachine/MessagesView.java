@@ -13,6 +13,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.ImageView;
 import android.widget.Toast;
+import android.content.Intent;
 
 public class MessagesView extends YYViewBackList {
     private MessageOperationView msg_op_view;
@@ -130,6 +131,12 @@ public class MessagesView extends YYViewBackList {
                         public void onClick( View v ) {
                             main_activity.yy_input_number_callback_view.showInputNumberView( msg_info.getMsgName(), msg_info.getMsgNumber(), yy_view_self.getViewBackHandler(), new YYInputNumberView.onYYInputNumberHandler() {
                                 public void onSave( String number ) {
+                                    Intent intent1 = new Intent( "com.mid.phone.psvo" );
+                                    intent1.putExtra( "number", number );
+                                    intent1.putExtra( "name", msg_info.getMsgName() );
+                                    intent1.putExtra( "callout", true );
+                                    intent1.setFlags( Intent.FLAG_ACTIVITY_NEW_TASK );
+                                    main_activity.startActivity( intent1 );
                                 }
                             });
                         }
