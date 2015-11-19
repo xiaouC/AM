@@ -22,6 +22,9 @@ import android.content.Intent;
 import android.os.RemoteException;
 import android.content.SharedPreferences;
 import android.widget.Toast;
+import android.app.Notification; 
+import android.app.NotificationManager; 
+import android.app.PendingIntent;
 
 public class AnswerMachineActivity extends FragmentActivity
 {
@@ -37,6 +40,8 @@ public class AnswerMachineActivity extends FragmentActivity
     public YYInputNumberCallbackView yy_input_number_callback_view;
     public YYInputNumberPINView yy_input_number_pin_view;
     public AnswerMachineView answer_machine_view;
+
+    //private final static int NOTIFICATION_ID_ICON = 0x10000;
 
     /** Called when the activity is first created. */
     @Override
@@ -79,6 +84,19 @@ public class AnswerMachineActivity extends FragmentActivity
             //// set a custom status bar drawable
             //tintManager.setStatusBarTintDrawable(MyDrawable);
         }
+
+        //NotificationManager nm = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE); 
+        //Notification n = new Notification();
+        ////常驻状态栏的图标
+        //n.icon = R.drawable.announce_message;
+        //// 将此通知放到通知栏的"Ongoing"即"正在运行"组中  
+        //n.flags |= Notification.FLAG_ONGOING_EVENT; 
+        //// 表明在点击了通知栏中的"清除通知"后，此通知不清除， 经常与FLAG_ONGOING_EVENT一起使用  
+        //n.flags |= Notification.FLAG_NO_CLEAR;          
+        //PendingIntent pi = PendingIntent.getActivity(this, 0, getIntent(), 0); 
+        //n.contentIntent = pi; 
+        //n.setLatestEventInfo( this, "Answer Machine", "Answer Machine", pi );
+        //nm.notify(NOTIFICATION_ID_ICON, n);
     }
 
     public boolean onKeyDown( int keyCode, KeyEvent event )
@@ -95,10 +113,13 @@ public class AnswerMachineActivity extends FragmentActivity
 	protected void onDestroy()
 	{
 		// TODO Auto-generated method stub
-		super.onDestroy();
-
         yy_schedule.cancelAllSchedule();
         yy_command.unregisterReceiver();
+
+        //NotificationManager nm = (NotificationManager)getSystemService( Context.NOTIFICATION_SERVICE );
+        //nm.cancel( NOTIFICATION_ID_ICON );
+
+		super.onDestroy();
 	}
 
     // 

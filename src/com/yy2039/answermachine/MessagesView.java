@@ -135,6 +135,7 @@ public class MessagesView extends YYViewBackList {
                                     intent1.putExtra( "number", number );
                                     intent1.putExtra( "name", msg_info.getMsgName() );
                                     intent1.putExtra( "callout", true );
+                                    intent1.putExtra( "quickdial", false );
                                     intent1.setFlags( Intent.FLAG_ACTIVITY_NEW_TASK );
                                     main_activity.startActivity( intent1 );
                                 }
