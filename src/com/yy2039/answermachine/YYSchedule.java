@@ -1,4 +1,4 @@
-package com.yy2039.answermachine_1;
+package com.yy2039.answermachine;
 
 import java.util.Timer;
 import java.util.TimerTask;
