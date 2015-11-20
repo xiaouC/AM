@@ -22,34 +22,37 @@ import android.widget.Toast;
 public class AnswerMachineView extends YYViewBase {
 	private BroadcastReceiver amReceiver = new BroadcastReceiver() {
 		public void onReceive(Context context, Intent intent) {
-			String action = intent.getAction();
-			String data = intent.getExtras().getString("data");
-			String data2 = intent.getExtras().getString("data2");
-            Log.v( "cconn", "amReceiver +++++++++++++++++++++++++++++++++++ action : " + action );
-            Log.v( "cconn", "amReceiver +++++++++++++++++++++++++++++++++++ data : " + data );
-            Log.v( "cconn", "amReceiver +++++++++++++++++++++++++++++++++++ data2 : " + data2 );
+            try {
+                String action = intent.getAction();
+                String data = intent.getExtras().getString("data");
+                String data2 = intent.getExtras().getString("data2");
+                Log.v( "cconn", "amReceiver +++++++++++++++++++++++++++++++++++ action : " + action );
+                Log.v( "cconn", "amReceiver +++++++++++++++++++++++++++++++++++ data : " + data );
+                Log.v( "cconn", "amReceiver +++++++++++++++++++++++++++++++++++ data2 : " + data2 );
 
-            if( data == null ) {
-                String text = String.format( "%s recv : null", YYCommand.PAGE_MSG_COUNT_RESULT );
-                Toast.makeText( main_activity, text, Toast.LENGTH_LONG ).show();
-            }
-            else {
-                String[] results = data.split( "," );
-                if( results.length < 2 ) {
-                    String text = String.format( "%s recv data error : %s", YYCommand.PAGE_MSG_COUNT_RESULT, data );
+                if( data == null ) {
+                    String text = String.format( "%s recv : null", YYCommand.PAGE_MSG_COUNT_RESULT );
                     Toast.makeText( main_activity, text, Toast.LENGTH_LONG ).show();
                 }
                 else {
-                    try {
-                        main_activity.yy_data_source.setMessageCount( Integer.valueOf( results[0] ) );
-                        main_activity.yy_data_source.setNewMessageCount( Integer.valueOf( results[1] ) );
-
-                        updateView();
-                    } catch ( Exception e ) {
+                    String[] results = data.split( "," );
+                    if( results.length < 2 ) {
                         String text = String.format( "%s recv data error : %s", YYCommand.PAGE_MSG_COUNT_RESULT, data );
                         Toast.makeText( main_activity, text, Toast.LENGTH_LONG ).show();
                     }
+                    else {
+                        try {
+                            main_activity.yy_data_source.setMessageCount( Integer.valueOf( results[0] ) );
+                            main_activity.yy_data_source.setNewMessageCount( Integer.valueOf( results[1] ) );
+
+                            updateView();
+                        } catch ( Exception e ) {
+                            String text = String.format( "%s recv data error : %s", YYCommand.PAGE_MSG_COUNT_RESULT, data );
+                            Toast.makeText( main_activity, text, Toast.LENGTH_LONG ).show();
+                        }
+                    }
                 }
+            } catch ( Exception e ) {
             }
         }
     };

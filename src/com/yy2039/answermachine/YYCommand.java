@@ -113,29 +113,25 @@ public class YYCommand {
 
 	private BroadcastReceiver commandReceiver = new BroadcastReceiver() {
 		public void onReceive(Context context, Intent intent) {
-			String action = intent.getAction();
-			String data = intent.getExtras().getString("data");
-			String data2 = intent.getExtras().getString("data2");
-            Log.v( "cconn", "onReceive +++++++++++++++++++++++++++++++++++ action : " + action );
-            Log.v( "cconn", "onReceive +++++++++++++++++++++++++++++++++++ data : " + data );
-            Log.v( "cconn", "onReceive +++++++++++++++++++++++++++++++++++ data2 : " + data2 );
+            try {
+                String action = intent.getAction();
+                String data = intent.getExtras().getString("data");
+                String data2 = intent.getExtras().getString("data2");
+                Log.v( "cconn", "onReceive +++++++++++++++++++++++++++++++++++ action : " + action );
+                Log.v( "cconn", "onReceive +++++++++++++++++++++++++++++++++++ data : " + data );
+                Log.v( "cconn", "onReceive +++++++++++++++++++++++++++++++++++ data2 : " + data2 );
 
 
-            if( cur_command_info != null ) {
-                if( cur_command_info.command_name.equals( action ) ) {
-                    unregisterReceiver();
+                if( cur_command_info != null ) {
+                    if( cur_command_info.command_name.equals( action ) ) {
+                        unregisterReceiver();
 
-                    onRecvActionListener ral = action_list.get( action );
-                    ral.onExecute( data, data2 );
+                        onRecvActionListener ral = action_list.get( action );
+                        ral.onExecute( data, data2 );
+                    }
                 }
+            } catch ( Exception e ) {
             }
-            //else {
-            //    onRecvActionListener ral = action_list.get( action );
-            //    ral.onExecute( data, data2 );
-            //}
-
-            //onRecvActionListener ral = action_list.get( action );
-            //ral.onExecute( data, data2 );
         }
     };
 
