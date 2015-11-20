@@ -45,7 +45,9 @@ public class SettingsView extends YYViewBackList {
                     public void onClick( View v ) {
                         main_activity.yy_command.executeSettingsBaseCommand( YYCommand.CALL_GUARDIAN_GDES_RESULT, new YYCommand.onCommandListener() {
                             public void onSend() {
-                                main_activity.sendBroadcast( new Intent( YYCommand.CALL_GUARDIAN_GDES ) );
+                                Intent gdesIntent = new Intent( YYCommand.CALL_GUARDIAN_GDES );
+                                gdesIntent.putExtra( "data", "00" );
+                                main_activity.sendBroadcast( gdesIntent );
                                 Log.v( "cconn", "CALL_GUARDIAN_GDES_RESULT : send" );
                             }
                             public void onRecv( String data, String data2 ) {
@@ -303,13 +305,13 @@ public class SettingsView extends YYViewBackList {
                                 Log.v( "cconn", "ANSWER_MACHINE_GATS : recv data : " + data );
                                 Log.v( "cconn", "ANSWER_MACHINE_GATS : recv data2 : " + data2 );
                                 if( data == null ) {
-                                    String text = String.format( "%s recv : null", YYCommand.CALL_GUARDIAN_GDES_RESULT );
+                                    String text = String.format( "%s recv : null", YYCommand.ANSWER_MACHINE_GATS_RESULT );
                                     Toast.makeText( main_activity, text, Toast.LENGTH_LONG ).show();
                                 }
                                 else {
                                     String[] results = data.split( "," );
                                     if( results.length < 2 ) {
-                                        String text = String.format( "%s recv data error : %s", YYCommand.CALL_GUARDIAN_GDES_RESULT, data );
+                                        String text = String.format( "%s recv data error : %s", YYCommand.ANSWER_MACHINE_GATS_RESULT, data );
                                         Toast.makeText( main_activity, text, Toast.LENGTH_LONG ).show();
                                     } else {
                                         try {
@@ -330,7 +332,7 @@ public class SettingsView extends YYViewBackList {
 
                                             auto_on_off_view.setView( true, yy_view_self.getViewBackHandler() );
                                         } catch ( Exception e ) {
-                                            String text = String.format( "%s recv data error : %s", YYCommand.CALL_GUARDIAN_GDES_RESULT, data );
+                                            String text = String.format( "%s recv data error : %s", YYCommand.ANSWER_MACHINE_GATS_RESULT, data );
                                             Toast.makeText( main_activity, text, Toast.LENGTH_LONG ).show();
                                         }
                                     }
@@ -338,7 +340,7 @@ public class SettingsView extends YYViewBackList {
                             }
                             public void onFailure() {
                                 Log.v( "cconn", "ANSWER_MACHINE_GATS failed" );
-                                String text = String.format( "request %s failed", YYCommand.CALL_GUARDIAN_GDES_RESULT );
+                                String text = String.format( "request %s failed", YYCommand.ANSWER_MACHINE_GATS_RESULT );
                                 Toast.makeText( main_activity, text, Toast.LENGTH_LONG ).show();
                             }
                         });
