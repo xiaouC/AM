@@ -75,20 +75,24 @@ public class YYDataSource {
     }
 
     public void refreshMessageCount( final onTreatMsgLinstener msg_lisenter ) {
-        main_activity.yy_command.executeCommand( YYCommand.PAGE_MSG_COUNT_RESULT, new YYCommand.onCommandListener() {
+        main_activity.yy_command.executeSettingsBaseCommand( YYCommand.CALL_GUARDIAN_GDES_RESULT, new YYCommand.onCommandListener() {
             public void onSend() {
-                main_activity.yy_show_alert_dialog.showWaitingAlertDialog();
-                main_activity.sendBroadcast( new Intent( YYCommand.COMMAD_PAGE_MSG_COUNT ) );
+                Intent gdesIntent = new Intent( YYCommand.CALL_GUARDIAN_GDES );
+                gdesIntent.putExtra( "data", "03" );
+                main_activity.sendBroadcast( gdesIntent );
+                Log.v( "cconn", "CALL_GUARDIAN_GDES_RESULT : send" );
             }
             public void onRecv( String data, String data2 ) {
+                Log.v( "cconn", "CALL_GUARDIAN_GDES_RESULT : recv data : " + data );
+                Log.v( "cconn", "CALL_GUARDIAN_GDES_RESULT : recv data2 : " + data2 );
                 if( data == null ) {
-                    String text = String.format( "%s recv : null", YYCommand.PAGE_MSG_COUNT_RESULT );
+                    String text = String.format( "%s recv : null", YYCommand.CALL_GUARDIAN_GDES_RESULT );
                     Toast.makeText( main_activity, text, Toast.LENGTH_LONG ).show();
                 }
                 else {
                     String[] results = data.split( "," );
                     if( results.length < 2 ) {
-                        String text = String.format( "%s recv data error : %s", YYCommand.PAGE_MSG_COUNT_RESULT, data );
+                        String text = String.format( "%s recv data error : %s", YYCommand.CALL_GUARDIAN_GDES_RESULT, data );
                         Toast.makeText( main_activity, text, Toast.LENGTH_LONG ).show();
                     }
                     else {
@@ -96,15 +100,47 @@ public class YYDataSource {
                         nNewMsgCount = Integer.valueOf( results[1] );
 
                         msg_lisenter.onSuccessfully();
-                        main_activity.yy_show_alert_dialog.hideWaitingAlertDialog();
                     }
                 }
             }
             public void onFailure() {
+                Log.v( "cconn", "CALL_GUARDIAN_GDES_RESULT : failed " );
+                String text = String.format( "%s recv failed", YYCommand.CALL_GUARDIAN_GDES_RESULT );
+                Toast.makeText( main_activity, text, Toast.LENGTH_LONG ).show();
                 msg_lisenter.onFailure();
-                main_activity.yy_show_alert_dialog.hideWaitingAlertDialog();
             }
         });
+
+        //main_activity.yy_command.executeCommand( YYCommand.PAGE_MSG_COUNT_RESULT, new YYCommand.onCommandListener() {
+        //    public void onSend() {
+        //        main_activity.yy_show_alert_dialog.showWaitingAlertDialog();
+        //        main_activity.sendBroadcast( new Intent( YYCommand.COMMAD_PAGE_MSG_COUNT ) );
+        //    }
+        //    public void onRecv( String data, String data2 ) {
+        //        if( data == null ) {
+        //            String text = String.format( "%s recv : null", YYCommand.PAGE_MSG_COUNT_RESULT );
+        //            Toast.makeText( main_activity, text, Toast.LENGTH_LONG ).show();
+        //        }
+        //        else {
+        //            String[] results = data.split( "," );
+        //            if( results.length < 2 ) {
+        //                String text = String.format( "%s recv data error : %s", YYCommand.PAGE_MSG_COUNT_RESULT, data );
+        //                Toast.makeText( main_activity, text, Toast.LENGTH_LONG ).show();
+        //            }
+        //            else {
+        //                nMsgCount = Integer.valueOf( results[0] );
+        //                nNewMsgCount = Integer.valueOf( results[1] );
+
+        //                msg_lisenter.onSuccessfully();
+        //                main_activity.yy_show_alert_dialog.hideWaitingAlertDialog();
+        //            }
+        //        }
+        //    }
+        //    public void onFailure() {
+        //        msg_lisenter.onFailure();
+        //        main_activity.yy_show_alert_dialog.hideWaitingAlertDialog();
+        //    }
+        //});
     }
 
     public void removeLocalMessageFromList( int nIndex ) {
