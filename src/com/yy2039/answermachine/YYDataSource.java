@@ -211,6 +211,7 @@ public class YYDataSource {
     public final static Integer TREAT_MSG_OPERATION_PLAY = 0;
     public final static Integer TREAT_MSG_OPERATION_DELETE_ONE = 1;
     public final static Integer TREAT_MSG_OPERATION_DELETE_ALL = 2;
+    public final static Integer TREAT_MSG_OPERATION_STOP_PLAY = 3;
     public void treatMsg( final int nOpType, final int nIndex, final onTreatMsgLinstener treat_msg_linstener ) {
         main_activity.yy_command.executeAnswerMachineCommandEx( YYCommand.ANSWER_MACHINE_CONM_RESULT, new YYCommand.onCommandListener() {
             public void onSend() {

@@ -87,7 +87,7 @@ public class MessagesView extends YYViewBackList {
                                     int nResOK = R.drawable.alert_dialog_ok;
                                     int nResDelete = R.drawable.alert_delete;
                                     main_activity.yy_show_alert_dialog.showImageTipsAlertDialog( title, R.drawable.play_message, tips, nResOK, nResDelete, new YYShowAlertDialog.onAlertDialogClickHandler() {
-                                        public void onOK() { }
+                                        public void onOK() { stopPlayMessage(); }
                                         public void onCancel() { deleteMessage(); }
                                     });
                                 }
@@ -164,6 +164,15 @@ public class MessagesView extends YYViewBackList {
             ret_data.add( map );
 
             return ret_data;
+        }
+
+        public void stopPlayMessage() {
+            main_activity.yy_data_source.treatMsg( YYDataSource.TREAT_MSG_OPERATION_STOP_PLAY, msg_index, new YYDataSource.onTreatMsgLinstener() {
+                public void onSuccessfully() {
+                }
+                public void onFailure() {
+                }
+            });
         }
 
         public void deleteMessage() {
