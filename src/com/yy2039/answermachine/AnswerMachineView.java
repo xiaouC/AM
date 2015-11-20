@@ -40,10 +40,15 @@ public class AnswerMachineView extends YYViewBase {
                     Toast.makeText( main_activity, text, Toast.LENGTH_LONG ).show();
                 }
                 else {
-                    main_activity.yy_data_source.setMessageCount( Integer.valueOf( results[0] ) );
-                    main_activity.yy_data_source.setNewMessageCount( Integer.valueOf( results[1] ) );
+                    try {
+                        main_activity.yy_data_source.setMessageCount( Integer.valueOf( results[0] ) );
+                        main_activity.yy_data_source.setNewMessageCount( Integer.valueOf( results[1] ) );
 
-                    updateView();
+                        updateView();
+                    } catch ( Exception e ) {
+                        String text = String.format( "%s recv data error : %s", YYCommand.PAGE_MSG_COUNT_RESULT, data );
+                        Toast.makeText( main_activity, text, Toast.LENGTH_LONG ).show();
+                    }
                 }
             }
         }

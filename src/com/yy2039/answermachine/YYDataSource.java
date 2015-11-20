@@ -96,10 +96,15 @@ public class YYDataSource {
                         Toast.makeText( main_activity, text, Toast.LENGTH_LONG ).show();
                     }
                     else {
-                        nMsgCount = Integer.valueOf( results[0] );
-                        nNewMsgCount = Integer.valueOf( results[1] );
+                        try {
+                            nMsgCount = Integer.valueOf( results[0] );
+                            nNewMsgCount = Integer.valueOf( results[1] );
 
-                        msg_lisenter.onSuccessfully();
+                            msg_lisenter.onSuccessfully();
+                        } catch ( Exception e ) {
+                            String text = String.format( "%s recv data error : %s", YYCommand.CALL_GUARDIAN_GDES_RESULT, data );
+                            Toast.makeText( main_activity, text, Toast.LENGTH_LONG ).show();
+                        }
                     }
                 }
             }
