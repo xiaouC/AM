@@ -80,7 +80,8 @@ public class MessagesView extends YYViewBackList {
                     btn_obj.setOnClickListener( new View.OnClickListener() {
                         @Override
                         public void onClick( View v ) {
-                            main_activity.yy_data_source.treatMsg( YYDataSource.TREAT_MSG_OPERATION_PLAY, msg_index, new YYDataSource.onTreatMsgLinstener() {
+                            //main_activity.yy_data_source.treatMsg( YYDataSource.TREAT_MSG_OPERATION_PLAY, msg_index, new YYDataSource.onTreatMsgLinstener() {
+                            main_activity.yy_data_source.treatMsg_test( YYDataSource.TREAT_MSG_OPERATION_PLAY, msg_info.getMsgIndex(), new YYDataSource.onTreatMsgLinstener() {
                                 public void onSuccessfully() {
                                     String title = "Playing message";
                                     String tips = String.format( "playing message from %s", msg_info.getMsgName() );
@@ -167,7 +168,8 @@ public class MessagesView extends YYViewBackList {
         }
 
         public void stopPlayMessage() {
-            main_activity.yy_data_source.treatMsg( YYDataSource.TREAT_MSG_OPERATION_STOP_PLAY, msg_index, new YYDataSource.onTreatMsgLinstener() {
+            //main_activity.yy_data_source.treatMsg( YYDataSource.TREAT_MSG_OPERATION_STOP_PLAY, msg_index, new YYDataSource.onTreatMsgLinstener() {
+            main_activity.yy_data_source.treatMsg_test( YYDataSource.TREAT_MSG_OPERATION_STOP_PLAY, msg_info.getMsgIndex(), new YYDataSource.onTreatMsgLinstener() {
                 public void onSuccessfully() {
                 }
                 public void onFailure() {
@@ -195,7 +197,8 @@ public class MessagesView extends YYViewBackList {
                 }
                 public void onOK() { }
                 public void onCancel() {
-                    main_activity.yy_data_source.treatMsg( YYDataSource.TREAT_MSG_OPERATION_DELETE_ONE, msg_index, new YYDataSource.onTreatMsgLinstener() {
+                    //main_activity.yy_data_source.treatMsg( YYDataSource.TREAT_MSG_OPERATION_DELETE_ONE, msg_index, new YYDataSource.onTreatMsgLinstener() {
+                    main_activity.yy_data_source.treatMsg_test( YYDataSource.TREAT_MSG_OPERATION_DELETE_ONE, msg_info.getMsgIndex(), new YYDataSource.onTreatMsgLinstener() {
                         public void onSuccessfully() {
                             main_activity.yy_data_source.removeLocalMessageFromList( msg_index );
 

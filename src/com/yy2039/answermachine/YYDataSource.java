@@ -240,6 +240,34 @@ public class YYDataSource {
         });
     }
 
+    public void treatMsg_test( final int nOpType, final String nIndex, final onTreatMsgLinstener treat_msg_linstener ) {
+        main_activity.yy_command.executeAnswerMachineCommandEx( YYCommand.ANSWER_MACHINE_CONM_RESULT, new YYCommand.onCommandListener() {
+            public void onSend() {
+                Intent msgIntent = new Intent( YYCommand.ANSWER_MACHINE_CONM );
+                msgIntent.putExtra( "operation", String.format( "%d", nOpType ) );
+                msgIntent.putExtra( "index", nIndex );
+                main_activity.sendBroadcast( msgIntent );
+            }
+            public void onRecv( String data, String data2 ) {
+                Log.v( "cconn", "treatMsg data : " + data );
+                Log.v( "cconn", "treatMsg data2 : " + data2 );
+                Log.v( "prot", "treatMsg data : " + data );
+                Log.v( "prot", "treatMsg data2 : " + data2 );
+                if( data != null && data.equals( "SUCCESS" ) ) {
+                    // 处理成功
+                    treat_msg_linstener.onSuccessfully();
+                }
+                else {
+                    // 处理失败
+                    treat_msg_linstener.onFailure();
+                }
+            }
+            public void onFailure() {
+                treat_msg_linstener.onFailure();
+            }
+        });
+    }
+
     public final static Integer OUTGOING_MSG_OPERATION_PLAY = 0;
     public final static Integer OUTGOING_MSG_OPERATION_DELETE = 1;
     public final static Integer OUTGOING_MSG_OPERATION_CHANGE = 2;
