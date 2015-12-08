@@ -273,7 +273,16 @@ public class OutgoingMessagesView extends YYViewBackList {
                                 }
                             });
                         }
-                        public void onCancel() { main_activity.yy_data_source.initOutgoingIsUseDefaultMessage( true ); }
+                        public void onCancel() {
+                            main_activity.yy_data_source.treatOutgoingMsg( YYDataSource.OUTGOING_MSG_OPERATION_DELETE, nMsgType, new YYDataSource.onTreatMsgLinstener() {
+                                public void onSuccessfully() {
+                                    main_activity.yy_data_source.initOutgoingIsUseDefaultMessage( true );
+                                }
+                                public void onFailure() {
+                                    Toast.makeText( main_activity, "delete outgoing message failed", Toast.LENGTH_SHORT ).show();
+                                }
+                            });
+                        }
                     });
                 }
                 public void onFailure() {
