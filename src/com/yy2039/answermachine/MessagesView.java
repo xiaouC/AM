@@ -84,7 +84,11 @@ public class MessagesView extends YYViewBackList {
                             main_activity.yy_data_source.treatMsg_test( YYDataSource.TREAT_MSG_OPERATION_PLAY, msg_info.getMsgIndex(), new YYDataSource.onTreatMsgLinstener() {
                                 public void onSuccessfully() {
                                     String title = "Playing message";
-                                    String tips = String.format( "playing message from %s", msg_info.getMsgName() );
+                                    String name = msg_info.getMsgName();
+                                    if( name.equals( "" ) ) {
+                                        name = msg_info.getMsgNumber();
+                                    }
+                                    String tips = String.format( "playing message from %s", name );
                                     int nResOK = R.drawable.alert_dialog_ok;
                                     int nResDelete = R.drawable.alert_delete;
                                     main_activity.yy_show_alert_dialog.showImageTipsAlertDialog( title, R.drawable.play_message, tips, nResOK, nResDelete, new YYShowAlertDialog.onAlertDialogClickHandler() {
