@@ -188,7 +188,14 @@ public class MessagesView extends YYViewBackList {
                     if( name.equals( "" ) ) {
                         name = msg_info.getMsgNumber();
                     }
-                    String text1 = String.format( "Are you sure that you want to delete the message you have received from %s?", name );
+
+                    String text1 = "";
+                    if( name.equals( "" ) ) {
+                        text1 = "Are you sure that you want to delete this message?";
+                    } else {
+                        text1 = String.format( "Are you sure that you want to delete the message you have received from %s?", name );
+                    }
+
                     TextView tv = (TextView)view.findViewById( R.id.attention_text );
                     tv.setText( text1 );
 
