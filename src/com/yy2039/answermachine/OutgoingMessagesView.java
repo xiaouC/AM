@@ -141,28 +141,28 @@ public class OutgoingMessagesView extends YYViewBackList {
                 public void item_handle( Object view_obj ) {
                     Button btn_obj = (Button)view_obj;
 
-                    btn_obj.setText( YYViewBase.transferText( "Use default message", main_activity.yy_data_source.getOutgoingIsUseDefaultMessage() ? "on" : "off" ) );
+                    btn_obj.setText( YYViewBase.transferText( "Use default message", main_activity.yy_data_source.getOutgoingIsUseDefaultMessage( nMsgType ) ? "on" : "off" ) );
                     btn_obj.setOnClickListener( new View.OnClickListener() {
                         @Override
                         public void onClick( View v ) {
                             List<YYShowAlertDialog.onAlertDialogRadioItemHandler> item_list_data = new ArrayList<YYShowAlertDialog.onAlertDialogRadioItemHandler>();
 
                             item_list_data.add( new YYShowAlertDialog.onAlertDialogRadioItemHandler() {
-                                public String getRadioText() { return "On(default)"; }
+                                public String getRadioText() { return "On (default)"; }
                                 public void onRadioClick() { yy_view_self.yy_temp_data.put( "use_default_message", true ); }
-                                public boolean isRadioChecked() { return main_activity.yy_data_source.getOutgoingIsUseDefaultMessage(); }
+                                public boolean isRadioChecked() { return main_activity.yy_data_source.getOutgoingIsUseDefaultMessage( nMsgType ); }
                             });
                             item_list_data.add( new YYShowAlertDialog.onAlertDialogRadioItemHandler() {
                                 public String getRadioText() { return "Off"; }
                                 public void onRadioClick() { yy_view_self.yy_temp_data.put( "use_default_message", false ); }
-                                public boolean isRadioChecked() { return !main_activity.yy_data_source.getOutgoingIsUseDefaultMessage(); }
+                                public boolean isRadioChecked() { return !main_activity.yy_data_source.getOutgoingIsUseDefaultMessage( nMsgType ); }
                             });
 
                             main_activity.yy_show_alert_dialog.showRadioGroupAlertDialog( "Use default message", item_list_data, new YYShowAlertDialog.onAlertDialogClickHandler() {
                                 public void onOK() {
                                     Boolean use_default_msg = (Boolean)yy_view_self.yy_temp_data.get( "use_default_message" );
                                     if( use_default_msg != null ) {
-                                        main_activity.yy_data_source.setOutgoingIsUseDefaultMessage( use_default_msg );
+                                        main_activity.yy_data_source.setOutgoingIsUseDefaultMessage( nMsgType, use_default_msg );
 
                                         YYListAdapter.updateListViewTask task = new YYListAdapter.updateListViewTask();
                                         task.execute();
@@ -243,7 +243,11 @@ public class OutgoingMessagesView extends YYViewBackList {
                         public void onOK() {
                             main_activity.yy_data_source.treatOutgoingMsg( YYDataSource.OUTGOING_MSG_OPERATION_STOP_CHANGE, nMsgType, new YYDataSource.onTreatMsgLinstener() {
                                 public void onSuccessfully() {
-                                    main_activity.yy_data_source.initOutgoingIsUseDefaultMessage( false );
+                                    if( nMsgType == 0 ) {
+                                        main_activity.yy_data_source.initOutgoingIsUseDefaultMessage0( false );
+                                    } else {
+                                        main_activity.yy_data_source.initOutgoingIsUseDefaultMessage1( false );
+                                    }
 
                                     yy_view_self.yy_list_adapter.list_data = yy_view_self.getItemListData();
 
@@ -258,7 +262,11 @@ public class OutgoingMessagesView extends YYViewBackList {
                                 }
                                 public void onFailure() {
                                     Toast.makeText( main_activity, "change outgoing message failed", Toast.LENGTH_SHORT ).show();
-                                    main_activity.yy_data_source.initOutgoingIsUseDefaultMessage( false );
+                                    if( nMsgType == 0 ) {
+                                        main_activity.yy_data_source.initOutgoingIsUseDefaultMessage0( false );
+                                    } else {
+                                        main_activity.yy_data_source.initOutgoingIsUseDefaultMessage1( false );
+                                    }
 
                                     yy_view_self.yy_list_adapter.list_data = yy_view_self.getItemListData();
 
@@ -276,7 +284,11 @@ public class OutgoingMessagesView extends YYViewBackList {
                         public void onCancel() {
                             main_activity.yy_data_source.treatOutgoingMsg( YYDataSource.OUTGOING_MSG_OPERATION_DELETE, nMsgType, new YYDataSource.onTreatMsgLinstener() {
                                 public void onSuccessfully() {
-                                    main_activity.yy_data_source.initOutgoingIsUseDefaultMessage( true );
+                                    if( nMsgType == 0 ) {
+                                        main_activity.yy_data_source.initOutgoingIsUseDefaultMessage0( true );
+                                    } else {
+                                        main_activity.yy_data_source.initOutgoingIsUseDefaultMessage1( true );
+                                    }
                                 }
                                 public void onFailure() {
                                     Toast.makeText( main_activity, "delete outgoing message failed", Toast.LENGTH_SHORT ).show();

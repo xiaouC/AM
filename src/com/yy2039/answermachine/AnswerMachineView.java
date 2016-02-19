@@ -212,7 +212,7 @@ public class AnswerMachineView extends YYViewBase {
                         main_activity.yy_command.executeSettingsBaseCommand( YYCommand.ANSWER_MACHINE_GDMS_RESULT, new YYCommand.onCommandListener() {
                             public void onSend() {
                                 Intent dmIntent = new Intent( YYCommand.ANSWER_MACHINE_GDMS );
-                                dmIntent.putExtra( "data", "2" );
+                                dmIntent.putExtra( "data", "0" );
                                 main_activity.sendBroadcast( dmIntent );
 
                                 Log.v( "cconn", "requestOutgoingIsUseDefaultMessage send" );
@@ -232,7 +232,7 @@ public class AnswerMachineView extends YYViewBase {
                                     else {
                                         try {
                                             Boolean bIsDefault = results[0].equals( "00" );
-                                            main_activity.yy_data_source.initOutgoingIsUseDefaultMessage( bIsDefault );
+                                            main_activity.yy_data_source.initOutgoingIsUseDefaultMessage0( bIsDefault );
                                         } catch ( Exception e ) {
                                             String text = String.format( "%s recv data error : %s", YYCommand.ANSWER_MACHINE_GDMS_RESULT, data );
                                             Toast.makeText( main_activity, text, Toast.LENGTH_LONG ).show();
@@ -240,9 +240,45 @@ public class AnswerMachineView extends YYViewBase {
                                     }
                                 }
 
-                                cancelListen();
+                                main_activity.yy_command.executeSettingsBaseCommand( YYCommand.ANSWER_MACHINE_GDMS_RESULT, new YYCommand.onCommandListener() {
+                                    public void onSend() {
+                                        Intent dmIntent = new Intent( YYCommand.ANSWER_MACHINE_GDMS );
+                                        dmIntent.putExtra( "data", "1" );
+                                        main_activity.sendBroadcast( dmIntent );
 
-                                outgoing_msg_view.setView( true, yy_view_self.getViewBackHandler() );
+                                        Log.v( "cconn", "requestOutgoingIsUseDefaultMessage send" );
+                                    }
+                                    public void onRecv( String data, String data2 ) {
+                                        Log.v( "cconn", "requestOutgoingIsUseDefaultMessage recv : " + data );
+                                        if( data == null ) {
+                                            String text = String.format( "%s recv : null", YYCommand.ANSWER_MACHINE_GDMS_RESULT );
+                                            Toast.makeText( main_activity, text, Toast.LENGTH_LONG ).show();
+                                        }
+                                        else {
+                                            String[] results = data.split( "," );
+                                            if( results.length < 1 ) {
+                                                String text = String.format( "%s recv data error : %s", YYCommand.ANSWER_MACHINE_GDMS_RESULT, data );
+                                                Toast.makeText( main_activity, text, Toast.LENGTH_LONG ).show();
+                                            }
+                                            else {
+                                                try {
+                                                    Boolean bIsDefault = results[0].equals( "00" );
+                                                    main_activity.yy_data_source.initOutgoingIsUseDefaultMessage1( bIsDefault );
+                                                } catch ( Exception e ) {
+                                                    String text = String.format( "%s recv data error : %s", YYCommand.ANSWER_MACHINE_GDMS_RESULT, data );
+                                                    Toast.makeText( main_activity, text, Toast.LENGTH_LONG ).show();
+                                                }
+                                            }
+                                        }
+
+                                        cancelListen();
+
+                                        outgoing_msg_view.setView( true, yy_view_self.getViewBackHandler() );
+                                    }
+                                    public void onFailure() {
+                                        Log.v( "cconn", "requestOutgoingIsUseDefaultMessage failed" );
+                                    }
+                                });
                             }
                             public void onFailure() {
                                 Log.v( "cconn", "requestOutgoingIsUseDefaultMessage failed" );

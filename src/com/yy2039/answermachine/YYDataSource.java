@@ -20,7 +20,8 @@ import android.provider.ContactsContract.CommonDataKinds.Photo;
 import android.provider.ContactsContract;
 
 public class YYDataSource {
-    private Boolean bOutgoingIsUseDefaultMessage;
+    private Boolean bOutgoingIsUseDefaultMessage0;
+    private Boolean bOutgoingIsUseDefaultMessage1;
 
     private Boolean bIsUseRemoteAccess;
     private boolean bIsFirstTimeUseRemoteAccess;
@@ -50,7 +51,8 @@ public class YYDataSource {
     public YYDataSource( AnswerMachineActivity activity ) {
         main_activity = activity;
 
-        bOutgoingIsUseDefaultMessage = true;
+        bOutgoingIsUseDefaultMessage0 = true;
+        bOutgoingIsUseDefaultMessage1 = true;
 
         bIsUseRemoteAccess = false;
         nAnswerDelayType = YYCommon.ANSWER_DELAY_2_RINGS;
@@ -469,22 +471,33 @@ public class YYDataSource {
         });
     }
 
-    public Boolean getOutgoingIsUseDefaultMessage() {
-        return bOutgoingIsUseDefaultMessage;
+    public Boolean getOutgoingIsUseDefaultMessage( int nType ) {
+        if( nType == 0 )
+            return bOutgoingIsUseDefaultMessage0;
+
+        return bOutgoingIsUseDefaultMessage1;
     }
 
-    public void initOutgoingIsUseDefaultMessage( Boolean bUseDefaultMessage ) {
-        bOutgoingIsUseDefaultMessage = bUseDefaultMessage;
+    public void initOutgoingIsUseDefaultMessage0( Boolean bUseDefaultMessage ) {
+        bOutgoingIsUseDefaultMessage0 = bUseDefaultMessage;
     }
 
-    public void setOutgoingIsUseDefaultMessage( Boolean bUseDefaultMessage ) {
-        bOutgoingIsUseDefaultMessage = bUseDefaultMessage;
+    public void initOutgoingIsUseDefaultMessage1( Boolean bUseDefaultMessage ) {
+        bOutgoingIsUseDefaultMessage1 = bUseDefaultMessage;
+    }
+
+    public void setOutgoingIsUseDefaultMessage( final int nType, final Boolean bUseDefaultMessage ) {
+        if( nType == 0 ) {
+            bOutgoingIsUseDefaultMessage0 = bUseDefaultMessage;
+        } else {
+            bOutgoingIsUseDefaultMessage1 = bUseDefaultMessage;
+        }
 
         main_activity.yy_command.executeSettingsBaseCommand( YYCommand.ANSWER_MACHINE_SDMS_RESULT, new YYCommand.onCommandListener() {
             public void onSend() {
                 Intent dmIntent = new Intent( YYCommand.ANSWER_MACHINE_SDMS );
-                dmIntent.putExtra( "status", bOutgoingIsUseDefaultMessage ? "0" : "1" );
-                dmIntent.putExtra( "type", "2" );
+                dmIntent.putExtra( "status", bUseDefaultMessage ? "0" : "1" );
+                dmIntent.putExtra( "type", String.format( "%d", nType ) );
                 main_activity.sendBroadcast( dmIntent );
             }
             public void onRecv( String data, String data2 ) {
