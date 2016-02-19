@@ -113,7 +113,7 @@ public class MessagesView extends YYViewBackList {
                 public void item_handle( Object view_obj ) {
                     Button btn_obj = (Button)view_obj;
 
-                    btn_obj.setText( YYViewBase.transferText( "Delete Messages", "" ) );
+                    btn_obj.setText( YYViewBase.transferText( "Delete Message", "" ) );
                     btn_obj.setOnClickListener( new View.OnClickListener() {
                         @Override
                         public void onClick( View v ) { deleteMessage(); }
