@@ -13,6 +13,11 @@ import java.util.Date;
 import android.content.Intent;
 import android.widget.Toast;
 import android.util.Log;
+import android.content.ContentResolver;
+import android.database.Cursor;
+import android.provider.ContactsContract.CommonDataKinds.Phone;
+import android.provider.ContactsContract.CommonDataKinds.Photo;
+import android.provider.ContactsContract;
 
 public class YYDataSource {
     private Boolean bOutgoingIsUseDefaultMessage;
@@ -152,6 +157,96 @@ public class YYDataSource {
         msg_list.remove( nIndex );
     }
 
+    private String valid_chars = new String( "0123456789PR*#" );
+    private boolean isValidNumber( char ch ) {
+        for( int i=0; i < valid_chars.length(); ++i ) {
+            if( ch == valid_chars.charAt( i ) ) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public interface contactsListItem {
+        String getName();
+        List<String> getNumber();
+    }
+
+    public List<contactsListItem> getContactsList() {
+        Map<String,List<String>> name_number_list = new HashMap<String,List<String>>();
+
+        List<String> sortList = new ArrayList<String>();
+
+        Cursor cursor = null;
+        try {
+            cursor = main_activity.getContentResolver().query( ContactsContract.CommonDataKinds.Phone.CONTENT_URI, null, null, null, null );
+            while( cursor.moveToNext() ) {
+                String displayName = cursor.getString( cursor.getColumnIndex( ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME ) );
+                String number = cursor.getString( cursor.getColumnIndex( ContactsContract.CommonDataKinds.Phone.NUMBER ) );
+
+                String new_number = "";
+                for( int i=0; i < number.length(); ++i ) {
+                    if( isValidNumber( number.charAt( i ) ) ) {
+                        new_number += number.charAt( i );
+                    }
+                }
+
+                List<String> number_list = name_number_list.get( displayName );
+                if( number_list == null ) {
+                    name_number_list.put( displayName, new ArrayList<String>() );
+                    number_list = name_number_list.get( displayName );
+
+                    sortList.add( displayName );
+                }
+                number_list.add( new_number );
+            }
+        } catch ( Exception e ) {
+            // TODO: handle exception
+            e.printStackTrace();
+        } finally {
+            if( cursor != null ){
+                cursor.close();
+            }
+        }
+
+        List<contactsListItem> ret_contacts_list = new ArrayList<contactsListItem>();
+
+        for( int i=0; i < sortList.size(); ++i ) {
+            final String displayName = sortList.get( i );
+            final List<String> numbers = name_number_list.get( displayName );
+
+            ret_contacts_list.add( new contactsListItem() {
+                public String getName() { return displayName; }
+                public List<String> getNumber() { return numbers; }
+            });
+        }
+
+        //for( Map.Entry<String,List<String>> item_entry : name_number_list.entrySet() ) {
+        //    final String displayName = item_entry.getKey();
+        //    final List<String> numbers = item_entry.getValue();
+
+        //    ret_contacts_list.add( new contactsListItem() {
+        //        public String getName() { return displayName; }
+        //        public List<String> getNumber() { return numbers; }
+        //    });
+        //}
+
+        return ret_contacts_list;
+    }
+
+    public String getMessageName( String number, String name, List<contactsListItem> contacts_list ) {
+        for( int i=0; i < contacts_list.size(); ++i ) {
+            List<String> num_list = contacts_list.get( i ).getNumber();
+            for( int j=0; j < num_list.size(); ++j ) {
+                if( number.equals( num_list.get( j ) ) ) {
+                    return contacts_list.get( i ).getName();
+                }
+            }
+        }
+
+        return name;
+    }
+
     public void getMessageList( final onTreatMsgLinstener msgListener ) {
         main_activity.yy_command.executeAnswerMachineCommandEx( YYCommand.ANSWER_MACHINE_GMSL_RESULT, new YYCommand.onCommandListener() {
             public void onSend() {
@@ -167,6 +262,8 @@ public class YYDataSource {
 
                     msg_list.clear();
 
+                    List<contactsListItem> contacts_list = getContactsList();
+
                     try {
                         int count = results.length / 5;
                         for( int i=0; i < count; ++i ) {
@@ -177,14 +274,15 @@ public class YYDataSource {
                             Log.v( "cconn", "msg_index : " + results[i*5+0] );
                             final String msg_index = results[i*5+0];
                             final int msg_type = Integer.valueOf( results[i*5+1] );
-                            final String msg_name = results[i*5+2];
                             final String msg_number = results[i*5+3];
+                            final String msg_name = getMessageName( msg_number, results[i*5+2], contacts_list );
                             final String msg_datetime = results[i*5+4];
                             final String year = msg_datetime.substring( 0, 4 );
                             final String month = msg_datetime.substring( 4, 6 );
                             final String day = msg_datetime.substring( 6, 8 );
                             final String hour = msg_datetime.substring( 8, 10 );
                             final String min = msg_datetime.substring( 10 );
+
                             msg_list.add( new onMsgInfo() {
                                 public String getMsgIndex() { return msg_index; }
                                 public int getMsgType() { return msg_type; }
