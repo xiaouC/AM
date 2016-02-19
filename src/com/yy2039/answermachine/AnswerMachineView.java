@@ -174,6 +174,7 @@ public class AnswerMachineView extends YYViewBase {
 
                                         cancelListen();
 
+                                        msg_view.resetLastPosition();
                                         msg_view.setView( true, yy_view_self.getViewBackHandler() );
                                     } catch ( Exception e ) {
                                         String text = String.format( "%s recv data2 error : %s", YYCommand.ANSWER_MACHINE_GMSL_RESULT, data2 );
