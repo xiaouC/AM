@@ -107,20 +107,22 @@ public class MessagesView extends YYViewBackList {
 
             //////////////////////////////////////////////////////////////////////////////////////////////////////////////
             // Delete message
-            map = new HashMap<Integer,YYListAdapter.onYYListItemHandler>();
-            map.put( R.id.item_button, new YYListAdapter.onYYListItemHandler() {
-                @Override
-                public void item_handle( Object view_obj ) {
-                    Button btn_obj = (Button)view_obj;
+            if( msg_info.getMsgType() == 1 ) {      // 0 is new msg, 1 is old msg
+                map = new HashMap<Integer,YYListAdapter.onYYListItemHandler>();
+                map.put( R.id.item_button, new YYListAdapter.onYYListItemHandler() {
+                    @Override
+                    public void item_handle( Object view_obj ) {
+                        Button btn_obj = (Button)view_obj;
 
-                    btn_obj.setText( YYViewBase.transferText( "Delete Message", "" ) );
-                    btn_obj.setOnClickListener( new View.OnClickListener() {
-                        @Override
-                        public void onClick( View v ) { deleteMessage(); }
-                    });
-                }
-            });
-            ret_data.add( map );
+                        btn_obj.setText( YYViewBase.transferText( "Delete Message", "" ) );
+                        btn_obj.setOnClickListener( new View.OnClickListener() {
+                            @Override
+                            public void onClick( View v ) { deleteMessage(); }
+                        });
+                    }
+                });
+                ret_data.add( map );
+            }
 
             //////////////////////////////////////////////////////////////////////////////////////////////////////////////
             // Call back
