@@ -186,8 +186,9 @@ public class OutgoingMessagesView extends YYViewBackList {
                     String tips = "playing outgoing message";
                     int nResOK = R.drawable.alert_dialog_ok;
                     int nResDelete = R.drawable.alert_delete;
-                    main_activity.yy_show_alert_dialog.showImageTipsAlertDialog( title, R.drawable.play_message, tips, nResOK, nResDelete, new YYShowAlertDialog.onAlertDialogClickHandler() {
+                    main_activity.yy_playing_msg_dlg = main_activity.yy_show_alert_dialog.showImageTipsAlertDialog( title, R.drawable.play_message, tips, nResOK, nResDelete, new YYShowAlertDialog.onAlertDialogClickHandler() {
                         public void onOK() {
+                            main_activity.yy_playing_msg_dlg = null;
                             main_activity.yy_data_source.treatOutgoingMsg( YYDataSource.OUTGOING_MSG_OPERATION_STOP_PLAY, nMsgType, new YYDataSource.onTreatMsgLinstener() {
                                 public void onSuccessfully() {
                                 }
@@ -196,7 +197,10 @@ public class OutgoingMessagesView extends YYViewBackList {
                                 }
                             });
                         }
-                        public void onCancel() { deleteMessage(); }
+                        public void onCancel() {
+                            main_activity.yy_playing_msg_dlg = null;
+                            deleteMessage();
+                        }
                     });
                 }
                 public void onFailure() {
@@ -239,8 +243,9 @@ public class OutgoingMessagesView extends YYViewBackList {
                 public void onSuccessfully() {
                     String title = "Record message";
                     String tips = "Recording outgoing message";
-                    main_activity.yy_show_alert_dialog.showImageTipsAlertDialog( title, R.drawable.record_name, tips, R.drawable.alert_save, R.drawable.alert_delete, new YYShowAlertDialog.onAlertDialogClickHandler() {
+                    main_activity.yy_playing_msg_dlg = main_activity.yy_show_alert_dialog.showImageTipsAlertDialog( title, R.drawable.record_name, tips, R.drawable.alert_save, R.drawable.alert_delete, new YYShowAlertDialog.onAlertDialogClickHandler() {
                         public void onOK() {
+                            main_activity.yy_playing_msg_dlg = null;
                             main_activity.yy_data_source.treatOutgoingMsg( YYDataSource.OUTGOING_MSG_OPERATION_STOP_CHANGE, nMsgType, new YYDataSource.onTreatMsgLinstener() {
                                 public void onSuccessfully() {
                                     if( nMsgType == 0 ) {
@@ -282,6 +287,7 @@ public class OutgoingMessagesView extends YYViewBackList {
                             });
                         }
                         public void onCancel() {
+                            main_activity.yy_playing_msg_dlg = null;
                             main_activity.yy_data_source.treatOutgoingMsg( YYDataSource.OUTGOING_MSG_OPERATION_DELETE, nMsgType, new YYDataSource.onTreatMsgLinstener() {
                                 public void onSuccessfully() {
                                     if( nMsgType == 0 ) {

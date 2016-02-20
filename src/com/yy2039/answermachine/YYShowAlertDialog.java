@@ -159,8 +159,8 @@ public class YYShowAlertDialog {
         });
     }
 
-    public void showImageTipsAlertDialog( final String title, final int image_id, final String tips, final int btn_ok_image_id, final int btn_cancel_image_id, final onAlertDialogClickHandler click_handler ) {
-        showAlertDialog( R.layout.alert_image_tips, new onAlertDialogHandler() {
+    public AlertDialog showImageTipsAlertDialog( final String title, final int image_id, final String tips, final int btn_ok_image_id, final int btn_cancel_image_id, final onAlertDialogClickHandler click_handler ) {
+        return showAlertDialog( R.layout.alert_image_tips, new onAlertDialogHandler() {
             public void onInit( AlertDialog ad, View view ) {
                 TextView tv_title = (TextView)view.findViewById( R.id.alert_title );
                 tv_title.setText( title );

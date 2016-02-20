@@ -91,9 +91,17 @@ public class MessagesView extends YYViewBackList {
                                     String tips = String.format( "playing message from %s", name );
                                     int nResOK = R.drawable.alert_dialog_ok;
                                     int nResDelete = R.drawable.alert_delete;
-                                    main_activity.yy_show_alert_dialog.showImageTipsAlertDialog( title, R.drawable.play_message, tips, nResOK, nResDelete, new YYShowAlertDialog.onAlertDialogClickHandler() {
-                                        public void onOK() { stopPlayMessage(); }
-                                        public void onCancel() { deleteMessage(); }
+                                    main_activity.yy_playing_msg_dlg = main_activity.yy_show_alert_dialog.showImageTipsAlertDialog( title, R.drawable.play_message, tips, nResOK, nResDelete, new YYShowAlertDialog.onAlertDialogClickHandler() {
+                                        public void onOK() {
+                                            main_activity.yy_playing_msg_dlg = null;
+
+                                            stopPlayMessage();
+                                        }
+                                        public void onCancel() {
+                                            main_activity.yy_playing_msg_dlg = null;
+
+                                            deleteMessage();
+                                        }
                                     });
                                 }
                                 public void onFailure() {
