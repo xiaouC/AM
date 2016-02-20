@@ -25,6 +25,9 @@ import android.widget.Toast;
 import android.app.Notification; 
 import android.app.NotificationManager; 
 import android.app.PendingIntent;
+import android.content.BroadcastReceiver;
+import android.content.IntentFilter;
+import android.media.AudioManager;
 
 public class AnswerMachineActivity extends FragmentActivity
 {
@@ -43,6 +46,18 @@ public class AnswerMachineActivity extends FragmentActivity
     public AnswerMachineView answer_machine_view;
 
     //private final static int NOTIFICATION_ID_ICON = 0x10000;
+	private BroadcastReceiver headsetPlugReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            if( intent.hasExtra( "state" ) ) {
+                if( intent.getIntExtra( "state", 0 ) == 0 ) {
+                    changeShengDao( 1 );
+                } else if( intent.getIntExtra( "state", 0 ) == 1 ) {
+                    changeShengDao( 0 );
+                }
+            }
+        }
+    };
 
     /** Called when the activity is first created. */
     @Override
@@ -98,6 +113,13 @@ public class AnswerMachineActivity extends FragmentActivity
         //n.contentIntent = pi; 
         //n.setLatestEventInfo( this, "Answer Machine", "Answer Machine", pi );
         //nm.notify(NOTIFICATION_ID_ICON, n);
+
+        IntentFilter filter = new IntentFilter();
+        filter.addAction( "android.intent.action.HEADSET_PLUG" );
+        registerReceiver( headsetPlugReceiver, filter );  
+
+        AudioManager localAudioManager = (AudioManager)getSystemService( Context.AUDIO_SERVICE );  
+        changeShengDao( localAudioManager.isWiredHeadsetOn() ? 0 : 1 );
     }
 
     public boolean onKeyDown( int keyCode, KeyEvent event )
@@ -110,6 +132,40 @@ public class AnswerMachineActivity extends FragmentActivity
         return false;
     }
 
+    public final static String ANSWER_MACHINE_CHANGE_HEADSET = "andorid.intent.action.answer.machine.change.headset";           // 耳机
+    public final static String ANSWER_MACHINE_CHANGE_HANDFREE = "andorid.intent.action.answer.machine.change.handfree";         // 免提
+    public final static String ANSWER_MACHINE_CHANGE_NORMAL = "andorid.intent.action.answer.machine.change.normal";             // 普通
+    public void changeShengDao( int nType ) {
+        Intent intent = new Intent();  
+        switch( nType ) {
+            case 0:
+                intent.setAction( ANSWER_MACHINE_CHANGE_HEADSET );  
+                break;
+            case 1:
+                intent.setAction( ANSWER_MACHINE_CHANGE_HANDFREE );  
+                break;
+            default:
+                intent.setAction( ANSWER_MACHINE_CHANGE_NORMAL );  
+                break;
+        }
+        sendBroadcast( intent );
+    }
+
+	@Override
+	protected void onResume() {
+        super.onResume();
+
+        AudioManager localAudioManager = (AudioManager)getSystemService( Context.AUDIO_SERVICE );  
+        changeShengDao( localAudioManager.isWiredHeadsetOn() ? 0 : 1 );
+    }
+
+	@Override
+	protected void onPause() {
+        changeShengDao( 2 );
+
+        super.onPause();
+    }
+
 	@Override
 	protected void onDestroy()
 	{
@@ -119,6 +175,8 @@ public class AnswerMachineActivity extends FragmentActivity
         yy_schedule.cancelAllSchedule();
         yy_command.unregisterReceiver();
         answer_machine_view.cancelListen();
+
+        unregisterReceiver( headsetPlugReceiver );
 
         //NotificationManager nm = (NotificationManager)getSystemService( Context.NOTIFICATION_SERVICE );
         //nm.cancel( NOTIFICATION_ID_ICON );
