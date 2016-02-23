@@ -236,7 +236,8 @@ public class YYDataSource {
         return ret_contacts_list;
     }
 
-    public String getMessageName( String number, String name, List<contactsListItem> contacts_list ) {
+    private List<contactsListItem> contacts_list = getContactsList();
+    public String getMessageName( String number, String name ) {
         for( int i=0; i < contacts_list.size(); ++i ) {
             List<String> num_list = contacts_list.get( i ).getNumber();
             for( int j=0; j < num_list.size(); ++j ) {
@@ -264,8 +265,6 @@ public class YYDataSource {
 
                     msg_list.clear();
 
-                    List<contactsListItem> contacts_list = getContactsList();
-
                     try {
                         int count = results.length / 5;
                         for( int i=0; i < count; ++i ) {
@@ -277,7 +276,7 @@ public class YYDataSource {
                             final String msg_index = results[i*5+0];
                             final int msg_type = Integer.valueOf( results[i*5+1] );
                             final String msg_number = results[i*5+3];
-                            final String msg_name = getMessageName( msg_number, results[i*5+2], contacts_list );
+                            final String msg_name = getMessageName( msg_number, results[i*5+2] );
                             final String msg_datetime = results[i*5+4];
                             final String year = msg_datetime.substring( 0, 4 );
                             final String month = msg_datetime.substring( 4, 6 );
