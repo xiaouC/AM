@@ -131,7 +131,9 @@ public class AnswerMachineActivity extends FragmentActivity
         registerReceiver( headsetPlugReceiver, filter );  
 
         IntentFilter filter2 = new IntentFilter();
-        filter2.addAction( "android.intent.action.PLAY_END" );
+        filter2.addAction( "com.action.dect.page.voicemsg.overtime.autosave" );
+        filter2.addAction( "com.action.dect.page.voicemsg.play.over" );
+        //filter2.addAction( "com.action.dect.page.voicemsg.delete.play.over" );
         registerReceiver( playingMsgEndReceiver, filter2 );  
 
         AudioManager localAudioManager = (AudioManager)getSystemService( Context.AUDIO_SERVICE );  
