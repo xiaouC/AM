@@ -200,7 +200,7 @@ public class MessagesView extends YYViewBackList {
                     }
 
                     String text1 = "";
-                    if( name.equals( "" ) ) {
+                    if( msg_info.getMsgNumber().equals( "" ) ) {
                         text1 = "Are you sure that you want to delete the message you have received from an Unknown Number?";
                     } else {
                         text1 = String.format( "Are you sure that you want to delete the message you have received from %s?", name );
