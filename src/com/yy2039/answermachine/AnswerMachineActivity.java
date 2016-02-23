@@ -188,6 +188,8 @@ public class AnswerMachineActivity extends FragmentActivity
         bIsDestroy = true;
 
 		// TODO Auto-generated method stub
+        changeShengDao( 2 );
+
         yy_schedule.cancelAllSchedule();
         yy_command.unregisterReceiver();
         answer_machine_view.cancelListen();
