@@ -71,6 +71,13 @@ public class AnswerMachineActivity extends FragmentActivity
         }
     };
 
+    private BroadcastReceiver incomingCallReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            finish();
+        }
+    };
+
     /** Called when the activity is first created. */
     @Override
     public void onCreate(Bundle savedInstanceState)
@@ -136,6 +143,10 @@ public class AnswerMachineActivity extends FragmentActivity
         //filter2.addAction( "com.action.dect.page.voicemsg.delete.play.over" );
         registerReceiver( playingMsgEndReceiver, filter2 );  
 
+        IntentFilter filter3 = new IntentFilter();
+        filter3.addAction( "com.action.dect.page.incoming.call" );
+        registerReceiver( incomingCallReceiver, filter3 );  
+
         AudioManager localAudioManager = (AudioManager)getSystemService( Context.AUDIO_SERVICE );  
         changeShengDao( localAudioManager.isWiredHeadsetOn() ? 0 : 1 );
     }
@@ -198,6 +209,7 @@ public class AnswerMachineActivity extends FragmentActivity
 
         unregisterReceiver( headsetPlugReceiver );
         unregisterReceiver( playingMsgEndReceiver );
+        unregisterReceiver( incomingCallReceiver );
 
         //NotificationManager nm = (NotificationManager)getSystemService( Context.NOTIFICATION_SERVICE );
         //nm.cancel( NOTIFICATION_ID_ICON );
