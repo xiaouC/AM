@@ -265,6 +265,8 @@ public class YYDataSource {
 
                     msg_list.clear();
 
+                    contacts_list = getContactsList();
+
                     try {
                         int count = results.length / 5;
                         for( int i=0; i < count; ++i ) {
