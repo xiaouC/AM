@@ -94,15 +94,18 @@ public class MessagesView extends YYViewBackList {
                                     main_activity.yy_playing_msg_dlg = main_activity.yy_show_alert_dialog.showImageTipsAlertDialog( title, R.drawable.play_message, tips, nResOK, nResDelete, new YYShowAlertDialog.onAlertDialogClickHandler() {
                                         public void onOK() {
                                             main_activity.yy_playing_msg_dlg = null;
+                                            main_activity.changeShengDao( true );
 
                                             stopPlayMessage();
                                         }
                                         public void onCancel() {
                                             main_activity.yy_playing_msg_dlg = null;
+                                            main_activity.changeShengDao( true );
 
                                             deleteMessage();
                                         }
                                     });
+                                    main_activity.changeShengDao( false );
                                 }
                                 public void onFailure() {
                                 }

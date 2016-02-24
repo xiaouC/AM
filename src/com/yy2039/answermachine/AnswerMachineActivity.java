@@ -51,11 +51,7 @@ public class AnswerMachineActivity extends FragmentActivity
         @Override
         public void onReceive(Context context, Intent intent) {
             if( intent.hasExtra( "state" ) ) {
-                if( intent.getIntExtra( "state", 0 ) == 0 ) {
-                    changeShengDao( 1 );
-                } else if( intent.getIntExtra( "state", 0 ) == 1 ) {
-                    changeShengDao( 0 );
-                }
+                changeShengDao( false );
             }
         }
     };
@@ -78,6 +74,9 @@ public class AnswerMachineActivity extends FragmentActivity
         }
     };
 
+    public AudioManager localAudioManager = null;
+    public int nDefaultStreamType = 0;
+    
     /** Called when the activity is first created. */
     @Override
     public void onCreate(Bundle savedInstanceState)
@@ -147,8 +146,8 @@ public class AnswerMachineActivity extends FragmentActivity
         filter3.addAction( "com.action.dect.page.incoming.call" );
         registerReceiver( incomingCallReceiver, filter3 );  
 
-        AudioManager localAudioManager = (AudioManager)getSystemService( Context.AUDIO_SERVICE );  
-        changeShengDao( localAudioManager.isWiredHeadsetOn() ? 0 : 1 );
+        localAudioManager = (AudioManager)getSystemService( Context.AUDIO_SERVICE );  
+        nDefaultStreamType = getVolumeControlStream();
     }
 
     public boolean onKeyDown( int keyCode, KeyEvent event )
@@ -164,33 +163,40 @@ public class AnswerMachineActivity extends FragmentActivity
     public final static String ANSWER_MACHINE_CHANGE_HEADSET = "andorid.intent.action.answer.machine.change.headset";           // 耳机
     public final static String ANSWER_MACHINE_CHANGE_HANDFREE = "andorid.intent.action.answer.machine.change.handfree";         // 免提
     public final static String ANSWER_MACHINE_CHANGE_NORMAL = "andorid.intent.action.answer.machine.change.normal";             // 普通
-    public void changeShengDao( int nType ) {
-        Intent intent = new Intent();  
-        switch( nType ) {
-            case 0:
-                intent.setAction( ANSWER_MACHINE_CHANGE_HEADSET );  
-                break;
-            case 1:
-                intent.setAction( ANSWER_MACHINE_CHANGE_HANDFREE );  
-                break;
-            default:
-                intent.setAction( ANSWER_MACHINE_CHANGE_NORMAL );  
-                break;
+    public void changeShengDao( boolean bResumeNormal ) {
+        if( !bResumeNormal ) {
+            if( yy_playing_msg_dlg != null ) {
+                Intent intent = new Intent();  
+                if( localAudioManager.isWiredHeadsetOn() ) {
+                    intent.setAction( ANSWER_MACHINE_CHANGE_HEADSET );
+                } else {
+                    intent.setAction( ANSWER_MACHINE_CHANGE_HANDFREE );
+                }
+                sendBroadcast( intent );
+
+                setVolumeControlStream( AudioManager.STREAM_VOICE_CALL );
+            }
+        } else {
+            Intent intent = new Intent();  
+            intent.setAction( ANSWER_MACHINE_CHANGE_NORMAL );
+            sendBroadcast( intent );
+
+            setVolumeControlStream( nDefaultStreamType );
         }
-        sendBroadcast( intent );
     }
 
 	@Override
 	protected void onResume() {
         super.onResume();
 
-        AudioManager localAudioManager = (AudioManager)getSystemService( Context.AUDIO_SERVICE );  
-        changeShengDao( localAudioManager.isWiredHeadsetOn() ? 0 : 1 );
+        if( localAudioManager != null ) {
+            changeShengDao( false );
+        }
     }
 
 	@Override
 	protected void onPause() {
-        changeShengDao( 2 );
+        changeShengDao( true );
 
         super.onPause();
     }
@@ -201,7 +207,7 @@ public class AnswerMachineActivity extends FragmentActivity
         bIsDestroy = true;
 
 		// TODO Auto-generated method stub
-        changeShengDao( 2 );
+        changeShengDao( true );
 
         yy_schedule.cancelAllSchedule();
         yy_command.unregisterReceiver();

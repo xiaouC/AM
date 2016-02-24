@@ -87,8 +87,10 @@ public class YYShowAlertDialog {
             btn_cancel.setOnClickListener( new View.OnClickListener () {
                 public void onClick( View v ){
                     // 先清理，再回调
-                    cur_show_ad.hide();
-                    cur_show_ad = null;
+                    if( cur_show_ad != null ) {
+                        cur_show_ad.hide();
+                        cur_show_ad = null;
+                    }
 
                     handler.onCancel();
                 }

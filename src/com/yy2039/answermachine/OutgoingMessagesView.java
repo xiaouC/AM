@@ -189,6 +189,7 @@ public class OutgoingMessagesView extends YYViewBackList {
                     main_activity.yy_playing_msg_dlg = main_activity.yy_show_alert_dialog.showImageTipsAlertDialog( title, R.drawable.play_message, tips, nResOK, nResDelete, new YYShowAlertDialog.onAlertDialogClickHandler() {
                         public void onOK() {
                             main_activity.yy_playing_msg_dlg = null;
+                            main_activity.changeShengDao( true );
                             main_activity.yy_data_source.treatOutgoingMsg( YYDataSource.OUTGOING_MSG_OPERATION_STOP_PLAY, nMsgType, new YYDataSource.onTreatMsgLinstener() {
                                 public void onSuccessfully() {
                                 }
@@ -199,9 +200,11 @@ public class OutgoingMessagesView extends YYViewBackList {
                         }
                         public void onCancel() {
                             main_activity.yy_playing_msg_dlg = null;
+                            main_activity.changeShengDao( true );
                             deleteMessage();
                         }
                     });
+                    main_activity.changeShengDao( false );
                 }
                 public void onFailure() {
                     Toast.makeText( main_activity, "play outgoing message failed", Toast.LENGTH_SHORT ).show();
