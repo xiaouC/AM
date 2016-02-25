@@ -257,62 +257,70 @@ public class YYDataSource {
 
     public String getNameByNumber( String number )
     {
+        Log.v( "cocos", "getNameByNumber number 1 : " + number );
         String name = "";
 
         number = number.replace(" ", "").replace("-", "").replace("(", "").replace(")", "");		
+        Log.v( "cocos", "getNameByNumber number 2 : " + number );
         name = getContactNameByPhoneNumber( number, 0 );
+        Log.v( "cocos", "getNameByNumber name 1 : " + name );
         if( TextUtils.isEmpty( name ) ) {
             if( number.length() >= 11 ) {
                 String number_11 = number.substring( number.length() - 11, number.length() );
                 name = getContactNameByPhoneNumber( number_11, 1 );
+                Log.v( "cocos", "getNameByNumber name 2 : " + name );
                 if( TextUtils.isEmpty( name ) ) {
                     String number_6 = number.substring( number.length() - 6, number.length() );
                     name = getContactNameByPhoneNumber( number_6, 1 );
+                    Log.v( "cocos", "getNameByNumber name 3 : " + name );
                 }
             } else {
                 if( number.length() >= 6 ) {
                     String number_6 = number.substring( number.length() - 6, number.length() );
                     name = getContactNameByPhoneNumber( number_6, 1 );
+                    Log.v( "cocos", "getNameByNumber name 4 : " + name );
                 }
             }
         }
 
+        Log.v( "cocos", "getNameByNumber return name 5 : " + name );
         return name;
     }
 
     public String getContactNameByPhoneNumber( String num, int type )
     {
+        Log.v( "cocos", "num : " + num );
+        Log.v( "cocos", "type : " + type );
         String[] projection = { ContactsContract.CommonDataKinds.Phone.TYPE, ContactsContract.PhoneLookup.DISPLAY_NAME, ContactsContract.CommonDataKinds.Phone.NUMBER, ContactsContract.PhoneLookup.STARRED };
 
         Cursor cursor = main_activity.getContentResolver().query( ContactsContract.CommonDataKinds.Phone.CONTENT_URI, projection, ContactsContract.CommonDataKinds.Phone.NUMBER + " like '%" + num.charAt( num.length() - 1 ) + "'", null, ContactsContract.PhoneLookup.DISPLAY_NAME );
         if( cursor == null ) {
-            Log.d("Phonebook", "getPeople null");
+            Log.v( "cocos", "get People null" );
             return "";
         }
 
         String name = "";
-        while( cursor.moveToNext() )
-        {
+        while( cursor.moveToNext() ) {
             int nameFieldColumnIndex = cursor.getColumnIndex( ContactsContract.PhoneLookup.DISPLAY_NAME );
-            int typeFieldColumnIndex = cursor.getColumnIndex( ContactsContract.CommonDataKinds.Phone.TYPE );
             int numFieldColumnIndex = cursor.getColumnIndex( ContactsContract.CommonDataKinds.Phone.NUMBER );
             String numString = cursor.getString( numFieldColumnIndex ).replace(" ", "").replace("-", "").replace("(", "").replace(")", "");
-            switch( type )
-            {
+            Log.v( "cocos", "numString : " + numString );
+            switch( type ) {
                 case 0:
                     if( numString.equals(num) ) {
-                        name = cursor.getString(nameFieldColumnIndex) + "," + cursor.getInt(typeFieldColumnIndex) + "," + cursor.getString(numFieldColumnIndex);
+                        name = cursor.getString( nameFieldColumnIndex );
                     }
                     break;
                 case 1:
                     if( numString.endsWith( num ) ) {
-                        name = cursor.getString(nameFieldColumnIndex) + "," + cursor.getInt(typeFieldColumnIndex) + "," + cursor.getString(numFieldColumnIndex);
+                        name = cursor.getString( nameFieldColumnIndex );
                     }
                     break;
                 default:
                     break;
             }
 
+            Log.v( "cocos", "name : " + name );
             if( !TextUtils.isEmpty( name ) ) {
                 break;
             }
@@ -320,6 +328,7 @@ public class YYDataSource {
 
         cursor.close();
 
+        Log.v( "cocos", "return name : " + name );
         return name;
     }
 
@@ -357,7 +366,10 @@ public class YYDataSource {
 
     //private List<contactsListItem> contacts_list = getContactsList();
     public String getMessageName( String number, String name ) {
+        Log.v( "cocos", "getMessageName number : " + number );
+        Log.v( "cocos", "getMessageName name : " + name );
         String ret_name = getNameByNumber( number );
+        Log.v( "cocos", "getMessageName ret_name : " + ret_name );
         if( !ret_name.equals( "" ) ) {
             return ret_name;
         }
