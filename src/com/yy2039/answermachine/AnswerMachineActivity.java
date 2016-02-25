@@ -90,7 +90,6 @@ public class AnswerMachineActivity extends FragmentActivity
     };
 
     public AudioManager localAudioManager = null;
-    public int nDefaultStreamType = 0;
     
     /** Called when the activity is first created. */
     @Override
@@ -166,7 +165,6 @@ public class AnswerMachineActivity extends FragmentActivity
         registerReceiver( autoSaveReceiver, filter5 );  
 
         localAudioManager = (AudioManager)getSystemService( Context.AUDIO_SERVICE );  
-        nDefaultStreamType = getVolumeControlStream();
     }
 
     public boolean onKeyDown( int keyCode, KeyEvent event )
@@ -193,14 +191,17 @@ public class AnswerMachineActivity extends FragmentActivity
                 }
                 sendBroadcast( intent );
 
-                setVolumeControlStream( AudioManager.STREAM_VOICE_CALL );
+                if( yy_playing_msg_dlg != null ) {
+                    yy_playing_msg_dlg.setVolumeControlStream( AudioManager.STREAM_VOICE_CALL );
+                }
+                if( yy_record_auto_save_dlg != null ) {
+                    yy_record_auto_save_dlg.setVolumeControlStream( AudioManager.STREAM_VOICE_CALL );
+                }
             }
         } else {
             Intent intent = new Intent();  
             intent.setAction( ANSWER_MACHINE_CHANGE_NORMAL );
             sendBroadcast( intent );
-
-            setVolumeControlStream( nDefaultStreamType );
         }
     }
 
