@@ -176,7 +176,7 @@ public class YYDataSource {
         List<String> getNumber();
     }
 
-    /*
+    private List<contactsListItem> contacts_list = null;
     public List<contactsListItem> getContactsList() {
         Map<String,List<String>> name_number_list = new HashMap<String,List<String>>();
 
@@ -188,13 +188,14 @@ public class YYDataSource {
             while( cursor.moveToNext() ) {
                 String displayName = cursor.getString( cursor.getColumnIndex( ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME ) );
                 String number = cursor.getString( cursor.getColumnIndex( ContactsContract.CommonDataKinds.Phone.NUMBER ) );
+                String new_number = number.replace(" ", "").replace("-", "").replace("(", "").replace(")", "");
 
-                String new_number = "";
-                for( int i=0; i < number.length(); ++i ) {
-                    if( isValidNumber( number.charAt( i ) ) ) {
-                        new_number += number.charAt( i );
-                    }
-                }
+                //String new_number = "";
+                //for( int i=0; i < number.length(); ++i ) {
+                //    if( isValidNumber( number.charAt( i ) ) ) {
+                //        new_number += number.charAt( i );
+                //    }
+                //}
 
                 List<String> number_list = name_number_list.get( displayName );
                 if( number_list == null ) {
@@ -238,7 +239,6 @@ public class YYDataSource {
 
         return ret_contacts_list;
     }
-    */
 
 
 
@@ -287,6 +287,7 @@ public class YYDataSource {
         return name;
     }
 
+    /*
     public String getContactNameByPhoneNumber( String num, int type )
     {
         Log.v( "cocos", "num : " + num );
@@ -331,6 +332,42 @@ public class YYDataSource {
         Log.v( "cocos", "return name : " + name );
         return name;
     }
+    */
+
+
+    public String getContactNameByPhoneNumber( String number, int type ) {
+        Log.v( "cocos", "getContactNameByPhoneNumber number : " + number );
+        Log.v( "cocos", "getContactNameByPhoneNumber type : " + type );
+
+        String ret_name = "";
+
+        for( int i=0; i < contacts_list.size(); ++i ) {
+            List<String> num_list = contacts_list.get( i ).getNumber();
+            for( int j=0; j < num_list.size(); ++j ) {
+                String number_tmp = num_list.get( j );
+                Log.v( "cocos", "getContactNameByPhoneNumber number_tmp : " + number_tmp );
+                if( type == 0 ) {
+                    if( number_tmp.equals( number ) ) {
+                        ret_name = contacts_list.get( i ).getName();
+                        Log.v( "cocos", "getContactNameByPhoneNumber ret_name 0 : " + ret_name );
+                    }
+                } else {
+                    if( number_tmp.endsWith( number ) ) {
+                        ret_name = contacts_list.get( i ).getName();
+                        Log.v( "cocos", "getContactNameByPhoneNumber ret_name 1 : " + ret_name );
+                    }
+                }
+
+                if( !TextUtils.isEmpty( ret_name ) ) {
+                    Log.v( "cocos", "getContactNameByPhoneNumber ret_name 3 : " + ret_name );
+                    return ret_name;
+                }
+            }
+        }
+
+        Log.v( "cocos", "getContactNameByPhoneNumber ret_name 4 : " + ret_name );
+        return ret_name;
+    }
 
 
 
@@ -362,9 +399,6 @@ public class YYDataSource {
 
 
 
-
-
-    //private List<contactsListItem> contacts_list = getContactsList();
     public String getMessageName( String number, String name ) {
         Log.v( "cocos", "getMessageName number : " + number );
         Log.v( "cocos", "getMessageName name : " + name );
@@ -373,6 +407,7 @@ public class YYDataSource {
         if( !ret_name.equals( "" ) ) {
             return ret_name;
         }
+
         //for( int i=0; i < contacts_list.size(); ++i ) {
         //    List<String> num_list = contacts_list.get( i ).getNumber();
         //    for( int j=0; j < num_list.size(); ++j ) {
@@ -400,7 +435,7 @@ public class YYDataSource {
 
                     msg_list.clear();
 
-                    //contacts_list = getContactsList();
+                    contacts_list = getContactsList();
 
                     try {
                         int count = results.length / 5;
