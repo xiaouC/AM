@@ -246,9 +246,10 @@ public class OutgoingMessagesView extends YYViewBackList {
                 public void onSuccessfully() {
                     String title = "Record message";
                     String tips = "Recording outgoing message";
-                    main_activity.yy_playing_msg_dlg = main_activity.yy_show_alert_dialog.showImageTipsAlertDialog( title, R.drawable.record_name, tips, R.drawable.alert_save, R.drawable.alert_delete, new YYShowAlertDialog.onAlertDialogClickHandler() {
+                    main_activity.yy_record_auto_save_dlg = main_activity.yy_show_alert_dialog.showImageTipsAlertDialog( title, R.drawable.record_name, tips, R.drawable.alert_save, R.drawable.alert_delete, new YYShowAlertDialog.onAlertDialogClickHandler() {
                         public void onOK() {
-                            main_activity.yy_playing_msg_dlg = null;
+                            main_activity.yy_record_auto_save_dlg = null;
+                            main_activity.yy_auto_save_listener = null;
                             main_activity.yy_data_source.treatOutgoingMsg( YYDataSource.OUTGOING_MSG_OPERATION_STOP_CHANGE, nMsgType, new YYDataSource.onTreatMsgLinstener() {
                                 public void onSuccessfully() {
                                     if( nMsgType == 0 ) {
@@ -290,7 +291,8 @@ public class OutgoingMessagesView extends YYViewBackList {
                             });
                         }
                         public void onCancel() {
-                            main_activity.yy_playing_msg_dlg = null;
+                            main_activity.yy_record_auto_save_dlg = null;
+                            main_activity.yy_auto_save_listener = null;
                             main_activity.yy_data_source.treatOutgoingMsg( YYDataSource.OUTGOING_MSG_OPERATION_DELETE, nMsgType, new YYDataSource.onTreatMsgLinstener() {
                                 public void onSuccessfully() {
                                     if( nMsgType == 0 ) {
@@ -305,6 +307,20 @@ public class OutgoingMessagesView extends YYViewBackList {
                             });
                         }
                     });
+                    main_activity.yy_auto_save_listener = new AnswerMachineActivity.onAutoSaveListener() {
+                        public void onAutoSave() {
+                            if( main_activity.yy_record_auto_save_dlg != null ) {
+                                main_activity.yy_record_auto_save_dlg.hide();
+                                main_activity.yy_record_auto_save_dlg = null;
+
+                                main_activity.yy_schedule.scheduleOnceTime( 1000, new YYSchedule.onScheduleAction() {
+                                    public void doSomething() {
+                                        playMessage();
+                                    }
+                                });
+                            }
+                        }
+                    };
                 }
                 public void onFailure() {
                     Toast.makeText( main_activity, "record outgoing message failed", Toast.LENGTH_SHORT ).show();
