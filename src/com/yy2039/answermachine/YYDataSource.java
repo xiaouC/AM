@@ -18,6 +18,8 @@ import android.database.Cursor;
 import android.provider.ContactsContract.CommonDataKinds.Phone;
 import android.provider.ContactsContract.CommonDataKinds.Photo;
 import android.provider.ContactsContract;
+import android.text.TextUtils;
+import android.provider.ContactsContract;
 
 public class YYDataSource {
     private Boolean bOutgoingIsUseDefaultMessage0;
@@ -174,6 +176,7 @@ public class YYDataSource {
         List<String> getNumber();
     }
 
+    /*
     public List<contactsListItem> getContactsList() {
         Map<String,List<String>> name_number_list = new HashMap<String,List<String>>();
 
@@ -235,17 +238,137 @@ public class YYDataSource {
 
         return ret_contacts_list;
     }
+    */
 
-    private List<contactsListItem> contacts_list = getContactsList();
-    public String getMessageName( String number, String name ) {
-        for( int i=0; i < contacts_list.size(); ++i ) {
-            List<String> num_list = contacts_list.get( i ).getNumber();
-            for( int j=0; j < num_list.size(); ++j ) {
-                if( number.equals( num_list.get( j ) ) ) {
-                    return contacts_list.get( i ).getName();
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    public String getNameByNumber( String number )
+    {
+        String name = "";
+
+        number = number.replace(" ", "").replace("-", "").replace("(", "").replace(")", "");		
+        name = getContactNameByPhoneNumber( number, 0 );
+        if( TextUtils.isEmpty( name ) ) {
+            if( number.length() >= 11 ) {
+                String number_11 = number.substring( number.length() - 11, number.length() );
+                name = getContactNameByPhoneNumber( number_11, 1 );
+                if( TextUtils.isEmpty( name ) ) {
+                    String number_6 = number.substring( number.length() - 6, number.length() );
+                    name = getContactNameByPhoneNumber( number_6, 1 );
+                }
+            } else {
+                if( number.length() >= 6 ) {
+                    String number_6 = number.substring( number.length() - 6, number.length() );
+                    name = getContactNameByPhoneNumber( number_6, 1 );
                 }
             }
         }
+
+        return name;
+    }
+
+    public String getContactNameByPhoneNumber( String num, int type )
+    {
+        String[] projection = { ContactsContract.CommonDataKinds.Phone.TYPE, ContactsContract.PhoneLookup.DISPLAY_NAME, ContactsContract.CommonDataKinds.Phone.NUMBER, ContactsContract.PhoneLookup.STARRED };
+
+        Cursor cursor = main_activity.getContentResolver().query( ContactsContract.CommonDataKinds.Phone.CONTENT_URI, projection, ContactsContract.CommonDataKinds.Phone.NUMBER + " like '%" + num.charAt( num.length() - 1 ) + "'", null, ContactsContract.PhoneLookup.DISPLAY_NAME );
+        if( cursor == null ) {
+            Log.d("Phonebook", "getPeople null");
+            return "";
+        }
+
+        String name = "";
+        while( cursor.moveToNext() )
+        {
+            int nameFieldColumnIndex = cursor.getColumnIndex( ContactsContract.PhoneLookup.DISPLAY_NAME );
+            int typeFieldColumnIndex = cursor.getColumnIndex( ContactsContract.CommonDataKinds.Phone.TYPE );
+            int numFieldColumnIndex = cursor.getColumnIndex( ContactsContract.CommonDataKinds.Phone.NUMBER );
+            String numString = cursor.getString( numFieldColumnIndex ).replace(" ", "").replace("-", "").replace("(", "").replace(")", "");
+            switch( type )
+            {
+                case 0:
+                    if( numString.equals(num) ) {
+                        name = cursor.getString(nameFieldColumnIndex) + "," + cursor.getInt(typeFieldColumnIndex) + "," + cursor.getString(numFieldColumnIndex);
+                    }
+                    break;
+                case 1:
+                    if( numString.endsWith( num ) ) {
+                        name = cursor.getString(nameFieldColumnIndex) + "," + cursor.getInt(typeFieldColumnIndex) + "," + cursor.getString(numFieldColumnIndex);
+                    }
+                    break;
+                default:
+                    break;
+            }
+
+            if( !TextUtils.isEmpty( name ) ) {
+                break;
+            }
+        }
+
+        cursor.close();
+
+        return name;
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    //private List<contactsListItem> contacts_list = getContactsList();
+    public String getMessageName( String number, String name ) {
+        String ret_name = getNameByNumber( number );
+        if( !ret_name.equals( "" ) ) {
+            return ret_name;
+        }
+        //for( int i=0; i < contacts_list.size(); ++i ) {
+        //    List<String> num_list = contacts_list.get( i ).getNumber();
+        //    for( int j=0; j < num_list.size(); ++j ) {
+        //        if( number.equals( num_list.get( j ) ) ) {
+        //            return contacts_list.get( i ).getName();
+        //        }
+        //    }
+        //}
 
         return name;
     }
@@ -265,7 +388,7 @@ public class YYDataSource {
 
                     msg_list.clear();
 
-                    contacts_list = getContactsList();
+                    //contacts_list = getContactsList();
 
                     try {
                         int count = results.length / 5;
