@@ -310,6 +310,17 @@ public class OutgoingMessagesView extends YYViewBackList {
                     main_activity.yy_auto_save_listener = new AnswerMachineActivity.onAutoSaveListener() {
                         public void onAutoSave() {
                             if( main_activity.yy_playing_msg_dlg != null ) {
+                                if( nMsgType == 0 ) {
+                                    main_activity.yy_data_source.initOutgoingIsUseDefaultMessage0( false );
+                                } else {
+                                    main_activity.yy_data_source.initOutgoingIsUseDefaultMessage1( false );
+                                }
+
+                                yy_view_self.yy_list_adapter.list_data = yy_view_self.getItemListData();
+
+                                YYListAdapter.updateListViewTask task = new YYListAdapter.updateListViewTask();
+                                task.execute();
+
                                 main_activity.yy_schedule.scheduleOnceTime( 100, new YYSchedule.onScheduleAction() {
                                     public void doSomething() {
                                         playMessage();
