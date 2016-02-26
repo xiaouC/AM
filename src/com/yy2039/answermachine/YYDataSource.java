@@ -176,7 +176,7 @@ public class YYDataSource {
         List<String> getNumber();
     }
 
-    private List<contactsListItem> contacts_list = null;
+    public List<contactsListItem> contacts_list = null;
     public List<contactsListItem> getContactsList() {
         Map<String,List<String>> name_number_list = new HashMap<String,List<String>>();
 
@@ -421,11 +421,15 @@ public class YYDataSource {
     }
 
     public void getMessageList( final onTreatMsgLinstener msgListener ) {
+        Log.v( "cocos", "getMessageList ==================================================================================" );
         main_activity.yy_command.executeAnswerMachineCommandEx( YYCommand.ANSWER_MACHINE_GMSL_RESULT, new YYCommand.onCommandListener() {
             public void onSend() {
                 main_activity.sendBroadcast( new Intent( YYCommand.ANSWER_MACHINE_GMSL ) );
+                Log.v( "cocos", "send YYCommand.ANSWER_MACHINE_GMSL" );
             }
             public void onRecv( String data, String data2 ) {
+                Log.v( "cocos", "recv YYCommand.ANSWER_MACHINE_GMSL data : " + data );
+                Log.v( "cocos", "recv YYCommand.ANSWER_MACHINE_GMSL data2 : " + data2 );
                 if( data2 == null ) {
                     String text = String.format( "%s recv : null", YYCommand.ANSWER_MACHINE_GMSL_RESULT );
                     Toast.makeText( main_activity, text, Toast.LENGTH_LONG ).show();
@@ -439,12 +443,13 @@ public class YYDataSource {
 
                     try {
                         int count = results.length / 5;
+                        Log.v( "cocos", "recv YYCommand.ANSWER_MACHINE_GMSL count : " + count );
                         for( int i=0; i < count; ++i ) {
                             if( results[i*5+0].equals( "" ) ) {
                                 continue;
                             }
 
-                            Log.v( "cconn", "msg_index : " + results[i*5+0] );
+                            Log.v( "cocos", "msg_index : " + results[i*5+0] );
                             final String msg_index = results[i*5+0];
                             final int msg_type = Integer.valueOf( results[i*5+1] );
                             final String msg_number = results[i*5+3];
@@ -472,6 +477,7 @@ public class YYDataSource {
                 }
             }
             public void onFailure() {
+                Log.v( "cocos", "failed YYCommand.ANSWER_MACHINE_GMSL" );
                 Toast.makeText( main_activity, "get message list failed", Toast.LENGTH_LONG ).show();
                 msgListener.onFailure();
             }
