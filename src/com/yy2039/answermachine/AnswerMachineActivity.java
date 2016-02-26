@@ -152,7 +152,7 @@ public class AnswerMachineActivity extends FragmentActivity
 
         IntentFilter filter2 = new IntentFilter();
         filter2.addAction( "com.action.dect.page.voicemsg.play.over" );
-        filter2.addAction( "com.action.dect.page.voicemsg.delete.play.over" );
+        //filter2.addAction( "com.action.dect.page.voicemsg.delete.play.over" );
         registerReceiver( playingMsgEndReceiver, filter2 );  
 
         IntentFilter filter3 = new IntentFilter();
@@ -161,7 +161,6 @@ public class AnswerMachineActivity extends FragmentActivity
 
         IntentFilter filter5 = new IntentFilter();
         filter5.addAction( "com.action.dect.page.voicemsg.overtime.autosave" );
-        filter5.addAction( "com.action.dect.page.voicemsg.delete.play.over" );
         registerReceiver( autoSaveReceiver, filter5 );  
 
         localAudioManager = (AudioManager)getSystemService( Context.AUDIO_SERVICE );  
