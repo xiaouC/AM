@@ -231,6 +231,15 @@ public class OutgoingMessagesView extends YYViewBackList {
                 public void onCancel() {
                     main_activity.yy_data_source.treatOutgoingMsg( YYDataSource.OUTGOING_MSG_OPERATION_DELETE, nMsgType, new YYDataSource.onTreatMsgLinstener() {
                         public void onSuccessfully() {
+                            if( nMsgType == 0 ) {
+                                main_activity.yy_data_source.initOutgoingIsUseDefaultMessage0( true );
+                            } else {
+                                main_activity.yy_data_source.initOutgoingIsUseDefaultMessage1( true );
+                            }
+
+                            YYListAdapter.updateListViewTask task = new YYListAdapter.updateListViewTask();
+                            task.execute();
+
                             //recordMessage();
                         }
                         public void onFailure() {
