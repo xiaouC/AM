@@ -59,7 +59,7 @@ public class YYShowAlertDialog {
 
         AlertDialog.Builder builder = new AlertDialog.Builder( new ContextThemeWrapper( main_activity, R.style.BT_Call_Guardian_Mode ) );
         builder.setView( view );
-        builder.setCancelable( true );
+        builder.setCancelable( false );
 
         cur_show_ad = builder.create();
 
