@@ -29,6 +29,7 @@ import android.content.BroadcastReceiver;
 import android.content.IntentFilter;
 import android.media.AudioManager;
 import android.app.AlertDialog;
+import android.os.PowerManager;
 
 public class AnswerMachineActivity extends FragmentActivity
 {
@@ -45,6 +46,8 @@ public class AnswerMachineActivity extends FragmentActivity
     public YYInputNumberCallbackView yy_input_number_callback_view;
     public YYInputNumberPINView yy_input_number_pin_view;
     public AnswerMachineView answer_machine_view;
+
+    public YYViewBase yy_current_view;
 
     //private final static int NOTIFICATION_ID_ICON = 0x10000;
 	private BroadcastReceiver headsetPlugReceiver = new BroadcastReceiver() {
@@ -94,6 +97,7 @@ public class AnswerMachineActivity extends FragmentActivity
     };
 
     public AudioManager localAudioManager = null;
+    private PowerManager.WakeLock wakeLock = null;
     
     /** Called when the activity is first created. */
     @Override
@@ -102,6 +106,10 @@ public class AnswerMachineActivity extends FragmentActivity
         super.onCreate(savedInstanceState);
 
         main_activity = this;
+
+        PowerManager pm = (PowerManager)getSystemService( Context.POWER_SERVICE );
+        wakeLock = pm.newWakeLock( PowerManager.PARTIAL_WAKE_LOCK, AnswerMachineActivity.class.getName() );
+        wakeLock.acquire();
 
         yy_common = new YYCommon();
         yy_schedule = new YYSchedule( this );
@@ -219,6 +227,10 @@ public class AnswerMachineActivity extends FragmentActivity
 	protected void onResume() {
         super.onResume();
 
+        if( yy_current_view != null ) {
+            yy_current_view.onResume();
+        }
+
         if( localAudioManager != null ) {
             changeShengDao( false );
         }
@@ -227,6 +239,12 @@ public class AnswerMachineActivity extends FragmentActivity
 	@Override
 	protected void onPause() {
         changeShengDao( true );
+
+        yy_schedule.scheduleOnceTime( 20, new YYSchedule.onScheduleAction() {
+            public void doSomething() {
+                finish();
+            }
+        });
 
         super.onPause();
     }
@@ -251,6 +269,10 @@ public class AnswerMachineActivity extends FragmentActivity
         //NotificationManager nm = (NotificationManager)getSystemService( Context.NOTIFICATION_SERVICE );
         //nm.cancel( NOTIFICATION_ID_ICON );
 
+        if( wakeLock != null ) {
+            wakeLock.release();
+            wakeLock = null;
+        }
 		super.onDestroy();
 	}
 

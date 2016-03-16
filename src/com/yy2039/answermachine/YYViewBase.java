@@ -59,10 +59,15 @@ public class YYViewBase {
         // set title
         TextView tv = (TextView)main_activity.findViewById( R.id.title_text );
         tv.setText( getViewTitle() );
+
+        main_activity.yy_current_view = this;
     }
 
     public String getViewTitle() {
         return "";
+    }
+
+    public void onResume() {  
     }
 
     public void fillListView() {
