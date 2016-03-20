@@ -170,6 +170,7 @@ public class AnswerMachineActivity extends FragmentActivity
 
         IntentFilter filter3 = new IntentFilter();
         filter3.addAction( "com.action.dect.page.incoming.call" );
+        filter3.addAction( "com.action.dect.call.guardian.handing.result" );
         registerReceiver( incomingCallReceiver, filter3 );  
 
         //IntentFilter filter5 = new IntentFilter();
