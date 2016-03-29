@@ -118,20 +118,22 @@ public class OutgoingMessagesView extends YYViewBackList {
 
             //////////////////////////////////////////////////////////////////////////////////////////////////////////////
             // Delete
-            map = new HashMap<Integer,YYListAdapter.onYYListItemHandler>();
-            map.put( R.id.item_button, new YYListAdapter.onYYListItemHandler() {
-                @Override
-                public void item_handle( Object view_obj ) {
-                    Button btn_obj = (Button)view_obj;
+            if( !main_activity.yy_data_source.getOutgoingIsUseDefaultMessage( nMsgType ) ) {
+                map = new HashMap<Integer,YYListAdapter.onYYListItemHandler>();
+                map.put( R.id.item_button, new YYListAdapter.onYYListItemHandler() {
+                    @Override
+                    public void item_handle( Object view_obj ) {
+                        Button btn_obj = (Button)view_obj;
 
-                    btn_obj.setText( YYViewBase.transferText( "Delete", "" ) );
-                    btn_obj.setOnClickListener( new View.OnClickListener() {
-                        @Override
-                        public void onClick( View v ) { deleteMessage(); }
-                    });
-                }
-            });
-            ret_data.add( map );
+                        btn_obj.setText( YYViewBase.transferText( "Delete", "" ) );
+                        btn_obj.setOnClickListener( new View.OnClickListener() {
+                            @Override
+                            public void onClick( View v ) { deleteMessage(); }
+                        });
+                    }
+                });
+                ret_data.add( map );
+            }
 
             //////////////////////////////////////////////////////////////////////////////////////////////////////////////
             // Use default message
