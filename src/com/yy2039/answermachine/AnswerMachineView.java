@@ -157,7 +157,8 @@ public class AnswerMachineView extends YYViewBase {
                                             final String msg_index = results[i*5+0];
                                             final int msg_type = Integer.valueOf( results[i*5+1] );
                                             final String msg_number = results[i*5+3];
-                                            final String msg_name = main_activity.yy_data_source.getMessageName( msg_number, results[i*5+2] );
+                                            final String msg_name = results[i*5+2];
+                                            final String pb_name = main_activity.yy_data_source.getMessageName( msg_number, msg_name );
                                             final String msg_datetime = results[i*5+4];
                                             final String year = msg_datetime.substring( 0, 4 );
                                             final String month = msg_datetime.substring( 4, 6 );
@@ -168,6 +169,7 @@ public class AnswerMachineView extends YYViewBase {
                                                 public String getMsgIndex() { return msg_index; }
                                                 public int getMsgType() { return msg_type; }
                                                 public String getMsgName() { return msg_name; }
+                                                public String getPhoneBookName() { return pb_name; }
                                                 public String getMsgNumber() { return msg_number; }
                                                 public String getMsgDateTime() { return String.format( "%s/%s/%s %s:%s", month, day, year, hour, min ); }
                                             });

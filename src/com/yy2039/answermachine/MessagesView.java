@@ -203,16 +203,19 @@ public class MessagesView extends YYViewBackList {
         public void deleteMessage() {
             main_activity.yy_show_alert_dialog.showAlertDialog( R.layout.alert_attention, new YYShowAlertDialog.onAlertDialogHandler() {
                 public void onInit( AlertDialog ad, View view ) {
-                    String name = msg_info.getMsgName();
-                    if( name.equals( "" ) ) {
-                        name = msg_info.getMsgNumber();
-                    }
-
                     String text1 = "";
                     if( msg_info.getMsgNumber().equals( "" ) ) {
-                        text1 = "Are you sure that you want to delete the message you have received from an Unknown Number?";
+                        if( msg_info.getMsgName().equals( "Message" ) ) {
+                            text1 = "Are you sure that you want to delete the message you have received from an No Number?";
+                        } else {
+                            text1 = String.format( "Are you sure that you want to delete the message you have received from %s?", msg_info.getMsgName() );
+                        }
                     } else {
-                        text1 = String.format( "Are you sure that you want to delete the message you have received from %s?", name );
+                        if( msg_info.getPhoneBookName().equals( "" ) ) {
+                            text1 = String.format( "Are you sure that you want to delete the message you have received from %s?", msg_info.getMsgNumber() );
+                        } else {
+                            text1 = String.format( "Are you sure that you want to delete the message you have received from %s?", msg_info.getPhoneBookName() );
+                        }
                     }
 
                     TextView tv = (TextView)view.findViewById( R.id.attention_text );
