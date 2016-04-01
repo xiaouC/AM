@@ -43,9 +43,6 @@ public class MessagesView extends YYViewBackList {
                     Button btn_obj = (Button)view_obj;
 
                     String name = item_info.getMsgName();
-                    if( name.equals( "" ) ) {
-                        name = item_info.getMsgNumber();
-                    }
                     btn_obj.setText( YYViewBase.transferText( name, item_info.getMsgDateTime() ) );
                     btn_obj.setOnClickListener( new View.OnClickListener() {
                         public void onClick( View v ) {
@@ -91,9 +88,6 @@ public class MessagesView extends YYViewBackList {
                                 public void onSuccessfully() {
                                     String title = "Playing message";
                                     String name = msg_info.getMsgName();
-                                    if( name.equals( "" ) ) {
-                                        name = msg_info.getMsgNumber();
-                                    }
                                     String tips = String.format( "playing message from %s", name );
                                     int nResOK = R.drawable.alert_dialog_ok;
                                     int nResDelete = R.drawable.alert_delete;
@@ -203,20 +197,7 @@ public class MessagesView extends YYViewBackList {
         public void deleteMessage() {
             main_activity.yy_show_alert_dialog.showAlertDialog( R.layout.alert_attention, new YYShowAlertDialog.onAlertDialogHandler() {
                 public void onInit( AlertDialog ad, View view ) {
-                    String text1 = "";
-                    if( msg_info.getMsgNumber().equals( "" ) ) {
-                        if( msg_info.getMsgName().equals( "Message" ) ) {
-                            text1 = "Are you sure that you want to delete the message you have received from an No Number?";
-                        } else {
-                            text1 = String.format( "Are you sure that you want to delete the message you have received from %s?", msg_info.getMsgName() );
-                        }
-                    } else {
-                        if( msg_info.getPhoneBookName().equals( "" ) ) {
-                            text1 = String.format( "Are you sure that you want to delete the message you have received from %s?", msg_info.getMsgNumber() );
-                        } else {
-                            text1 = String.format( "Are you sure that you want to delete the message you have received from %s?", msg_info.getPhoneBookName() );
-                        }
-                    }
+                    String text1 = String.format( "Are you sure that you want to delete the message you have received from %s?", msg_info.getMsgName() );
 
                     TextView tv = (TextView)view.findViewById( R.id.attention_text );
                     tv.setText( text1 );

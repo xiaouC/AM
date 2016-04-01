@@ -165,10 +165,27 @@ public class AnswerMachineView extends YYViewBase {
                                             final String day = msg_datetime.substring( 6, 8 );
                                             final String hour = msg_datetime.substring( 8, 10 );
                                             final String min = msg_datetime.substring( 10 );
+
+                                            String show_name = "";
+                                            if( msg_number.equals( "" ) ) {
+                                                if( msg_name.equals( "Message" ) ) {
+                                                    show_name = "No Number";
+                                                } else {
+                                                    show_name = msg_name;
+                                                }
+                                            } else {
+                                                if( pb_name.equals( "" ) ) {
+                                                    show_name = msg_number;
+                                                } else {
+                                                    show_name = pb_name;
+                                                }
+                                            }
+
+                                            final show_msg_name = show_name;
                                             main_activity.yy_data_source.msg_list.add( new YYDataSource.onMsgInfo() {
                                                 public String getMsgIndex() { return msg_index; }
                                                 public int getMsgType() { return msg_type; }
-                                                public String getMsgName() { return msg_name; }
+                                                public String getMsgName() { return show_msg_name; }
                                                 public String getPhoneBookName() { return pb_name; }
                                                 public String getMsgNumber() { return msg_number; }
                                                 public String getMsgDateTime() { return String.format( "%s/%s/%s %s:%s", month, day, year, hour, min ); }
