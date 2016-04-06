@@ -217,6 +217,15 @@ public class MessagesView extends YYViewBackList {
                             main_activity.yy_data_source.removeLocalMessageFromList( msg_index );
 
                             YYViewBase.onBackClick();
+
+                            // delete msg prompt
+                            String title = "Delete Message";
+                            String tips = "delete message successfully";
+                            int image_id = R.drawable.successfully;
+                            main_activity.yy_show_alert_dialog.showSuccessfullImageTipsAlertDialog( title, image_id, tips, R.drawable.alert_dialog_ok, new YYShowAlertDialog.onAlertDialogClickHandler() {
+                                public void onOK() { }
+                                public void onCancel() { }
+                            });
                         }
                         public void onFailure() {
                             Toast.makeText( main_activity, "delete message failed", Toast.LENGTH_SHORT ).show();

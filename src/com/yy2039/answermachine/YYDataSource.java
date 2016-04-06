@@ -478,7 +478,7 @@ public class YYDataSource {
                                 }
                             }
 
-                            final show_msg_name = show_name;
+                            final String show_msg_name = show_name;
                             msg_list.add( new onMsgInfo() {
                                 public String getMsgIndex() { return msg_index; }
                                 public int getMsgType() { return msg_type; }
