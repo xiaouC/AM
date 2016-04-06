@@ -97,13 +97,13 @@ public class YYDataSource {
                 Log.v( "cconn", "CALL_GUARDIAN_GDES_RESULT : recv data2 : " + data2 );
                 if( data == null ) {
                     String text = String.format( "%s recv : null", YYCommand.CALL_GUARDIAN_GDES_RESULT );
-                    Toast.makeText( main_activity, text, Toast.LENGTH_LONG ).show();
+                    //Toast.makeText( main_activity, text, Toast.LENGTH_LONG ).show();
                 }
                 else {
                     String[] results = data.split( "," );
                     if( results.length < 2 ) {
                         String text = String.format( "%s recv data error : %s", YYCommand.CALL_GUARDIAN_GDES_RESULT, data );
-                        Toast.makeText( main_activity, text, Toast.LENGTH_LONG ).show();
+                        //Toast.makeText( main_activity, text, Toast.LENGTH_LONG ).show();
                     }
                     else {
                         try {
@@ -113,7 +113,7 @@ public class YYDataSource {
                             msg_lisenter.onSuccessfully();
                         } catch ( Exception e ) {
                             String text = String.format( "%s recv data error : %s", YYCommand.CALL_GUARDIAN_GDES_RESULT, data );
-                            Toast.makeText( main_activity, text, Toast.LENGTH_LONG ).show();
+                            //Toast.makeText( main_activity, text, Toast.LENGTH_LONG ).show();
                         }
                     }
                 }
@@ -121,7 +121,7 @@ public class YYDataSource {
             public void onFailure() {
                 Log.v( "cconn", "CALL_GUARDIAN_GDES_RESULT : failed " );
                 String text = String.format( "%s recv failed", YYCommand.CALL_GUARDIAN_GDES_RESULT );
-                Toast.makeText( main_activity, text, Toast.LENGTH_LONG ).show();
+                //Toast.makeText( main_activity, text, Toast.LENGTH_LONG ).show();
                 msg_lisenter.onFailure();
             }
         });
@@ -433,7 +433,7 @@ public class YYDataSource {
                 Log.v( "cocos", "recv YYCommand.ANSWER_MACHINE_GMSL data2 : " + data2 );
                 if( data2 == null ) {
                     String text = String.format( "%s recv : null", YYCommand.ANSWER_MACHINE_GMSL_RESULT );
-                    Toast.makeText( main_activity, text, Toast.LENGTH_LONG ).show();
+                    //Toast.makeText( main_activity, text, Toast.LENGTH_LONG ).show();
                 }
                 else {
                     String[] results = data2.split( "," );
@@ -491,13 +491,13 @@ public class YYDataSource {
                         msgListener.onSuccessfully();
                     } catch ( Exception e ) {
                         String text = String.format( "%s recv data2 error : %s", YYCommand.ANSWER_MACHINE_GMSL_RESULT, data2 );
-                        Toast.makeText( main_activity, text, Toast.LENGTH_LONG ).show();
+                        //Toast.makeText( main_activity, text, Toast.LENGTH_LONG ).show();
                     }
                 }
             }
             public void onFailure() {
                 Log.v( "cocos", "failed YYCommand.ANSWER_MACHINE_GMSL" );
-                Toast.makeText( main_activity, "get message list failed", Toast.LENGTH_LONG ).show();
+                //Toast.makeText( main_activity, "get message list failed", Toast.LENGTH_LONG ).show();
                 msgListener.onFailure();
             }
         });
@@ -609,13 +609,13 @@ public class YYDataSource {
             public void onRecv( String data, String data2 ) {
                 if( data == null ) {
                     String text = String.format( "%s recv : null", YYCommand.ANSWER_MACHINE_GDTS_RESULT );
-                    Toast.makeText( main_activity, text, Toast.LENGTH_LONG ).show();
+                    //Toast.makeText( main_activity, text, Toast.LENGTH_LONG ).show();
                 }
                 else {
                     String[] results = data.split( "," );
                     if( results.length < 4 ) {
                         String text = String.format( "%s recv data error : %s", YYCommand.ANSWER_MACHINE_GDTS_RESULT, data );
-                        Toast.makeText( main_activity, text, Toast.LENGTH_LONG ).show();
+                        //Toast.makeText( main_activity, text, Toast.LENGTH_LONG ).show();
                     }
                     else {
                         try {
@@ -627,7 +627,7 @@ public class YYDataSource {
                             treat_msg_linstener.onSuccessfully();
                         } catch ( Exception e ) {
                             String text = String.format( "%s recv data error : %s", YYCommand.ANSWER_MACHINE_GDTS_RESULT, data );
-                            Toast.makeText( main_activity, text, Toast.LENGTH_LONG ).show();
+                            //Toast.makeText( main_activity, text, Toast.LENGTH_LONG ).show();
                         }
                     }
                 }
@@ -658,11 +658,11 @@ public class YYDataSource {
                 }
                 else {
                     // 失败
-                    Toast.makeText( main_activity, "update answer machine settings failed", Toast.LENGTH_LONG ).show();
+                    //Toast.makeText( main_activity, "update answer machine settings failed", Toast.LENGTH_LONG ).show();
                 }
             }
             public void onFailure() {
-				Toast.makeText( main_activity, "update answer machine settings failed", Toast.LENGTH_LONG ).show();
+				//Toast.makeText( main_activity, "update answer machine settings failed", Toast.LENGTH_LONG ).show();
             }
         });
     }
@@ -702,11 +702,11 @@ public class YYDataSource {
                 }
                 else {
                     // 失败
-                    Toast.makeText( main_activity, "operation failed", Toast.LENGTH_LONG ).show();
+                    //Toast.makeText( main_activity, "operation failed", Toast.LENGTH_LONG ).show();
                 }
             }
             public void onFailure() {
-				Toast.makeText( main_activity, "operation failed", Toast.LENGTH_LONG ).show();
+				//Toast.makeText( main_activity, "operation failed", Toast.LENGTH_LONG ).show();
             }
         });
     }

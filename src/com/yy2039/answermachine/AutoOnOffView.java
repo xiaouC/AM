@@ -102,7 +102,7 @@ public class AutoOnOffView extends YYViewBackList implements TimePickerDialog.On
                                 public void onSuccessfully() {
                                 }
                                 public void onFailure() {
-                                    Toast.makeText( main_activity, "update auto on/off status failed", Toast.LENGTH_LONG ).show();
+                                    //Toast.makeText( main_activity, "update auto on/off status failed", Toast.LENGTH_LONG ).show();
                                 }
                             });
 
@@ -212,7 +212,7 @@ public class AutoOnOffView extends YYViewBackList implements TimePickerDialog.On
             public void onSuccessfully() {
             }
             public void onFailure() {
-                Toast.makeText( main_activity, "update auto on/off status failed", Toast.LENGTH_LONG ).show();
+                //Toast.makeText( main_activity, "update auto on/off status failed", Toast.LENGTH_LONG ).show();
             }
         });
 

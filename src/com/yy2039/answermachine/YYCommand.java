@@ -447,7 +447,7 @@ public class YYCommand {
                     }
                     public void onFailure() {
                         main_activity.yy_show_alert_dialog.hideWaitingAlertDialog();
-                        Toast.makeText( main_activity, "settings base link failed!", Toast.LENGTH_LONG ).show();
+                        //Toast.makeText( main_activity, "settings base link failed!", Toast.LENGTH_LONG ).show();
                         Log.v( "cconn", "hideWaitingAlertDialog 55555555555555555555555555555555555" );
                     }
                 });
@@ -455,7 +455,7 @@ public class YYCommand {
             public void onFailure() {
                 main_activity.yy_show_alert_dialog.hideWaitingAlertDialog();
                 Log.v( "cconn", "hideWaitingAlertDialog 55555555555555555555555555555555555" );
-                Toast.makeText( main_activity, "disconnect link failed!", Toast.LENGTH_LONG ).show();
+                //Toast.makeText( main_activity, "disconnect link failed!", Toast.LENGTH_LONG ).show();
             }
         });
     }
@@ -501,7 +501,7 @@ public class YYCommand {
                     }
                     public void onFailure() {
                         main_activity.yy_show_alert_dialog.hideWaitingAlertDialog();
-                        Toast.makeText( main_activity, "answer machine link failed!", Toast.LENGTH_LONG ).show();
+                        //Toast.makeText( main_activity, "answer machine link failed!", Toast.LENGTH_LONG ).show();
                         Log.v( "cconn", "hideWaitingAlertDialog 444444444444444444444444444444444444444444444444" );
                     }
                 });
@@ -509,7 +509,7 @@ public class YYCommand {
             public void onFailure() {
                 main_activity.yy_show_alert_dialog.hideWaitingAlertDialog();
                 Log.v( "cconn", "hideWaitingAlertDialog 444444444444444444444444444444444444444444444444" );
-                Toast.makeText( main_activity, "disconnect link failed!", Toast.LENGTH_LONG ).show();
+                //Toast.makeText( main_activity, "disconnect link failed!", Toast.LENGTH_LONG ).show();
             }
         });
     }
@@ -586,7 +586,7 @@ public class YYCommand {
                 }
                 public void onFailure() {
                     Log.v( "cconn", "disconnect settings base failed" );
-                    Toast.makeText( main_activity, "disconnect settings base link failed!", Toast.LENGTH_LONG ).show();
+                    //Toast.makeText( main_activity, "disconnect settings base link failed!", Toast.LENGTH_LONG ).show();
                 }
             });
         //}
@@ -610,7 +610,7 @@ public class YYCommand {
                 }
                 public void onFailure() {
                     Log.v( "cconn", "disconnect answer machine failed" );
-                    Toast.makeText( main_activity, "disconnect answer machine link failed!", Toast.LENGTH_LONG ).show();
+                    //Toast.makeText( main_activity, "disconnect answer machine link failed!", Toast.LENGTH_LONG ).show();
                 }
             });
         //}

@@ -32,13 +32,13 @@ public class AnswerMachineView extends YYViewBase {
 
                 if( data == null ) {
                     String text = String.format( "%s recv : null", YYCommand.PAGE_MSG_COUNT_RESULT );
-                    Toast.makeText( main_activity, text, Toast.LENGTH_LONG ).show();
+                    //Toast.makeText( main_activity, text, Toast.LENGTH_LONG ).show();
                 }
                 else {
                     String[] results = data.split( "," );
                     if( results.length < 2 ) {
                         String text = String.format( "%s recv data error : %s", YYCommand.PAGE_MSG_COUNT_RESULT, data );
-                        Toast.makeText( main_activity, text, Toast.LENGTH_LONG ).show();
+                        //Toast.makeText( main_activity, text, Toast.LENGTH_LONG ).show();
                     }
                     else {
                         try {
@@ -48,7 +48,7 @@ public class AnswerMachineView extends YYViewBase {
                             updateView();
                         } catch ( Exception e ) {
                             String text = String.format( "%s recv data error : %s", YYCommand.PAGE_MSG_COUNT_RESULT, data );
-                            Toast.makeText( main_activity, text, Toast.LENGTH_LONG ).show();
+                            //Toast.makeText( main_activity, text, Toast.LENGTH_LONG ).show();
                         }
                     }
                 }
@@ -139,7 +139,7 @@ public class AnswerMachineView extends YYViewBase {
                             public void onRecv( String data, String data2 ) {
                                 if( data2 == null ) {
                                     String text = String.format( "%s recv : null", YYCommand.ANSWER_MACHINE_GMSL_RESULT );
-                                    Toast.makeText( main_activity, text, Toast.LENGTH_LONG ).show();
+                                    //Toast.makeText( main_activity, text, Toast.LENGTH_LONG ).show();
                                 }
                                 else {
                                     String[] results = data2.split( "," );
@@ -198,7 +198,7 @@ public class AnswerMachineView extends YYViewBase {
                                         msg_view.setView( true, yy_view_self.getViewBackHandler() );
                                     } catch ( Exception e ) {
                                         String text = String.format( "%s recv data2 error : %s", YYCommand.ANSWER_MACHINE_GMSL_RESULT, data2 );
-                                        Toast.makeText( main_activity, text, Toast.LENGTH_LONG ).show();
+                                        //Toast.makeText( main_activity, text, Toast.LENGTH_LONG ).show();
                                     }
                                 }
                             }
@@ -241,13 +241,13 @@ public class AnswerMachineView extends YYViewBase {
                                 Log.v( "cconn", "requestOutgoingIsUseDefaultMessage recv : " + data );
                                 if( data == null ) {
                                     String text = String.format( "%s recv : null", YYCommand.ANSWER_MACHINE_GDMS_RESULT );
-                                    Toast.makeText( main_activity, text, Toast.LENGTH_LONG ).show();
+                                    //Toast.makeText( main_activity, text, Toast.LENGTH_LONG ).show();
                                 }
                                 else {
                                     String[] results = data.split( "," );
                                     if( results.length < 1 ) {
                                         String text = String.format( "%s recv data error : %s", YYCommand.ANSWER_MACHINE_GDMS_RESULT, data );
-                                        Toast.makeText( main_activity, text, Toast.LENGTH_LONG ).show();
+                                        //Toast.makeText( main_activity, text, Toast.LENGTH_LONG ).show();
                                     }
                                     else {
                                         try {
@@ -255,7 +255,7 @@ public class AnswerMachineView extends YYViewBase {
                                             main_activity.yy_data_source.initOutgoingIsUseDefaultMessage0( bIsDefault );
                                         } catch ( Exception e ) {
                                             String text = String.format( "%s recv data error : %s", YYCommand.ANSWER_MACHINE_GDMS_RESULT, data );
-                                            Toast.makeText( main_activity, text, Toast.LENGTH_LONG ).show();
+                                            //Toast.makeText( main_activity, text, Toast.LENGTH_LONG ).show();
                                         }
                                     }
                                 }
@@ -272,13 +272,13 @@ public class AnswerMachineView extends YYViewBase {
                                         Log.v( "cconn", "requestOutgoingIsUseDefaultMessage recv : " + data );
                                         if( data == null ) {
                                             String text = String.format( "%s recv : null", YYCommand.ANSWER_MACHINE_GDMS_RESULT );
-                                            Toast.makeText( main_activity, text, Toast.LENGTH_LONG ).show();
+                                            //Toast.makeText( main_activity, text, Toast.LENGTH_LONG ).show();
                                         }
                                         else {
                                             String[] results = data.split( "," );
                                             if( results.length < 1 ) {
                                                 String text = String.format( "%s recv data error : %s", YYCommand.ANSWER_MACHINE_GDMS_RESULT, data );
-                                                Toast.makeText( main_activity, text, Toast.LENGTH_LONG ).show();
+                                                //Toast.makeText( main_activity, text, Toast.LENGTH_LONG ).show();
                                             }
                                             else {
                                                 try {
@@ -286,7 +286,7 @@ public class AnswerMachineView extends YYViewBase {
                                                     main_activity.yy_data_source.initOutgoingIsUseDefaultMessage1( bIsDefault );
                                                 } catch ( Exception e ) {
                                                     String text = String.format( "%s recv data error : %s", YYCommand.ANSWER_MACHINE_GDMS_RESULT, data );
-                                                    Toast.makeText( main_activity, text, Toast.LENGTH_LONG ).show();
+                                                    //Toast.makeText( main_activity, text, Toast.LENGTH_LONG ).show();
                                                 }
                                             }
                                         }
@@ -335,7 +335,7 @@ public class AnswerMachineView extends YYViewBase {
                                 settings_view.setView( true, yy_view_self.getViewBackHandler() );
                             }
                             public void onFailure() {
-                                Toast.makeText( main_activity, "get answer machine settings failed", Toast.LENGTH_LONG ).show();
+                                //Toast.makeText( main_activity, "get answer machine settings failed", Toast.LENGTH_LONG ).show();
                             }
                         });
                     }

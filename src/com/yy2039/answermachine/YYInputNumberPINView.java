@@ -168,7 +168,7 @@ public class YYInputNumberPINView extends YYViewBase {
                     public void onRecv( String data, String data2 ) {
                         if( data == null ) {
                             String text = String.format( "%s recv : null", YYCommand.CALL_GUARDIAN_SCCP_RESULT );
-                            Toast.makeText( main_activity, text, Toast.LENGTH_LONG ).show();
+                            //Toast.makeText( main_activity, text, Toast.LENGTH_LONG ).show();
                         }
                         else {
                             // 
@@ -189,7 +189,7 @@ public class YYInputNumberPINView extends YYViewBase {
                         }
                     }
                     public void onFailure() {
-                        Toast.makeText( main_activity, "change pin number failed", Toast.LENGTH_LONG ).show();
+                        //Toast.makeText( main_activity, "change pin number failed", Toast.LENGTH_LONG ).show();
                     }
                 });
             }
@@ -225,7 +225,7 @@ public class YYInputNumberPINView extends YYViewBase {
                 public void onRecv( String data, String data2 ) {
                     if( data == null ) {
                         String text = String.format( "%s recv : null", YYCommand.CALL_GUARDIAN_CMPC_RESULT );
-                        Toast.makeText( main_activity, text, Toast.LENGTH_LONG ).show();
+                        //Toast.makeText( main_activity, text, Toast.LENGTH_LONG ).show();
                     }
                     else {
                         // 
@@ -246,7 +246,7 @@ public class YYInputNumberPINView extends YYViewBase {
                     }
                 }
                 public void onFailure() {
-                    Toast.makeText( main_activity, "get pin number failed", Toast.LENGTH_LONG ).show();
+                    //Toast.makeText( main_activity, "get pin number failed", Toast.LENGTH_LONG ).show();
                 }
             });
 

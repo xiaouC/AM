@@ -196,7 +196,7 @@ public class OutgoingMessagesView extends YYViewBackList {
                                 public void onSuccessfully() {
                                 }
                                 public void onFailure() {
-                                    Toast.makeText( main_activity, "stop play outgoing message failed", Toast.LENGTH_SHORT ).show();
+                                    //Toast.makeText( main_activity, "stop play outgoing message failed", Toast.LENGTH_SHORT ).show();
                                 }
                             });
                         }
@@ -209,7 +209,7 @@ public class OutgoingMessagesView extends YYViewBackList {
                     main_activity.changeShengDao( false );
                 }
                 public void onFailure() {
-                    Toast.makeText( main_activity, "play outgoing message failed", Toast.LENGTH_SHORT ).show();
+                    //Toast.makeText( main_activity, "play outgoing message failed", Toast.LENGTH_SHORT ).show();
                 }
             });
         }
@@ -245,7 +245,7 @@ public class OutgoingMessagesView extends YYViewBackList {
                             //recordMessage();
                         }
                         public void onFailure() {
-                            Toast.makeText( main_activity, "delete outgoing message failed", Toast.LENGTH_SHORT ).show();
+                            //Toast.makeText( main_activity, "delete outgoing message failed", Toast.LENGTH_SHORT ).show();
                         }
                     });
                 }
@@ -281,7 +281,7 @@ public class OutgoingMessagesView extends YYViewBackList {
                                     });
                                 }
                                 public void onFailure() {
-                                    Toast.makeText( main_activity, "change outgoing message failed", Toast.LENGTH_SHORT ).show();
+                                    //Toast.makeText( main_activity, "change outgoing message failed", Toast.LENGTH_SHORT ).show();
                                     if( nMsgType == 0 ) {
                                         main_activity.yy_data_source.initOutgoingIsUseDefaultMessage0( false );
                                     } else {
@@ -313,7 +313,7 @@ public class OutgoingMessagesView extends YYViewBackList {
                                     }
                                 }
                                 public void onFailure() {
-                                    Toast.makeText( main_activity, "delete outgoing message failed", Toast.LENGTH_SHORT ).show();
+                                    //Toast.makeText( main_activity, "delete outgoing message failed", Toast.LENGTH_SHORT ).show();
                                 }
                             });
                         }
@@ -342,7 +342,7 @@ public class OutgoingMessagesView extends YYViewBackList {
                     };
                 }
                 public void onFailure() {
-                    Toast.makeText( main_activity, "record outgoing message failed", Toast.LENGTH_SHORT ).show();
+                    //Toast.makeText( main_activity, "record outgoing message failed", Toast.LENGTH_SHORT ).show();
                 }
             });
         }

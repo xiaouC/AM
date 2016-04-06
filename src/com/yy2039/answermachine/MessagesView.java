@@ -228,7 +228,7 @@ public class MessagesView extends YYViewBackList {
                             });
                         }
                         public void onFailure() {
-                            Toast.makeText( main_activity, "delete message failed", Toast.LENGTH_SHORT ).show();
+                            //Toast.makeText( main_activity, "delete message failed", Toast.LENGTH_SHORT ).show();
                         }
                     });
                 }
