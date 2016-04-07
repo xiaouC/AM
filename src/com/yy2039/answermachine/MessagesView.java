@@ -151,24 +151,12 @@ public class MessagesView extends YYViewBackList {
                                 public void onSave( final String number ) {
                                     main_activity.yy_command.disconnectAllLink( new YYCommand.onConnLisenter() {
                                         public void onSuccessfully() {
-                                            Intent intent1 = new Intent( "com.mid.phone.psvo" );
-                                            intent1.putExtra( "number", number );
-                                            intent1.putExtra( "name", msg_info.getMsgName() );
-                                            intent1.putExtra( "callout", true );
-                                            intent1.putExtra( "quickdial", true );
-                                            intent1.setFlags( Intent.FLAG_ACTIVITY_NEW_TASK );
-                                            main_activity.startActivity( intent1 );
+                                            onCallback( number, msg_info.getMsgName() );
 
                                             main_activity.finish();
                                         }
                                         public void onFailure() {
-                                            Intent intent1 = new Intent( "com.mid.phone.psvo" );
-                                            intent1.putExtra( "number", number );
-                                            intent1.putExtra( "name", msg_info.getMsgName() );
-                                            intent1.putExtra( "callout", true );
-                                            intent1.putExtra( "quickdial", true );
-                                            intent1.setFlags( Intent.FLAG_ACTIVITY_NEW_TASK );
-                                            main_activity.startActivity( intent1 );
+                                            onCallback( number, msg_info.getMsgName() );
 
                                             main_activity.finish();
                                         }
@@ -233,6 +221,15 @@ public class MessagesView extends YYViewBackList {
                     });
                 }
             });
+        }
+
+        public void onCallback( String num, String name ) {
+            Intent intent = new Intent( "com.mid.phone.call.status.receiver" );
+            intent.putExtra( "number", num );
+            intent.putExtra( "name", name );
+            intent.putExtra( "callout", true );
+            intent.putExtra( "quickdial", true );
+            main_activity.sendBroadcast( intent );
         }
     }
 }
