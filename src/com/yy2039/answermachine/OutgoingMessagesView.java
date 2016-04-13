@@ -36,7 +36,7 @@ public class OutgoingMessagesView extends YYViewBackList {
             public void item_handle( Object view_obj ) {
                 Button btn_obj = (Button)view_obj;
 
-                String text_1 = "Answer & Record";
+                String text_1 = "Answer & record";
                 String text_2 = "";
                 btn_obj.setText( YYViewBase.transferText( text_1, text_2 ) );
                 btn_obj.setOnClickListener( new View.OnClickListener() {
@@ -55,7 +55,7 @@ public class OutgoingMessagesView extends YYViewBackList {
             public void item_handle( Object view_obj ) {
                 Button btn_obj = (Button)view_obj;
 
-                btn_obj.setText( YYViewBase.transferText( "Answer Only", "" ) );
+                btn_obj.setText( YYViewBase.transferText( "Answer only", "" ) );
                 btn_obj.setOnClickListener( new View.OnClickListener() {
                     @Override
                     public void onClick( View v ) { answer_only_view.setView( true, yy_view_self.getViewBackHandler() ); }
@@ -171,6 +171,9 @@ public class OutgoingMessagesView extends YYViewBackList {
                                     }
                                 }
                                 public void onCancel() { }
+                                public boolean getIsCancelEnable() { return true; }
+                                public int getKeybackIsCancel() { return 2; }
+                                public void onKeyback() {}
                             });
                         }
                     });
@@ -185,7 +188,7 @@ public class OutgoingMessagesView extends YYViewBackList {
             main_activity.yy_data_source.treatOutgoingMsg( YYDataSource.OUTGOING_MSG_OPERATION_PLAY, nMsgType, new YYDataSource.onTreatMsgLinstener() {
                 public void onSuccessfully() {
                     String title = "Play message";
-                    String tips = "playing outgoing message";
+                    String tips = "Playing outgoing message";
                     int nResOK = R.drawable.alert_dialog_ok;
                     int nResDelete = R.drawable.alert_delete;
                     main_activity.yy_playing_msg_dlg = main_activity.yy_show_alert_dialog.showImageTipsAlertDialog( title, R.drawable.play_message, tips, nResOK, nResDelete, new YYShowAlertDialog.onAlertDialogClickHandler() {
@@ -205,6 +208,9 @@ public class OutgoingMessagesView extends YYViewBackList {
                             main_activity.changeShengDao( true );
                             deleteMessage();
                         }
+                        public boolean getIsCancelEnable() { return false; }
+                        public int getKeybackIsCancel() { return 1; }
+                        public void onKeyback() {}
                     });
                     main_activity.changeShengDao( false );
                 }
@@ -217,7 +223,7 @@ public class OutgoingMessagesView extends YYViewBackList {
         public void deleteMessage() {
             main_activity.yy_show_alert_dialog.showAlertDialog( R.layout.alert_attention, new YYShowAlertDialog.onAlertDialogHandler() {
                 public void onInit( AlertDialog ad, View view ) {
-                    String text1 = "Are you sure that you want to delete the personalised outgoing message you have recorded?";
+                    String text1 = "Are you sure that you want to delete\r\nthe personalised outgoing message\r\nyou have recorded?";
                     TextView tv = (TextView)view.findViewById( R.id.attention_text );
                     tv.setText( text1 );
 
@@ -229,6 +235,9 @@ public class OutgoingMessagesView extends YYViewBackList {
                     btn_cancel.setImageDrawable( main_activity.getResources().getDrawable( R.drawable.alert_attention_ok ) );
                 }
                 //public void onOK() { playMessage(); }
+                public boolean getIsCancelEnable() { return true; }
+                public int getKeybackIsCancel() { return 1; }
+                public void onKeyback() {}
                 public void onOK() { }
                 public void onCancel() {
                     main_activity.yy_data_source.treatOutgoingMsg( YYDataSource.OUTGOING_MSG_OPERATION_DELETE, nMsgType, new YYDataSource.onTreatMsgLinstener() {
@@ -255,91 +264,109 @@ public class OutgoingMessagesView extends YYViewBackList {
         public void recordMessage() {
             main_activity.yy_data_source.treatOutgoingMsg( YYDataSource.OUTGOING_MSG_OPERATION_CHANGE, nMsgType, new YYDataSource.onTreatMsgLinstener() {
                 public void onSuccessfully() {
-                    String title = "Record message";
-                    String tips = "Recording outgoing message";
-                    main_activity.yy_playing_msg_dlg = main_activity.yy_show_alert_dialog.showImageTipsAlertDialog( title, R.drawable.record_name, tips, R.drawable.alert_save, R.drawable.alert_delete, new YYShowAlertDialog.onAlertDialogClickHandler() {
-                        public void onOK() {
-                            main_activity.yy_playing_msg_dlg = null;
-                            main_activity.yy_auto_save_listener = null;
-                            main_activity.yy_data_source.treatOutgoingMsg( YYDataSource.OUTGOING_MSG_OPERATION_STOP_CHANGE, nMsgType, new YYDataSource.onTreatMsgLinstener() {
-                                public void onSuccessfully() {
-                                    if( nMsgType == 0 ) {
-                                        main_activity.yy_data_source.initOutgoingIsUseDefaultMessage0( false );
-                                    } else {
-                                        main_activity.yy_data_source.initOutgoingIsUseDefaultMessage1( false );
-                                    }
+                    String title = "Voice Prompt\r\nLoudspeaker Delivery";
+                    String tips = "Please speak after the tone.\r\nTo end recording, press Save";
+                    final AlertDialog ad = main_activity.yy_show_alert_dialog.showVoicePromptAlertDialog( title, R.drawable.play_message, tips, new YYShowAlertDialog.onAlertDialogClickHandler() {
+                        public boolean getIsCancelEnable() { return false; }
+                        public int getKeybackIsCancel() { return 0; }
+                        public void onOK() { }
+                        public void onCancel() { }
+                        public void onKeyback() {}
+                    });
 
-                                    yy_view_self.yy_list_adapter.list_data = yy_view_self.getItemListData();
+                    main_activity.yy_schedule.scheduleOnceTime( 5000, new YYSchedule.onScheduleAction() {
+                        public void doSomething() {
+                            ad.hide();
 
-                                    YYListAdapter.updateListViewTask task = new YYListAdapter.updateListViewTask();
-                                    task.execute();
+                            String title = "Record message";
+                            String tips = "Recording outgoing message";
+                            main_activity.yy_playing_msg_dlg = main_activity.yy_show_alert_dialog.showImageTipsAlertDialog( title, R.drawable.record_name, tips, R.drawable.alert_save, R.drawable.alert_delete, new YYShowAlertDialog.onAlertDialogClickHandler() {
+                                public void onOK() {
+                                    main_activity.yy_playing_msg_dlg = null;
+                                    main_activity.yy_auto_save_listener = null;
+                                    main_activity.yy_data_source.treatOutgoingMsg( YYDataSource.OUTGOING_MSG_OPERATION_STOP_CHANGE, nMsgType, new YYDataSource.onTreatMsgLinstener() {
+                                        public void onSuccessfully() {
+                                            if( nMsgType == 0 ) {
+                                                main_activity.yy_data_source.initOutgoingIsUseDefaultMessage0( false );
+                                            } else {
+                                                main_activity.yy_data_source.initOutgoingIsUseDefaultMessage1( false );
+                                            }
 
-                                    main_activity.yy_schedule.scheduleOnceTime( 1000, new YYSchedule.onScheduleAction() {
-                                        public void doSomething() {
-                                            playMessage();
+                                            yy_view_self.yy_list_adapter.list_data = yy_view_self.getItemListData();
+
+                                            YYListAdapter.updateListViewTask task = new YYListAdapter.updateListViewTask();
+                                            task.execute();
+
+                                            main_activity.yy_schedule.scheduleOnceTime( 1000, new YYSchedule.onScheduleAction() {
+                                                public void doSomething() {
+                                                    playMessage();
+                                                }
+                                            });
+                                        }
+                                        public void onFailure() {
+                                            if( nMsgType == 0 ) {
+                                                main_activity.yy_data_source.initOutgoingIsUseDefaultMessage0( false );
+                                            } else {
+                                                main_activity.yy_data_source.initOutgoingIsUseDefaultMessage1( false );
+                                            }
+
+                                            yy_view_self.yy_list_adapter.list_data = yy_view_self.getItemListData();
+
+                                            YYListAdapter.updateListViewTask task = new YYListAdapter.updateListViewTask();
+                                            task.execute();
+
+                                            main_activity.yy_schedule.scheduleOnceTime( 1000, new YYSchedule.onScheduleAction() {
+                                                public void doSomething() {
+                                                    playMessage();
+                                                }
+                                            });
                                         }
                                     });
                                 }
-                                public void onFailure() {
-                                    //Toast.makeText( main_activity, "change outgoing message failed", Toast.LENGTH_SHORT ).show();
-                                    if( nMsgType == 0 ) {
-                                        main_activity.yy_data_source.initOutgoingIsUseDefaultMessage0( false );
-                                    } else {
-                                        main_activity.yy_data_source.initOutgoingIsUseDefaultMessage1( false );
-                                    }
-
-                                    yy_view_self.yy_list_adapter.list_data = yy_view_self.getItemListData();
-
-                                    YYListAdapter.updateListViewTask task = new YYListAdapter.updateListViewTask();
-                                    task.execute();
-
-                                    main_activity.yy_schedule.scheduleOnceTime( 1000, new YYSchedule.onScheduleAction() {
-                                        public void doSomething() {
-                                            playMessage();
+                                public void onCancel() {
+                                    main_activity.yy_playing_msg_dlg = null;
+                                    main_activity.yy_auto_save_listener = null;
+                                    main_activity.yy_data_source.treatOutgoingMsg( YYDataSource.OUTGOING_MSG_OPERATION_DELETE, nMsgType, new YYDataSource.onTreatMsgLinstener() {
+                                        public void onSuccessfully() {
+                                            if( nMsgType == 0 ) {
+                                                main_activity.yy_data_source.initOutgoingIsUseDefaultMessage0( true );
+                                            } else {
+                                                main_activity.yy_data_source.initOutgoingIsUseDefaultMessage1( true );
+                                            }
+                                        }
+                                        public void onFailure() {
+                                            //Toast.makeText( main_activity, "delete outgoing message failed", Toast.LENGTH_SHORT ).show();
                                         }
                                     });
                                 }
+                                public boolean getIsCancelEnable() { return false; }
+                                public int getKeybackIsCancel() { return 2; }
+                                public void onKeyback() {}
                             });
-                        }
-                        public void onCancel() {
-                            main_activity.yy_playing_msg_dlg = null;
-                            main_activity.yy_auto_save_listener = null;
-                            main_activity.yy_data_source.treatOutgoingMsg( YYDataSource.OUTGOING_MSG_OPERATION_DELETE, nMsgType, new YYDataSource.onTreatMsgLinstener() {
-                                public void onSuccessfully() {
-                                    if( nMsgType == 0 ) {
-                                        main_activity.yy_data_source.initOutgoingIsUseDefaultMessage0( true );
-                                    } else {
-                                        main_activity.yy_data_source.initOutgoingIsUseDefaultMessage1( true );
+                            main_activity.yy_auto_save_listener = new AnswerMachineActivity.onAutoSaveListener() {
+                                public void onAutoSave() {
+                                    if( main_activity.yy_playing_msg_dlg != null ) {
+                                        if( nMsgType == 0 ) {
+                                            main_activity.yy_data_source.initOutgoingIsUseDefaultMessage0( false );
+                                        } else {
+                                            main_activity.yy_data_source.initOutgoingIsUseDefaultMessage1( false );
+                                        }
+
+                                        yy_view_self.yy_list_adapter.list_data = yy_view_self.getItemListData();
+
+                                        YYListAdapter.updateListViewTask task = new YYListAdapter.updateListViewTask();
+                                        task.execute();
+
+                                        main_activity.yy_schedule.scheduleOnceTime( 100, new YYSchedule.onScheduleAction() {
+                                            public void doSomething() {
+                                                playMessage();
+                                            }
+                                        });
                                     }
                                 }
-                                public void onFailure() {
-                                    //Toast.makeText( main_activity, "delete outgoing message failed", Toast.LENGTH_SHORT ).show();
-                                }
-                            });
+                            };
                         }
                     });
-                    main_activity.yy_auto_save_listener = new AnswerMachineActivity.onAutoSaveListener() {
-                        public void onAutoSave() {
-                            if( main_activity.yy_playing_msg_dlg != null ) {
-                                if( nMsgType == 0 ) {
-                                    main_activity.yy_data_source.initOutgoingIsUseDefaultMessage0( false );
-                                } else {
-                                    main_activity.yy_data_source.initOutgoingIsUseDefaultMessage1( false );
-                                }
-
-                                yy_view_self.yy_list_adapter.list_data = yy_view_self.getItemListData();
-
-                                YYListAdapter.updateListViewTask task = new YYListAdapter.updateListViewTask();
-                                task.execute();
-
-                                main_activity.yy_schedule.scheduleOnceTime( 100, new YYSchedule.onScheduleAction() {
-                                    public void doSomething() {
-                                        playMessage();
-                                    }
-                                });
-                            }
-                        }
-                    };
                 }
                 public void onFailure() {
                     //Toast.makeText( main_activity, "record outgoing message failed", Toast.LENGTH_SHORT ).show();

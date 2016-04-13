@@ -78,6 +78,9 @@ public class SettingsView extends YYViewBackList {
                                                     }
                                                     public void onOK() { }
                                                     public void onCancel() { }
+                                                    public boolean getIsCancelEnable() { return true; }
+                                                    public int getKeybackIsCancel() { return 1; }
+                                                    public void onKeyback() {}
                                                 });
                                             }
                                         }
@@ -132,7 +135,7 @@ public class SettingsView extends YYViewBackList {
                             public boolean isRadioChecked() { return main_activity.yy_data_source.getAnswerDelayType() == YYCommon.ANSWER_DELAY_4_RINGS; }
                         });
                         item_list_data.add( new YYShowAlertDialog.onAlertDialogRadioItemHandler() {
-                            public String getRadioText() { return "5 rings"; }
+                            public String getRadioText() { return "5 rings (default)"; }
                             public void onRadioClick() { yy_view_self.yy_temp_data.put( "answer_delay", YYCommon.ANSWER_DELAY_5_RINGS ); }
                             public boolean isRadioChecked() { return main_activity.yy_data_source.getAnswerDelayType() == YYCommon.ANSWER_DELAY_5_RINGS; }
                         });
@@ -173,6 +176,9 @@ public class SettingsView extends YYViewBackList {
                                 }
                             }
                             public void onCancel() { }
+                            public boolean getIsCancelEnable() { return true; }
+                            public int getKeybackIsCancel() { return 2; }
+                            public void onKeyback() {}
                         });
                     }
                 });
@@ -252,7 +258,7 @@ public class SettingsView extends YYViewBackList {
                         List<YYShowAlertDialog.onAlertDialogRadioItemHandler> item_list_data = new ArrayList<YYShowAlertDialog.onAlertDialogRadioItemHandler>();
 
                         item_list_data.add( new YYShowAlertDialog.onAlertDialogRadioItemHandler() {
-                            public String getRadioText() { return "Answer & record"; }
+                            public String getRadioText() { return "Answer & record(default)"; }
                             public void onRadioClick() { yy_view_self.yy_temp_data.put( "answer_mode", YYCommon.ANSWER_MODE_ANSWER_AND_RECORD ); }
                             public boolean isRadioChecked() { return main_activity.yy_data_source.getAnswerMode() == YYCommon.ANSWER_MODE_ANSWER_AND_RECORD; }
                         });
@@ -278,6 +284,9 @@ public class SettingsView extends YYViewBackList {
                                 }
                             }
                             public void onCancel() { }
+                            public boolean getIsCancelEnable() { return true; }
+                            public int getKeybackIsCancel() { return 2; }
+                            public void onKeyback() {}
                         });
 
                     }
@@ -371,7 +380,7 @@ public class SettingsView extends YYViewBackList {
                     Button btn_obj = (Button)view_obj;
 
                     String text_1 = "Remote access";
-                    String text_2 = main_activity.yy_data_source.getIsUseRemoteAccess() ? "on" : "off";
+                    String text_2 = main_activity.yy_data_source.getIsUseRemoteAccess() ? "On" : "Off";
                     btn_obj.setText( YYViewBase.transferText( text_1, text_2 ) );
                     btn_obj.setOnClickListener( new View.OnClickListener() {
                         @Override
@@ -384,7 +393,7 @@ public class SettingsView extends YYViewBackList {
                                 public boolean isRadioChecked() { return main_activity.yy_data_source.getIsUseRemoteAccess(); }
                             });
                             item_list_data.add( new YYShowAlertDialog.onAlertDialogRadioItemHandler() {
-                                public String getRadioText() { return "Off(default)"; }
+                                public String getRadioText() { return "Off(Default)"; }
                                 public void onRadioClick() { yy_view_self.yy_temp_data.put( "remote_access", false ); }
                                 public boolean isRadioChecked() { return !main_activity.yy_data_source.getIsUseRemoteAccess(); }
                             });
@@ -400,6 +409,9 @@ public class SettingsView extends YYViewBackList {
                                     }
                                 }
                                 public void onCancel() { }
+                                public boolean getIsCancelEnable() { return true; }
+                                public int getKeybackIsCancel() { return 2; }
+                                public void onKeyback() {}
                             });
                         }
                     });
@@ -433,6 +445,9 @@ public class SettingsView extends YYViewBackList {
                                         }
                                         public void onOK() { }
                                         public void onCancel() { }
+                                        public boolean getIsCancelEnable() { return true; }
+                                        public int getKeybackIsCancel() { return 2; }
+                                        public void onKeyback() {}
                                     });
                                 }
                                 public boolean onCheckNumber( String number ) {
@@ -484,6 +499,9 @@ public class SettingsView extends YYViewBackList {
                                         }
                                         public void onOK() { }
                                         public void onCancel() { }
+                                        public boolean getIsCancelEnable() { return true; }
+                                        public int getKeybackIsCancel() { return 2; }
+                                        public void onKeyback() {}
                                     });
                                 }
                             }

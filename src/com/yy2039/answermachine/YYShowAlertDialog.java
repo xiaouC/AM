@@ -26,15 +26,21 @@ public class YYShowAlertDialog {
     private AnswerMachineActivity main_activity;
 
     public interface onAlertDialogClickHandler {
+        boolean getIsCancelEnable();
+        int getKeybackIsCancel();   // 1 onOK, 2 onCancel, else onKeyback
         void onOK();
         void onCancel();
+        void onKeyback();
     }
 
     // 
     public interface onAlertDialogHandler {
+        boolean getIsCancelEnable();
+        int getKeybackIsCancel();   // 1 onOK, 2 onCancel, else onKeyback
         void onInit( AlertDialog ad, View view );
         void onOK();
         void onCancel();
+        void onKeyback();
     }
 
     //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -59,7 +65,35 @@ public class YYShowAlertDialog {
 
         AlertDialog.Builder builder = new AlertDialog.Builder( new ContextThemeWrapper( main_activity, R.style.BT_Call_Guardian_Mode ) );
         builder.setView( view );
-        builder.setCancelable( false );
+        builder.setCancelable( handler.getIsCancelEnable() );
+        if( handler.getIsCancelEnable() ) {
+            builder.setOnKeyListener( new DialogInterface.OnKeyListener() {
+                @Override
+                public boolean onKey( DialogInterface dialog, int keyCode, KeyEvent event) {
+                    if( keyCode == KeyEvent.KEYCODE_BACK ) {
+                        cur_show_ad = null;
+
+                        main_activity.yy_schedule.scheduleOnceTime( 20, new YYSchedule.onScheduleAction() {
+                            public void doSomething() {
+                                switch( handler.getKeybackIsCancel() ) {
+                                    case 1:
+                                        handler.onOK();
+                                        break;
+                                    case 2:
+                                        handler.onCancel();
+                                        break;
+                                    default:
+                                        handler.onKeyback();
+                                        break;
+                                }
+                            }
+                        });
+                    }
+
+                    return false;
+                }
+            });
+        }
 
         cur_show_ad = builder.create();
 
@@ -120,6 +154,8 @@ public class YYShowAlertDialog {
 
     public void showRadioGroupAlertDialog( final String title, final List<onAlertDialogRadioItemHandler> item_list_data, final onAlertDialogClickHandler click_handler ) {
         showAlertDialog( R.layout.alert_radio_group, new YYShowAlertDialog.onAlertDialogHandler() {
+            public boolean getIsCancelEnable() { return click_handler.getIsCancelEnable(); }
+            public int getKeybackIsCancel() { return click_handler.getKeybackIsCancel(); }
             public void onInit( AlertDialog ad, View view ) {
                 TextView tv_title = (TextView)view.findViewById( R.id.alert_title );
                 tv_title.setText( title );
@@ -158,11 +194,14 @@ public class YYShowAlertDialog {
 
             public void onOK() { click_handler.onOK(); }
             public void onCancel() { click_handler.onCancel(); }
+            public void onKeyback() { click_handler.onKeyback(); }
         });
     }
 
     public AlertDialog showImageTipsAlertDialog( final String title, final int image_id, final String tips, final int btn_ok_image_id, final int btn_cancel_image_id, final onAlertDialogClickHandler click_handler ) {
         return showAlertDialog( R.layout.alert_image_tips, new onAlertDialogHandler() {
+            public boolean getIsCancelEnable() { return click_handler.getIsCancelEnable(); }
+            public int getKeybackIsCancel() { return click_handler.getKeybackIsCancel(); }
             public void onInit( AlertDialog ad, View view ) {
                 TextView tv_title = (TextView)view.findViewById( R.id.alert_title );
                 tv_title.setText( title );
@@ -187,11 +226,14 @@ public class YYShowAlertDialog {
             }
             public void onOK() { click_handler.onOK(); }
             public void onCancel() { click_handler.onCancel(); }
+            public void onKeyback() { click_handler.onKeyback(); }
         });
     }
 
     public void showSuccessfullImageTipsAlertDialog( final String title, final int image_id, final String tips, final int btn_ok_image_id, final onAlertDialogClickHandler click_handler ) {
         showAlertDialog( R.layout.alert_image_tips_title_center, new onAlertDialogHandler() {
+            public boolean getIsCancelEnable() { return click_handler.getIsCancelEnable(); }
+            public int getKeybackIsCancel() { return click_handler.getKeybackIsCancel(); }
             public void onInit( AlertDialog ad, View view ) {
                 TextView tv_title = (TextView)view.findViewById( R.id.alert_title );
                 tv_title.setText( title );
@@ -210,6 +252,7 @@ public class YYShowAlertDialog {
             }
             public void onOK() { click_handler.onOK(); }
             public void onCancel() { click_handler.onCancel(); }
+            public void onKeyback() { click_handler.onKeyback(); }
         });
     }
 
@@ -244,6 +287,26 @@ public class YYShowAlertDialog {
 
         ad.setCanceledOnTouchOutside( false );   // 设置点击 Dialog 外部任意区域关闭 Dialog
         ad.show();
+    }
+
+    public AlertDialog showVoicePromptAlertDialog( final String title, final int image_id, final String tips, final onAlertDialogClickHandler click_handler ) {
+        return showAlertDialog( R.layout.alert_voice_prompt, new onAlertDialogHandler() {
+            public void onInit( AlertDialog ad, View view ) {
+                TextView tv_title = (TextView)view.findViewById( R.id.alert_title );
+                tv_title.setText( title );
+
+                ImageView iv = (ImageView)view.findViewById( R.id.alert_image );
+                iv.setBackgroundResource( image_id );
+
+                TextView tv_tips = (TextView)view.findViewById( R.id.alert_tips );
+                tv_tips.setText( tips );
+            }
+            public boolean getIsCancelEnable() { return click_handler.getIsCancelEnable(); }
+            public int getKeybackIsCancel() { return click_handler.getKeybackIsCancel(); }
+            public void onOK() { click_handler.onOK(); }
+            public void onCancel() { click_handler.onCancel(); }
+            public void onKeyback() { click_handler.onKeyback(); }
+        });
     }
 
     public void showWaitingAlertDialog() {

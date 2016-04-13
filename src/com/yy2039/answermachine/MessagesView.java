@@ -93,7 +93,10 @@ public class MessagesView extends YYViewBackList {
                 ImageButton btn_cancel = (ImageButton)view.findViewById( R.id.ALERT_DIALOG_CANCEL );
                 btn_cancel.setImageDrawable( main_activity.getResources().getDrawable( R.drawable.alert_attention_ok ) );
             }
+            public boolean getIsCancelEnable() { return true; }
+            public int getKeybackIsCancel() { return 1; }
             public void onOK() { }
+            public void onKeyback() {}
             public void onCancel() {
                 main_activity.yy_data_source.treatMsg_test( YYDataSource.TREAT_MSG_OPERATION_DELETE_ALL, "0", new YYDataSource.onTreatMsgLinstener() {
                     public void onSuccessfully() {
@@ -110,6 +113,9 @@ public class MessagesView extends YYViewBackList {
                         main_activity.yy_show_alert_dialog.showSuccessfullImageTipsAlertDialog( title, image_id, tips, R.drawable.alert_dialog_ok, new YYShowAlertDialog.onAlertDialogClickHandler() {
                             public void onOK() { }
                             public void onCancel() { }
+                            public boolean getIsCancelEnable() { return true; }
+                            public int getKeybackIsCancel() { return 2; }
+                            public void onKeyback() {}
                         });
                     }
                     public void onFailure() {
@@ -119,6 +125,9 @@ public class MessagesView extends YYViewBackList {
                         main_activity.yy_show_alert_dialog.showSuccessfullImageTipsAlertDialog( title, image_id, tips, R.drawable.alert_dialog_ok, new YYShowAlertDialog.onAlertDialogClickHandler() {
                             public void onOK() { }
                             public void onCancel() { }
+                            public boolean getIsCancelEnable() { return true; }
+                            public int getKeybackIsCancel() { return 2; }
+                            public void onKeyback() {}
                         });
                     }
                 });
@@ -170,6 +179,9 @@ public class MessagesView extends YYViewBackList {
 
                                             deleteMessage();
                                         }
+                                        public boolean getIsCancelEnable() { return false; }
+                                        public int getKeybackIsCancel() { return 1; }
+                                        public void onKeyback() {}
                                     });
                                     main_activity.changeShengDao( false );
                                 }
@@ -251,7 +263,12 @@ public class MessagesView extends YYViewBackList {
         public void deleteMessage() {
             main_activity.yy_show_alert_dialog.showAlertDialog( R.layout.alert_attention, new YYShowAlertDialog.onAlertDialogHandler() {
                 public void onInit( AlertDialog ad, View view ) {
-                    String text1 = String.format( "Are you sure that you want to delete the message you have received from %s?", msg_info.getMsgName() );
+                    String text1 = "";
+                    if( msg_info.getMsgType() == 0 ) {
+                        text1 = String.format( "Are you sure that you want to delete\r\nthe message you have received from\r\n%s without listening\r\nto the message first?", msg_info.getMsgName() );
+                    } else {
+                        text1 = String.format( "Are you sure that you want to delete\r\nthe message you have received from\r\n%s?", msg_info.getMsgName() );
+                    }
 
                     TextView tv = (TextView)view.findViewById( R.id.attention_text );
                     tv.setText( text1 );
@@ -263,6 +280,9 @@ public class MessagesView extends YYViewBackList {
                     ImageButton btn_cancel = (ImageButton)view.findViewById( R.id.ALERT_DIALOG_CANCEL );
                     btn_cancel.setImageDrawable( main_activity.getResources().getDrawable( R.drawable.alert_attention_ok ) );
                 }
+                public boolean getIsCancelEnable() { return true; }
+                public int getKeybackIsCancel() { return 1; }
+                public void onKeyback() {}
                 public void onOK() { }
                 public void onCancel() {
                     //main_activity.yy_data_source.treatMsg( YYDataSource.TREAT_MSG_OPERATION_DELETE_ONE, msg_index, new YYDataSource.onTreatMsgLinstener() {
@@ -273,16 +293,30 @@ public class MessagesView extends YYViewBackList {
                             YYViewBase.onBackClick();
 
                             // delete msg prompt
-                            String title = "Delete Message";
-                            String tips = "delete message successfully";
+                            String title = "Message deleted";
+                            String tips = "Press OK to finish";
                             int image_id = R.drawable.successfully;
                             main_activity.yy_show_alert_dialog.showSuccessfullImageTipsAlertDialog( title, image_id, tips, R.drawable.alert_dialog_ok, new YYShowAlertDialog.onAlertDialogClickHandler() {
                                 public void onOK() { }
                                 public void onCancel() { }
+                                public boolean getIsCancelEnable() { return true; }
+                                public int getKeybackIsCancel() { return 1; }
+                                public void onKeyback() {}
                             });
                         }
                         public void onFailure() {
-                            //Toast.makeText( main_activity, "delete message failed", Toast.LENGTH_SHORT ).show();
+                            // delete msg prompt
+                            String title = "Error deleting message";
+                            String tips = "Press OK to return";
+                            int image_id = R.drawable.failure;
+                            main_activity.yy_show_alert_dialog.showSuccessfullImageTipsAlertDialog( title, image_id, tips, R.drawable.alert_dialog_ok, new YYShowAlertDialog.onAlertDialogClickHandler() {
+                                public void onOK() { }
+                                public void onCancel() { }
+                                public boolean getIsCancelEnable() { return true; }
+                                public int getKeybackIsCancel() { return 1; }
+                                public void onKeyback() {}
+                            });
+
                         }
                     });
                 }

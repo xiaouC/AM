@@ -113,6 +113,9 @@ public class AutoOnOffView extends YYViewBackList implements TimePickerDialog.On
                         }
                     }
                     public void onCancel() { }
+                    public boolean getIsCancelEnable() { return true; }
+                    public int getKeybackIsCancel() { return 2; }
+                    public void onKeyback() {}
                 });
             }
         });
