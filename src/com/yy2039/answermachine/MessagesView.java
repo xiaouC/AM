@@ -57,8 +57,74 @@ public class MessagesView extends YYViewBackList {
             ret_list_data.add( map );
         }
 
+        //////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        // Delete Old Messages
+        Map<Integer,YYListAdapter.onYYListItemHandler> map = new HashMap<Integer,YYListAdapter.onYYListItemHandler>();
+        map.put( R.id.item_button, new YYListAdapter.onYYListItemHandler() {
+            @Override
+            public void item_handle( Object view_obj ) {
+                Button btn_obj = (Button)view_obj;
+
+                btn_obj.setText( YYViewBase.transferText( "Delete old messages", "This will delete all old messages" ) );
+                btn_obj.setOnClickListener( new View.OnClickListener() {
+                    @Override
+                    public void onClick( View v ) { deleteOldMessages(); }
+                });
+            }
+        });
+
+        ret_list_data.add( map );
+
         return ret_list_data;
     }
+
+    public void deleteOldMessages() {
+        main_activity.yy_show_alert_dialog.showAlertDialog( R.layout.alert_attention, new YYShowAlertDialog.onAlertDialogHandler() {
+            public void onInit( AlertDialog ad, View view ) {
+                String text1 = "All old messages that have been\r\nlistened to will be delete. Are you\r\nsure you wish to continue?";
+
+                TextView tv = (TextView)view.findViewById( R.id.attention_text );
+                tv.setText( text1 );
+
+                // 又是 OK 当 CANCEL 用，CANCEL 当 OK 用
+                ImageButton btn_ok = (ImageButton)view.findViewById( R.id.ALERT_DIALOG_OK );
+                btn_ok.setImageDrawable( main_activity.getResources().getDrawable( R.drawable.alert_attention_cancel ) );
+
+                ImageButton btn_cancel = (ImageButton)view.findViewById( R.id.ALERT_DIALOG_CANCEL );
+                btn_cancel.setImageDrawable( main_activity.getResources().getDrawable( R.drawable.alert_attention_ok ) );
+            }
+            public void onOK() { }
+            public void onCancel() {
+                main_activity.yy_data_source.treatMsg_test( YYDataSource.TREAT_MSG_OPERATION_DELETE_ALL, "0", new YYDataSource.onTreatMsgLinstener() {
+                    public void onSuccessfully() {
+                        main_activity.yy_data_source.msg_list.clear();
+
+                        yy_view_self.yy_list_adapter.list_data = yy_view_self.getItemListData();
+
+                        YYListAdapter.updateListViewTask task = new YYListAdapter.updateListViewTask();
+                        task.execute();
+
+                        String title = "All old messages\r\ndeleted";
+                        String tips = "Press OK to finish";
+                        int image_id = R.drawable.successfully;
+                        main_activity.yy_show_alert_dialog.showSuccessfullImageTipsAlertDialog( title, image_id, tips, R.drawable.alert_dialog_ok, new YYShowAlertDialog.onAlertDialogClickHandler() {
+                            public void onOK() { }
+                            public void onCancel() { }
+                        });
+                    }
+                    public void onFailure() {
+                        String title = "Error deleting old\r\nmessages";
+                        String tips = "Press OK to return";
+                        int image_id = R.drawable.failure;
+                        main_activity.yy_show_alert_dialog.showSuccessfullImageTipsAlertDialog( title, image_id, tips, R.drawable.alert_dialog_ok, new YYShowAlertDialog.onAlertDialogClickHandler() {
+                            public void onOK() { }
+                            public void onCancel() { }
+                        });
+                    }
+                });
+                }
+            });
+        }
 
     public class MessageOperationView extends YYViewBackList {
         private int msg_index;
@@ -125,7 +191,7 @@ public class MessagesView extends YYViewBackList {
                     public void item_handle( Object view_obj ) {
                         Button btn_obj = (Button)view_obj;
 
-                        btn_obj.setText( YYViewBase.transferText( "Delete Message", "" ) );
+                        btn_obj.setText( YYViewBase.transferText( "Delete message", "" ) );
                         btn_obj.setOnClickListener( new View.OnClickListener() {
                             @Override
                             public void onClick( View v ) { deleteMessage(); }
