@@ -127,6 +127,9 @@ public class AutoOnOffView extends YYViewBackList implements TimePickerDialog.On
                 public void onClick( View v ) {
                     is_pick_start_time = true;
 
+                    int nHour = main_activity.yy_data_source.getAutoOnHour();
+                    int nMin = main_activity.yy_data_source.getAutoOnMinue();
+                    timePickerDialog.setStartTime( nHour, nMin );
                     timePickerDialog.setVibrate( true );
                     timePickerDialog.setCloseOnSingleTapMinute( false );
                     timePickerDialog.show( main_activity.getSupportFragmentManager(), TIMEPICKER_TAG );
@@ -136,6 +139,9 @@ public class AutoOnOffView extends YYViewBackList implements TimePickerDialog.On
                 public void onClick( View v ) {
                     is_pick_start_time = false;
 
+                    int nHour = main_activity.yy_data_source.getAutoOffHour();
+                    int nMin = main_activity.yy_data_source.getAutoOffMinue();
+                    timePickerDialog.setStartTime( nHour, nMin );
                     timePickerDialog.setVibrate( true );
                     timePickerDialog.setCloseOnSingleTapMinute( false );
                     timePickerDialog.show( main_activity.getSupportFragmentManager(), TIMEPICKER_TAG );
@@ -203,10 +209,40 @@ public class AutoOnOffView extends YYViewBackList implements TimePickerDialog.On
     @Override
     public void onTimeSet( RadialPickerLayout view, int hourOfDay, int minute ) {
         if( is_pick_start_time ) {
+            if( main_activity.yy_data_source.getAutoOffHour() == hourOfDay && main_activity.yy_data_source.getAutoOffMinue() == minute ) {
+                String title = "Error auto on time";
+                String tips = "Auto on/off time should not be same";
+                int nResOK = 0;
+                int nResDelete = R.drawable.alert_dialog_ok;
+                main_activity.yy_playing_msg_dlg = main_activity.yy_show_alert_dialog.showImageTipsAlertDialog( title, R.drawable.failure, tips, nResOK, nResDelete, new YYShowAlertDialog.onAlertDialogClickHandler() {
+                    public void onOK() { }
+                    public void onCancel() { }
+                    public boolean getIsCancelEnable() { return true; }
+                    public int getKeybackIsCancel() { return 1; }
+                    public void onKeyback() {}
+                });
+
+                return;
+            }
+
             main_activity.yy_data_source.setAutoOnHour( hourOfDay );
             main_activity.yy_data_source.setAutoOnMinue( minute );
         }
         else {
+            if( main_activity.yy_data_source.getAutoOnHour() == hourOfDay && main_activity.yy_data_source.getAutoOnMinue() == minute ) {
+                String title = "Error auto off time";
+                String tips = "Auto on/off time should not be same";
+                int nResOK = 0;
+                int nResDelete = R.drawable.alert_dialog_ok;
+                main_activity.yy_playing_msg_dlg = main_activity.yy_show_alert_dialog.showImageTipsAlertDialog( title, R.drawable.failure, tips, nResOK, nResDelete, new YYShowAlertDialog.onAlertDialogClickHandler() {
+                    public void onOK() { }
+                    public void onCancel() { }
+                    public boolean getIsCancelEnable() { return true; }
+                    public int getKeybackIsCancel() { return 1; }
+                    public void onKeyback() {}
+                });
+            }
+
             main_activity.yy_data_source.setAutoOffHour( hourOfDay );
             main_activity.yy_data_source.setAutoOffMinue( minute );
         }
