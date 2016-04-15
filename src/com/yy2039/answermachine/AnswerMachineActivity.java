@@ -54,7 +54,7 @@ public class AnswerMachineActivity extends FragmentActivity
         @Override
         public void onReceive(Context context, Intent intent) {
             if( intent.hasExtra( "state" ) ) {
-                changeShengDao( false );
+                changeShengDao( true );
             }
         }
     };
@@ -198,25 +198,21 @@ public class AnswerMachineActivity extends FragmentActivity
     public final static String ANSWER_MACHINE_CHANGE_HEADSET = "andorid.intent.action.answer.machine.change.headset";           // 耳机
     public final static String ANSWER_MACHINE_CHANGE_HANDFREE = "andorid.intent.action.answer.machine.change.handfree";         // 免提
     public final static String ANSWER_MACHINE_CHANGE_NORMAL = "andorid.intent.action.answer.machine.change.normal";             // 普通
-    public void changeShengDao( boolean bResumeNormal ) {
-        if( !bResumeNormal ) {
-            //if( yy_playing_msg_dlg != null || yy_record_auto_save_dlg != null ) {
-            if( yy_playing_msg_dlg != null ) {
-                Intent intent = new Intent();  
-                if( localAudioManager.isWiredHeadsetOn() ) {
-                    intent.setAction( ANSWER_MACHINE_CHANGE_HEADSET );
+    public void changeShengDao( boolean bNormal ) {
+        if( yy_playing_msg_dlg != null ) {
+            Intent intent = new Intent();  
+            if( localAudioManager.isWiredHeadsetOn() ) {
+                intent.setAction( ANSWER_MACHINE_CHANGE_HEADSET );
+            } else {
+                if( bNormal ) {
+                    intent.setAction( ANSWER_MACHINE_CHANGE_NORMAL );
                 } else {
                     intent.setAction( ANSWER_MACHINE_CHANGE_HANDFREE );
                 }
-                sendBroadcast( intent );
-
-                if( yy_playing_msg_dlg != null ) {
-                    yy_playing_msg_dlg.setVolumeControlStream( AudioManager.STREAM_VOICE_CALL );
-                }
-                //if( yy_record_auto_save_dlg != null ) {
-                //    yy_record_auto_save_dlg.setVolumeControlStream( AudioManager.STREAM_VOICE_CALL );
-                //}
             }
+            sendBroadcast( intent );
+
+            yy_playing_msg_dlg.setVolumeControlStream( AudioManager.STREAM_VOICE_CALL );
         } else {
             Intent intent = new Intent();  
             intent.setAction( ANSWER_MACHINE_CHANGE_NORMAL );
@@ -233,7 +229,7 @@ public class AnswerMachineActivity extends FragmentActivity
         }
 
         if( localAudioManager != null ) {
-            changeShengDao( false );
+            changeShengDao( true );
         }
     }
 

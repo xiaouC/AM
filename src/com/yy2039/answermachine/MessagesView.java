@@ -138,6 +138,7 @@ public class MessagesView extends YYViewBackList {
     public class MessageOperationView extends YYViewBackList {
         private int msg_index;
         private YYDataSource.onMsgInfo msg_info;
+        private boolean bPrivateFlag = true;
 
         public String getViewTitle() { return msg_info.getMsgName(); }
 
@@ -165,7 +166,8 @@ public class MessagesView extends YYViewBackList {
                                     String name = msg_info.getMsgName();
                                     String tips = String.format( "playing message from %s", name );
                                     int nResOK = R.drawable.alert_dialog_ok;
-                                    int nResDelete = R.drawable.alert_delete;
+                                    int nResDelete = R.drawable.alert_dialog_loudspeaker;
+                                    bPrivateFlag = false;
                                     main_activity.yy_playing_msg_dlg = main_activity.yy_show_alert_dialog.showImageTipsAlertDialog( title, R.drawable.play_message, tips, nResOK, nResDelete, new YYShowAlertDialog.onAlertDialogClickHandler() {
                                         public void onOK() {
                                             main_activity.yy_playing_msg_dlg = null;
@@ -174,16 +176,19 @@ public class MessagesView extends YYViewBackList {
                                             stopPlayMessage();
                                         }
                                         public void onCancel() {
-                                            main_activity.yy_playing_msg_dlg = null;
-                                            main_activity.changeShengDao( true );
+                                            ImageButton btn_cancel = (ImageButton)main_activity.yy_playing_msg_dlg.findViewById( R.id.ALERT_DIALOG_CANCEL );
+                                            if( btn_cancel != null ) {
+                                                btn_cancel.setImageDrawable( main_activity.getResources().getDrawable( bPrivateFlag ? R.drawable.alert_dialog_loudspeaker : R.drawable.alert_dialog_private ) );
+                                            }
+                                            main_activity.changeShengDao( bPrivateFlag ? true : false );
 
-                                            deleteMessage();
+                                            bPrivateFlag = !bPrivateFlag;
                                         }
                                         public boolean getIsCancelEnable() { return false; }
-                                        public int getKeybackIsCancel() { return 1; }
+                                        public int getKeybackIsCancel() { return 100; }
                                         public void onKeyback() {}
                                     });
-                                    main_activity.changeShengDao( false );
+                                    main_activity.changeShengDao( true );
                                 }
                                 public void onFailure() {
                                 }
