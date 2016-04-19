@@ -212,6 +212,7 @@ public class AnswerMachineActivity extends FragmentActivity
             }
             sendBroadcast( intent );
 
+            setVolumeControlStream( AudioManager.STREAM_VOICE_CALL );
             yy_playing_msg_dlg.setVolumeControlStream( AudioManager.STREAM_VOICE_CALL );
         } else {
             Intent intent = new Intent();  

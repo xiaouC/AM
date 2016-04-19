@@ -14,6 +14,10 @@ import android.widget.TextView;
 import android.widget.ImageView;
 import android.widget.Toast;
 import android.content.Intent;
+import android.text.SpannableString;
+import android.text.Spanned;
+import android.text.style.ForegroundColorSpan;
+import android.graphics.Color;
 
 public class MessagesView extends YYViewBackList {
     private MessageOperationView msg_op_view;
@@ -65,7 +69,15 @@ public class MessagesView extends YYViewBackList {
             public void item_handle( Object view_obj ) {
                 Button btn_obj = (Button)view_obj;
 
-                btn_obj.setText( YYViewBase.transferText( "Delete old messages", "This will delete all old messages" ) );
+                String text1 = "Delete old messages";
+                String text2 = "This will delete all old messages";
+                String text = text1 + "\r\n" + text2;
+
+                SpannableString msp = new SpannableString( text );
+                msp.setSpan( new ForegroundColorSpan( Color.RED ), 0, text1.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE );
+                msp.setSpan( new ForegroundColorSpan( Color.GRAY ), text1.length(), text.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE );
+
+                btn_obj.setText( msp );
                 btn_obj.setOnClickListener( new View.OnClickListener() {
                     @Override
                     public void onClick( View v ) { deleteOldMessages(); }
@@ -100,7 +112,14 @@ public class MessagesView extends YYViewBackList {
             public void onCancel() {
                 main_activity.yy_data_source.treatMsg_test( YYDataSource.TREAT_MSG_OPERATION_DELETE_ALL, "0", new YYDataSource.onTreatMsgLinstener() {
                     public void onSuccessfully() {
-                        main_activity.yy_data_source.msg_list.clear();
+                        List<YYDataSource.onMsgInfo> new_msg_list = new ArrayList<YYDataSource.onMsgInfo>();
+                        for( int i=0; i < main_activity.yy_data_source.msg_list.size(); ++i ) {
+                            YYDataSource.onMsgInfo item_info = main_activity.yy_data_source.msg_list.get( i );
+                            if( item_info.getMsgType() == 0 ) {
+                                new_msg_list.add( item_info );
+                            }
+                        }
+                        main_activity.yy_data_source.msg_list = new_msg_list;
 
                         yy_view_self.yy_list_adapter.list_data = yy_view_self.getItemListData();
 
