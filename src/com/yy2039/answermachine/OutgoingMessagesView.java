@@ -166,6 +166,8 @@ public class OutgoingMessagesView extends YYViewBackList {
                                     if( use_default_msg != null ) {
                                         main_activity.yy_data_source.setOutgoingIsUseDefaultMessage( nMsgType, use_default_msg );
 
+                                        yy_view_self.yy_list_adapter.list_data = yy_view_self.getItemListData();
+
                                         YYListAdapter.updateListViewTask task = new YYListAdapter.updateListViewTask();
                                         task.execute();
                                     }
@@ -223,7 +225,7 @@ public class OutgoingMessagesView extends YYViewBackList {
         public void deleteMessage() {
             main_activity.yy_show_alert_dialog.showAlertDialog( R.layout.alert_attention, new YYShowAlertDialog.onAlertDialogHandler() {
                 public void onInit( AlertDialog ad, View view ) {
-                    String text1 = "Are you sure that you want to delete\r\nthe personalised outgoing message\r\nyou have recorded?";
+                    String text1 = "Are you sure that you want to\r\ndelete the personalised\r\noutgoing message you have recorded?";
                     TextView tv = (TextView)view.findViewById( R.id.attention_text );
                     tv.setText( text1 );
 
@@ -247,6 +249,8 @@ public class OutgoingMessagesView extends YYViewBackList {
                             } else {
                                 main_activity.yy_data_source.initOutgoingIsUseDefaultMessage1( true );
                             }
+
+                            yy_view_self.yy_list_adapter.list_data = yy_view_self.getItemListData();
 
                             YYListAdapter.updateListViewTask task = new YYListAdapter.updateListViewTask();
                             task.execute();
