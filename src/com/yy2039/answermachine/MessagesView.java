@@ -64,6 +64,12 @@ public class MessagesView extends YYViewBackList {
         //////////////////////////////////////////////////////////////////////////////////////////////////////////////
         // Delete Old Messages
         Map<Integer,YYListAdapter.onYYListItemHandler> map = new HashMap<Integer,YYListAdapter.onYYListItemHandler>();
+        map.put( R.id.item_image, new YYListAdapter.onYYListItemHandler() {
+            @Override
+            public void item_handle( Object view_obj ) {
+                ((ImageView)view_obj).setBackgroundResource( R.drawable.msg_new_2 );
+            }
+        });
         map.put( R.id.item_button, new YYListAdapter.onYYListItemHandler() {
             @Override
             public void item_handle( Object view_obj ) {
