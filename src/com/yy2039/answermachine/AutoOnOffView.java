@@ -207,7 +207,7 @@ public class AutoOnOffView extends YYViewBackList implements TimePickerDialog.On
     }
 
     @Override
-    public void onTimeSet( RadialPickerLayout view, int hourOfDay, int minute ) {
+    public void onTimeSet( RadialPickerLayout view, final int hourOfDay, final int minute ) {
         if( is_pick_start_time ) {
             if( main_activity.yy_data_source.getAutoOffHour() == hourOfDay && main_activity.yy_data_source.getAutoOffMinue() == minute ) {
                 String title = "Error auto on time";
@@ -216,17 +216,16 @@ public class AutoOnOffView extends YYViewBackList implements TimePickerDialog.On
                 int nResDelete = R.drawable.alert_dialog_ok;
                 main_activity.yy_playing_msg_dlg = main_activity.yy_show_alert_dialog.showImageTipsAlertDialog( title, R.drawable.failure, tips, nResOK, nResDelete, new YYShowAlertDialog.onAlertDialogClickHandler() {
                     public void onOK() { }
-                    public void onCancel() { }
+                    public void onCancel() {
+                        main_activity.yy_data_source.setAutoOnMinue( minute );
+                    }
                     public boolean getIsCancelEnable() { return true; }
                     public int getKeybackIsCancel() { return 1; }
                     public void onKeyback() {}
                 });
-
-                return;
+            } else {
+                setAutoOnOffDateTime( hourOfDay, minute );
             }
-
-            main_activity.yy_data_source.setAutoOnHour( hourOfDay );
-            main_activity.yy_data_source.setAutoOnMinue( minute );
         }
         else {
             if( main_activity.yy_data_source.getAutoOnHour() == hourOfDay && main_activity.yy_data_source.getAutoOnMinue() == minute ) {
@@ -236,13 +235,24 @@ public class AutoOnOffView extends YYViewBackList implements TimePickerDialog.On
                 int nResDelete = R.drawable.alert_dialog_ok;
                 main_activity.yy_playing_msg_dlg = main_activity.yy_show_alert_dialog.showImageTipsAlertDialog( title, R.drawable.failure, tips, nResOK, nResDelete, new YYShowAlertDialog.onAlertDialogClickHandler() {
                     public void onOK() { }
-                    public void onCancel() { }
+                    public void onCancel() {
+                        main_activity.yy_data_source.setAutoOnMinue( minute );
+                    }
                     public boolean getIsCancelEnable() { return true; }
                     public int getKeybackIsCancel() { return 1; }
                     public void onKeyback() {}
                 });
+            } else {
+                setAutoOnOffDateTime( hourOfDay, minute );
             }
+        }
+    }
 
+    public void setAutoOnOffDateTime( int hourOfDay, int minute ) {
+        if( is_pick_start_time ) {
+            main_activity.yy_data_source.setAutoOnHour( hourOfDay );
+            main_activity.yy_data_source.setAutoOnMinue( minute );
+        } else {
             main_activity.yy_data_source.setAutoOffHour( hourOfDay );
             main_activity.yy_data_source.setAutoOffMinue( minute );
         }
