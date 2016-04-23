@@ -255,7 +255,7 @@ public class MessagesView extends YYViewBackList {
                     btn_obj.setOnClickListener( new View.OnClickListener() {
                         @Override
                         public void onClick( View v ) {
-                            main_activity.yy_input_number_callback_view.showInputNumberView( msg_info.getMsgName(), msg_info.getMsgNumber(), yy_view_self.getViewBackHandler(), new YYInputNumberView.onYYInputNumberHandler() {
+                            main_activity.yy_input_number_callback_view.showInputNumberView( msg_info.getPhoneBookName(), msg_info.getMsgNumber(), yy_view_self.getViewBackHandler(), new YYInputNumberView.onYYInputNumberHandler() {
                                 public void onSave( final String number ) {
                                     main_activity.yy_command.disconnectAllLink( new YYCommand.onConnLisenter() {
                                         public void onSuccessfully() {
