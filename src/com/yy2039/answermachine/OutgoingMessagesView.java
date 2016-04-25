@@ -288,6 +288,7 @@ public class OutgoingMessagesView extends YYViewBackList {
                                 public void onOK() {
                                     main_activity.yy_playing_msg_dlg = null;
                                     main_activity.yy_auto_save_listener = null;
+                                    main_activity.changeShengDao( true );
                                     main_activity.yy_data_source.treatOutgoingMsg( YYDataSource.OUTGOING_MSG_OPERATION_STOP_CHANGE, nMsgType, new YYDataSource.onTreatMsgLinstener() {
                                         public void onSuccessfully() {
                                             if( nMsgType == 0 ) {
@@ -330,6 +331,7 @@ public class OutgoingMessagesView extends YYViewBackList {
                                 public void onCancel() {
                                     main_activity.yy_playing_msg_dlg = null;
                                     main_activity.yy_auto_save_listener = null;
+                                    main_activity.changeShengDao( true );
                                     main_activity.yy_data_source.treatOutgoingMsg( YYDataSource.OUTGOING_MSG_OPERATION_DELETE, nMsgType, new YYDataSource.onTreatMsgLinstener() {
                                         public void onSuccessfully() {
                                             if( nMsgType == 0 ) {
@@ -347,6 +349,7 @@ public class OutgoingMessagesView extends YYViewBackList {
                                 public int getKeybackIsCancel() { return 2; }
                                 public void onKeyback() {}
                             });
+                            main_activity.changeShengDao( true );
                             main_activity.yy_auto_save_listener = new AnswerMachineActivity.onAutoSaveListener() {
                                 public void onAutoSave() {
                                     if( main_activity.yy_playing_msg_dlg != null ) {
