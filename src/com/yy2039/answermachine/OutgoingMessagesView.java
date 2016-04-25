@@ -214,7 +214,7 @@ public class OutgoingMessagesView extends YYViewBackList {
                         public int getKeybackIsCancel() { return 1; }
                         public void onKeyback() {}
                     });
-                    main_activity.changeShengDao( true );
+                    main_activity.changeShengDao( false );
                 }
                 public void onFailure() {
                     //Toast.makeText( main_activity, "play outgoing message failed", Toast.LENGTH_SHORT ).show();
