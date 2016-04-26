@@ -205,7 +205,7 @@ public class MessagesView extends YYViewBackList {
                                             if( btn_cancel != null ) {
                                                 btn_cancel.setImageDrawable( main_activity.getResources().getDrawable( bPrivateFlag ? R.drawable.alert_dialog_loudspeaker : R.drawable.alert_dialog_private ) );
                                             }
-                                            main_activity.changeShengDao( bPrivateFlag ? true : false );
+                                            main_activity.changeShengDao( !bPrivateFlag );
 
                                             bPrivateFlag = !bPrivateFlag;
                                         }
