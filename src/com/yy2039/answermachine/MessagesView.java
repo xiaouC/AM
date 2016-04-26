@@ -126,6 +126,8 @@ public class MessagesView extends YYViewBackList {
                             }
                         }
                         main_activity.yy_data_source.msg_list = new_msg_list;
+                        main_activity.yy_data_source.setMessageCount( new_msg_list.size() );
+                        main_activity.yy_data_source.setNewMessageCount( new_msg_list.size() );
 
                         yy_view_self.yy_list_adapter.list_data = yy_view_self.getItemListData();
 
