@@ -268,7 +268,9 @@ public class AnswerMachineActivity extends FragmentActivity
         bIsDestroy = true;
 
 		// TODO Auto-generated method stub
-        changeShengDao( true );
+        Intent intent = new Intent();  
+        intent.setAction( ANSWER_MACHINE_CHANGE_NORMAL );
+        sendBroadcast( intent );
 
         yy_schedule.cancelAllSchedule();
         yy_command.unregisterReceiver();
