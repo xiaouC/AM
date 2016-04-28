@@ -261,12 +261,12 @@ public class MessagesView extends YYViewBackList {
                                 public void onSave( final String number ) {
                                     main_activity.yy_command.disconnectAllLink( new YYCommand.onConnLisenter() {
                                         public void onSuccessfully() {
-                                            onCallback( number, msg_info.getMsgName() );
+                                            onCallback( number, msg_info.getPhoneBookName() );
 
                                             main_activity.finish();
                                         }
                                         public void onFailure() {
-                                            onCallback( number, msg_info.getMsgName() );
+                                            onCallback( number, msg_info.getPhoneBookName() );
 
                                             main_activity.finish();
                                         }
