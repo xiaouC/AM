@@ -276,6 +276,7 @@ public class OutgoingMessagesView extends YYViewBackList {
                         public void onCancel() { }
                         public void onKeyback() {}
                     });
+                    main_activity.changeShengDaoRecordStart( ad );
 
                     main_activity.yy_schedule.scheduleOnceTime( 5000, new YYSchedule.onScheduleAction() {
                         public void doSomething() {
@@ -348,7 +349,6 @@ public class OutgoingMessagesView extends YYViewBackList {
                                 public int getKeybackIsCancel() { return 2; }
                                 public void onKeyback() {}
                             });
-                            main_activity.changeShengDao( true );
                             main_activity.yy_auto_save_listener = new AnswerMachineActivity.onAutoSaveListener() {
                                 public void onAutoSave() {
                                     if( main_activity.yy_playing_msg_dlg != null ) {
