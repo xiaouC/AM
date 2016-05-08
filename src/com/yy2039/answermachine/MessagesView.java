@@ -215,7 +215,7 @@ public class MessagesView extends YYViewBackList {
                                         public int getKeybackIsCancel() { return 100; }
                                         public void onKeyback() {}
                                     });
-                                    main_activity.changeShengDao( true );
+                                    main_activity.changeShengDao( bPrivateFlag );
                                 }
                                 public void onFailure() {
                                 }
