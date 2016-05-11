@@ -41,6 +41,7 @@ public class YYViewBase {
     protected Integer yy_scrolled_x = null;
     protected Integer yy_scrolled_y = null;
     protected onViewBackHandler vb_handler;             // 返回到自己界面
+    public boolean bQuitPause = false;
 
     public YYViewBase() {
         main_activity = AnswerMachineActivity.main_activity;
@@ -65,9 +66,6 @@ public class YYViewBase {
 
     public String getViewTitle() {
         return "";
-    }
-
-    public void onResume() {  
     }
 
     public void fillListView() {
