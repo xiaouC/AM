@@ -189,6 +189,29 @@ public class MessagesView extends YYViewBackList {
                             //main_activity.yy_data_source.treatMsg( YYDataSource.TREAT_MSG_OPERATION_PLAY, msg_index, new YYDataSource.onTreatMsgLinstener() {
                             main_activity.yy_data_source.treatMsg_test( YYDataSource.TREAT_MSG_OPERATION_PLAY, msg_info.getMsgIndex(), new YYDataSource.onTreatMsgLinstener() {
                                 public void onSuccessfully() {
+                                    List<YYDataSource.onMsgInfo> new_msg_list = new ArrayList<YYDataSource.onMsgInfo>();
+                                    for( int i=0; i < main_activity.yy_data_source.msg_list.size(); ++i ) {
+                                        if( i == msg_index ) {
+                                            YYDataSource.onMsgInfo item_info = main_activity.yy_data_source.msg_list.get( i );
+                                            final String msg_index = item_info.getMsgIndex();
+                                            final String show_msg_name = item_info.getMsgName();
+                                            final String pb_name = item_info.getPhoneBookName();
+                                            final String msg_number = item_info.getMsgNumber();
+                                            final String msg_date_time = item_info.getMsgDateTime();
+                                            new_msg_list.add( new onMsgInfo() {
+                                                public String getMsgIndex() { return msg_index; }
+                                                public int getMsgType() { return 1; }       // old msg
+                                                public String getMsgName() { return show_msg_name; }
+                                                public String getPhoneBookName() { return pb_name; }
+                                                public String getMsgNumber() { return msg_number; }
+                                                public String getMsgDateTime() { return msg_date_time; }
+                                            });
+                                        } else {
+                                            new_msg_list.add( item_info );
+                                        }
+                                    }
+                                    main_activity.yy_data_source.msg_list = new_msg_list;
+
                                     String title = "Playing message";
                                     String name = msg_info.getMsgName();
                                     String tips = String.format( "playing message from %s", name );
