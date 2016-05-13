@@ -189,6 +189,7 @@ public class MessagesView extends YYViewBackList {
                             //main_activity.yy_data_source.treatMsg( YYDataSource.TREAT_MSG_OPERATION_PLAY, msg_index, new YYDataSource.onTreatMsgLinstener() {
                             main_activity.yy_data_source.treatMsg_test( YYDataSource.TREAT_MSG_OPERATION_PLAY, msg_info.getMsgIndex(), new YYDataSource.onTreatMsgLinstener() {
                                 public void onSuccessfully() {
+                                    int nNewMsgCount = 0;
                                     List<YYDataSource.onMsgInfo> new_msg_list = new ArrayList<YYDataSource.onMsgInfo>();
                                     for( int i=0; i < main_activity.yy_data_source.msg_list.size(); ++i ) {
                                         YYDataSource.onMsgInfo item_info = main_activity.yy_data_source.msg_list.get( i );
@@ -208,9 +209,14 @@ public class MessagesView extends YYViewBackList {
                                             });
                                         } else {
                                             new_msg_list.add( item_info );
+
+                                            if( item_info.getMsgType() == 0 ) {
+                                                ++nNewMsgCount;
+                                            }
                                         }
                                     }
                                     main_activity.yy_data_source.msg_list = new_msg_list;
+                                    main_activity.yy_data_source.setNewMessageCount( nNewMsgCount );
 
                                     String title = "Playing message";
                                     String name = msg_info.getMsgName();

@@ -144,7 +144,7 @@ public class AnswerMachineView extends YYViewBase {
                                 else {
                                     String[] results = data2.split( "," );
 
-                                    main_activity.yy_data_source.msg_list.clear();
+                                    main_activity.yy_data_source.msg_list = new ArrayList<YYDataSource.onMsgInfo>();
                                     main_activity.yy_data_source.contacts_list = main_activity.yy_data_source.getContactsList();
 
                                     try {
