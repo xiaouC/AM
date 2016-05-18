@@ -44,7 +44,7 @@ public class YYSchedule
         };
     }
 
-    public void scheduleOnceTime( long delay, onScheduleAction schedule_action ) {
+    public int scheduleOnceTime( long delay, onScheduleAction schedule_action ) {
         final int schedule_index = nNextScheduleIndex++;
         all_schedule_actions.put( schedule_index, schedule_action );
 
@@ -62,6 +62,18 @@ public class YYSchedule
         timer.schedule( task, delay );
 
         Log.v( "cconn", "scheduleOnceTime : " + schedule_index );
+
+        return schedule_index;
+    }
+
+    public void cancelSchedule( int schedule_index ) {
+        Timer timer = all_schedule_timers.get( schedule_index );
+        if( timer != null ) {
+            timer.cancel();
+
+            all_schedule_actions.remove( schedule_index );
+            all_schedule_timers.remove( schedule_index );
+        }
     }
 
     public void cancelAllSchedule() {

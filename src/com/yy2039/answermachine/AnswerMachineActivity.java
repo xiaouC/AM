@@ -59,6 +59,8 @@ public class AnswerMachineActivity extends FragmentActivity
         }
     };
 
+    public AlertDialog yy_record_prompt_dlg = null;
+    public int yy_record_schedule_index = -1;
     public AlertDialog yy_playing_msg_dlg = null;
     //public AlertDialog yy_record_auto_save_dlg = null;
     public interface onAutoSaveListener {
@@ -68,9 +70,17 @@ public class AnswerMachineActivity extends FragmentActivity
     private BroadcastReceiver playingMsgEndReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
+            if( yy_record_schedule_index != -1 ) {
+                yy_schedule.cancelSchedule( yy_record_schedule_index );
+                yy_record_schedule_index = -1;
+            }
             if( yy_auto_save_listener != null ) {
                 yy_auto_save_listener.onAutoSave();
                 yy_auto_save_listener = null;
+            }
+            if( yy_record_prompt_dlg != null ) {
+                yy_record_prompt_dlg.hide();
+                yy_record_prompt_dlg = null;
             }
             if( yy_playing_msg_dlg != null ) {
                 yy_playing_msg_dlg.hide();
@@ -167,6 +177,7 @@ public class AnswerMachineActivity extends FragmentActivity
         filter2.addAction( "com.action.dect.page.voicemsg.play.over" );
         filter2.addAction( "com.action.dect.page.voicemsg.overtime.autosave" );
         filter2.addAction( "com.action.dect.page.voicemsg.delete.play.over" );
+        filter2.addAction( "com.action.dect.page.memory.full" );
         registerReceiver( playingMsgEndReceiver, filter2 );  
 
         IntentFilter filter3 = new IntentFilter();

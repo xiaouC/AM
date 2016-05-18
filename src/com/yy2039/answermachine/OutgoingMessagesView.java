@@ -269,18 +269,20 @@ public class OutgoingMessagesView extends YYViewBackList {
                 public void onSuccessfully() {
                     String title = "Voice Prompt\r\nLoudspeaker Delivery";
                     String tips = "Please speak after the tone.\r\nTo end recording, press Save";
-                    final AlertDialog ad = main_activity.yy_show_alert_dialog.showVoicePromptAlertDialog( title, R.drawable.play_message, tips, new YYShowAlertDialog.onAlertDialogClickHandler() {
+                    main_activity.yy_record_prompt_dlg = main_activity.yy_show_alert_dialog.showVoicePromptAlertDialog( title, R.drawable.play_message, tips, new YYShowAlertDialog.onAlertDialogClickHandler() {
                         public boolean getIsCancelEnable() { return false; }
                         public int getKeybackIsCancel() { return 0; }
                         public void onOK() { }
                         public void onCancel() { }
                         public void onKeyback() {}
                     });
-                    main_activity.changeShengDaoRecordStart( ad );
+                    main_activity.changeShengDaoRecordStart( main_activity.yy_record_prompt_dlg );
 
-                    main_activity.yy_schedule.scheduleOnceTime( 5000, new YYSchedule.onScheduleAction() {
+                    main_activity.yy_record_schedule_index = main_activity.yy_schedule.scheduleOnceTime( 5000, new YYSchedule.onScheduleAction() {
                         public void doSomething() {
-                            ad.hide();
+                            main_activity.yy_record_schedule_index = -1;
+                            main_activity.yy_record_prompt_dlg.hide();
+                            main_activity.yy_record_prompt_dlg = null;
 
                             String title = "Record message";
                             String tips = "Recording outgoing message";
