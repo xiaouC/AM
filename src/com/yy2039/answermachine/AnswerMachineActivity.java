@@ -247,7 +247,9 @@ public class AnswerMachineActivity extends FragmentActivity
 
 	@Override
 	protected void onPause() {
-        changeShengDao( true );
+        Intent intent = new Intent();  
+        intent.setAction( ANSWER_MACHINE_CHANGE_NORMAL );
+        sendBroadcast( intent );
 
         if( yy_current_view.bQuitPause ) {
             yy_schedule.scheduleOnceTime( 20, new YYSchedule.onScheduleAction() {
@@ -264,11 +266,6 @@ public class AnswerMachineActivity extends FragmentActivity
 	protected void onDestroy()
 	{
         bIsDestroy = true;
-
-		// TODO Auto-generated method stub
-        Intent intent = new Intent();  
-        intent.setAction( ANSWER_MACHINE_CHANGE_NORMAL );
-        sendBroadcast( intent );
 
         yy_schedule.cancelAllSchedule();
         yy_command.unregisterReceiver();
