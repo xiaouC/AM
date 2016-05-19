@@ -99,7 +99,7 @@ public class MessagesView extends YYViewBackList {
     public void deleteOldMessages() {
         main_activity.yy_show_alert_dialog.showAlertDialog( R.layout.alert_attention, new YYShowAlertDialog.onAlertDialogHandler() {
             public void onInit( AlertDialog ad, View view ) {
-                String text1 = "All old messages that have been\r\nlistened to will be delete. Are you\r\nsure you wish to continue?";
+                String text1 = "All old messages that have been\r\nlistened to will be deleted. Are you\r\nsure you wish to continue?";
 
                 TextView tv = (TextView)view.findViewById( R.id.attention_text );
                 tv.setText( text1 );
