@@ -280,9 +280,13 @@ public class OutgoingMessagesView extends YYViewBackList {
 
                     main_activity.yy_record_schedule_index = main_activity.yy_schedule.scheduleOnceTime( 5000, new YYSchedule.onScheduleAction() {
                         public void doSomething() {
-                            main_activity.yy_record_schedule_index = -1;
-                            main_activity.yy_record_prompt_dlg.hide();
-                            main_activity.yy_record_prompt_dlg = null;
+                            if( main_activity.yy_record_schedule_index != -1 ) {
+                                main_activity.yy_record_schedule_index = -1;
+                            }
+                            if( main_activity.yy_record_prompt_dlg != null ) {
+                                main_activity.yy_record_prompt_dlg.hide();
+                                main_activity.yy_record_prompt_dlg = null;
+                            }
 
                             String title = "Record message";
                             String tips = "Recording outgoing message";
