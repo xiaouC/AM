@@ -345,6 +345,11 @@ public class OutgoingMessagesView extends YYViewBackList {
                                             } else {
                                                 main_activity.yy_data_source.initOutgoingIsUseDefaultMessage1( true );
                                             }
+
+                                            yy_view_self.yy_list_adapter.list_data = yy_view_self.getItemListData();
+
+                                            YYListAdapter.updateListViewTask task = new YYListAdapter.updateListViewTask();
+                                            task.execute();
                                         }
                                         public void onFailure() {
                                             //Toast.makeText( main_activity, "delete outgoing message failed", Toast.LENGTH_SHORT ).show();
