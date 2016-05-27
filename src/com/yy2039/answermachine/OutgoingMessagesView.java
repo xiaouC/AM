@@ -265,8 +265,13 @@ public class OutgoingMessagesView extends YYViewBackList {
         }
 
         public void recordMessage() {
+            main_activity.bMemoryFullFlag = false;
             main_activity.yy_data_source.treatOutgoingMsg( YYDataSource.OUTGOING_MSG_OPERATION_CHANGE, nMsgType, new YYDataSource.onTreatMsgLinstener() {
                 public void onSuccessfully() {
+                    if( main_activity.bMemoryFullFlag ) {
+                        return;
+                    }
+
                     String title = "Voice Prompt\r\nLoudspeaker Delivery";
                     String tips = "Please speak after the tone.\r\nTo end recording, press Save";
                     main_activity.yy_record_prompt_dlg = main_activity.yy_show_alert_dialog.showVoicePromptAlertDialog( title, R.drawable.play_message, tips, new YYShowAlertDialog.onAlertDialogClickHandler() {

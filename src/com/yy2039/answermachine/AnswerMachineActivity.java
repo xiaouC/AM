@@ -59,8 +59,6 @@ public class AnswerMachineActivity extends FragmentActivity
         }
     };
 
-    public AlertDialog yy_record_prompt_dlg = null;
-    public int yy_record_schedule_index = -1;
     public AlertDialog yy_playing_msg_dlg = null;
     //public AlertDialog yy_record_auto_save_dlg = null;
     public interface onAutoSaveListener {
@@ -70,23 +68,60 @@ public class AnswerMachineActivity extends FragmentActivity
     private BroadcastReceiver playingMsgEndReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
-            if( yy_record_schedule_index != -1 ) {
-                yy_schedule.cancelSchedule( yy_record_schedule_index );
-                yy_record_schedule_index = -1;
-            }
             if( yy_auto_save_listener != null ) {
                 yy_auto_save_listener.onAutoSave();
                 yy_auto_save_listener = null;
-            }
-            if( yy_record_prompt_dlg != null ) {
-                yy_record_prompt_dlg.hide();
-                yy_record_prompt_dlg = null;
             }
             if( yy_playing_msg_dlg != null ) {
                 yy_playing_msg_dlg.hide();
                 yy_playing_msg_dlg = null;
             }
             changeShengDao( true );
+        }
+    };
+
+    public AlertDialog yy_record_prompt_dlg = null;
+    public int yy_record_schedule_index = -1;
+    public boolean bMemoryFullFlag = false;
+
+    private AlertDialog memory_full_dlg = null;
+    private BroadcastReceiver memoryFullReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            bMemoryFullFlag = true;
+
+            if( yy_record_schedule_index != -1 ) {
+                yy_schedule.cancelSchedule( yy_record_schedule_index );
+                yy_record_schedule_index = -1;
+            }
+            if( yy_record_prompt_dlg != null ) {
+                yy_record_prompt_dlg.hide();
+                yy_record_prompt_dlg = null;
+            }
+
+            String title = "Voice Prompt\r\nLoudspeaker Delivery";
+            String tips = "Please speak after the tone.\r\nTo end recording, press Save";
+            memory_full_dlg = yy_show_alert_dialog.showVoicePromptAlertDialog( title, R.drawable.play_message, tips, new YYShowAlertDialog.onAlertDialogClickHandler() {
+                public boolean getIsCancelEnable() { return false; }
+                public int getKeybackIsCancel() { return 0; }
+                public void onOK() { }
+                public void onCancel() { }
+                public void onKeyback() {}
+            });
+            changeShengDaoRecordStart( memory_full_dlg );
+
+            yy_schedule.scheduleOnceTime( 5000, new YYSchedule.onScheduleAction() {
+                public void doSomething() {
+                    bMemoryFullFlag = false;
+
+                    if( memory_full_dlg != null ) {
+                        memory_full_dlg.hide();
+                        memory_full_dlg = null;
+                    }
+
+                    changeShengDao( true );
+                }
+            });
         }
     };
 
@@ -177,13 +212,16 @@ public class AnswerMachineActivity extends FragmentActivity
         filter2.addAction( "com.action.dect.page.voicemsg.play.over" );
         filter2.addAction( "com.action.dect.page.voicemsg.overtime.autosave" );
         filter2.addAction( "com.action.dect.page.voicemsg.delete.play.over" );
-        filter2.addAction( "com.action.dect.page.memory.full" );
         registerReceiver( playingMsgEndReceiver, filter2 );  
 
         IntentFilter filter3 = new IntentFilter();
         filter3.addAction( "com.action.dect.page.incoming.call" );
         filter3.addAction( "com.action.dect.call.guardian.handing.result" );
         registerReceiver( incomingCallReceiver, filter3 );  
+
+        IntentFilter filter4 = new IntentFilter();
+        filter4.addAction( "com.action.dect.page.memory.full" );
+        registerReceiver( memoryFullReceiver, filter4 );  
 
         //IntentFilter filter5 = new IntentFilter();
         //filter5.addAction( "com.action.dect.page.voicemsg.overtime.autosave" );
@@ -286,6 +324,7 @@ public class AnswerMachineActivity extends FragmentActivity
         unregisterReceiver( playingMsgEndReceiver );
         unregisterReceiver( incomingCallReceiver );
         //unregisterReceiver( autoSaveReceiver );
+        unregisterReceiver( memoryFullReceiver );
 
         //NotificationManager nm = (NotificationManager)getSystemService( Context.NOTIFICATION_SERVICE );
         //nm.cancel( NOTIFICATION_ID_ICON );
