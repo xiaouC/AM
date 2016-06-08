@@ -126,8 +126,9 @@ public class AnswerMachineView extends YYViewBase {
             public void item_handle( Object view_obj ) {
                 Button btn_obj = (Button)view_obj;
 
+                int nMsgCount = main_activity.yy_data_source.getMessageCount();
                 String text_1 = "Messages";
-                String text_2 = String.format( "%d Messages, %d New.", main_activity.yy_data_source.getMessageCount(), main_activity.yy_data_source.getNewMessageCount() );
+                String text_2 = String.format( "%d %s, %d New.", nMsgCount, nMsgCount > 1 ? "Messages" : "Message", main_activity.yy_data_source.getNewMessageCount() );
                 btn_obj.setText( YYViewBase.transferText( text_1, text_2 ) );
                 btn_obj.setOnClickListener( new View.OnClickListener() {
                     @Override
