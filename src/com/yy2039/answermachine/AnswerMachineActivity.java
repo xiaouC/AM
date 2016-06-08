@@ -99,7 +99,8 @@ public class AnswerMachineActivity extends FragmentActivity
                 yy_record_prompt_dlg = null;
             }
 
-            String title = "Voice Prompt\r\nLoudspeaker Delivery";
+            //String title = "Voice Prompt\r\nLoudspeaker Delivery";
+            String title = "";
             String tips = "Please speak after the tone.\r\nTo end recording, press Save";
             memory_full_dlg = yy_show_alert_dialog.showVoicePromptAlertDialog( title, R.drawable.play_message, tips, new YYShowAlertDialog.onAlertDialogClickHandler() {
                 public boolean getIsCancelEnable() { return false; }

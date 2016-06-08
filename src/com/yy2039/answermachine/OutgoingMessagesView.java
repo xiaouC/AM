@@ -272,7 +272,8 @@ public class OutgoingMessagesView extends YYViewBackList {
                         return;
                     }
 
-                    String title = "Voice Prompt\r\nLoudspeaker Delivery";
+                    //String title = "Voice Prompt\r\nLoudspeaker Delivery";
+                    String title = "";
                     String tips = "Please speak after the tone.\r\nTo end recording, press Save";
                     main_activity.yy_record_prompt_dlg = main_activity.yy_show_alert_dialog.showVoicePromptAlertDialog( title, R.drawable.play_message, tips, new YYShowAlertDialog.onAlertDialogClickHandler() {
                         public boolean getIsCancelEnable() { return false; }
