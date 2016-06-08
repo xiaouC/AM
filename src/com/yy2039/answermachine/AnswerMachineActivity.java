@@ -145,6 +145,7 @@ public class AnswerMachineActivity extends FragmentActivity
 
     public AudioManager localAudioManager = null;
     private PowerManager.WakeLock wakeLock = null;
+    private static boolean lockAcquired = false;
     
     /** Called when the activity is first created. */
     @Override
@@ -293,8 +294,7 @@ public class AnswerMachineActivity extends FragmentActivity
             changeShengDao( true );
         }
 
-        if( wakeLock != null )
-            wakeLock.acquire();
+        acquireWakeLock();
     }
 
 	@Override
@@ -311,8 +311,7 @@ public class AnswerMachineActivity extends FragmentActivity
             });
         }
 
-        if( wakeLock != null )
-            wakeLock.release();
+        releaseWakeLock();
 
         super.onPause();
     }
@@ -335,12 +334,48 @@ public class AnswerMachineActivity extends FragmentActivity
         //NotificationManager nm = (NotificationManager)getSystemService( Context.NOTIFICATION_SERVICE );
         //nm.cancel( NOTIFICATION_ID_ICON );
 
-        if( wakeLock != null ) {
-            wakeLock.release();
-            wakeLock = null;
-        }
+        releaseWakeLock();
+
 		super.onDestroy();
 	}
+
+    public boolean acquireWakeLock() {
+        if( lockAcquired )
+            return true;
+
+        if( wakeLock != null ) {
+            try {
+                wakeLock.acquire();
+                lockAcquired = true;
+            }
+            catch( SecurityException e )
+            {
+                Log.v( "AnswerMachine", "can't acquire wake lock:" + e.toString() );
+            }
+
+            return true;
+        }
+
+        return false;
+    }
+
+    public boolean releaseWakeLock() {
+        if( wakeLock != null ) {
+            try {
+                wakeLock.setReferenceCounted(false);
+                wakeLock.release();
+                lockAcquired = false;
+            }
+            catch( SecurityException e )
+            {
+                Log.v( "AnswerMachine", "can't release wake lock:" + e.toString() );
+            }
+
+            return true;
+        }
+
+        return false;
+    }
 
     // 
     public static String PREFER_NAME = "AnswerMachine";
