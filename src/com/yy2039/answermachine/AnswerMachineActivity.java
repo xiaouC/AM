@@ -155,8 +155,7 @@ public class AnswerMachineActivity extends FragmentActivity
         main_activity = this;
 
         PowerManager pm = (PowerManager)getSystemService( Context.POWER_SERVICE );
-        wakeLock = pm.newWakeLock( PowerManager.PARTIAL_WAKE_LOCK, AnswerMachineActivity.class.getName() );
-        wakeLock.acquire();
+        wakeLock = pm.newWakeLock( PowerManager.SCREEN_DIM_WAKE_LOCK | PowerManager.ON_AFTER_RELEASE, AnswerMachineActivity.class.getName() );
 
         yy_common = new YYCommon();
         yy_schedule = new YYSchedule( this );
@@ -293,6 +292,9 @@ public class AnswerMachineActivity extends FragmentActivity
         if( localAudioManager != null ) {
             changeShengDao( true );
         }
+
+        if( wakeLock != null )
+            wakeLock.acquire();
     }
 
 	@Override
@@ -308,6 +310,9 @@ public class AnswerMachineActivity extends FragmentActivity
                 }
             });
         }
+
+        if( wakeLock != null )
+            wakeLock.release();
 
         super.onPause();
     }
