@@ -139,6 +139,14 @@ public class AnswerMachineActivity extends FragmentActivity
     private BroadcastReceiver incomingCallReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
+            if( yy_playing_msg_dlg != null ) {
+                Intent intent1 = new Intent();  
+                intent1.setAction( ANSWER_MACHINE_CHANGE_NORMAL );
+                sendBroadcast( intent1 );
+
+                yy_playing_msg_dlg = null;
+            }
+
             finish();
         }
     };
@@ -299,9 +307,11 @@ public class AnswerMachineActivity extends FragmentActivity
 
 	@Override
 	protected void onPause() {
-        Intent intent = new Intent();  
-        intent.setAction( ANSWER_MACHINE_CHANGE_NORMAL );
-        sendBroadcast( intent );
+        if( yy_playing_msg_dlg != null ) {
+            Intent intent = new Intent();  
+            intent.setAction( ANSWER_MACHINE_CHANGE_NORMAL );
+            sendBroadcast( intent );
+        }
 
         if( yy_current_view.bQuitPause ) {
             yy_schedule.scheduleOnceTime( 20, new YYSchedule.onScheduleAction() {
