@@ -266,6 +266,7 @@ public class OutgoingMessagesView extends YYViewBackList {
 
         public void recordMessage() {
             main_activity.bMemoryFullFlag = false;
+            main_activity.bRecordFlag = true;
             main_activity.yy_data_source.treatOutgoingMsg( YYDataSource.OUTGOING_MSG_OPERATION_CHANGE, nMsgType, new YYDataSource.onTreatMsgLinstener() {
                 public void onSuccessfully() {
                     if( main_activity.bMemoryFullFlag ) {
@@ -298,6 +299,7 @@ public class OutgoingMessagesView extends YYViewBackList {
                             String tips = "Recording outgoing message";
                             main_activity.yy_playing_msg_dlg = main_activity.yy_show_alert_dialog.showImageTipsAlertDialog( title, R.drawable.record_name, tips, R.drawable.alert_save, R.drawable.alert_delete, new YYShowAlertDialog.onAlertDialogClickHandler() {
                                 public void onOK() {
+                                    main_activity.bRecordFlag = false;
                                     main_activity.yy_playing_msg_dlg = null;
                                     main_activity.yy_auto_save_listener = null;
                                     main_activity.changeShengDao( true );
@@ -341,6 +343,7 @@ public class OutgoingMessagesView extends YYViewBackList {
                                     });
                                 }
                                 public void onCancel() {
+                                    main_activity.bRecordFlag = false;
                                     main_activity.yy_playing_msg_dlg = null;
                                     main_activity.yy_auto_save_listener = null;
                                     main_activity.changeShengDao( true );
@@ -368,6 +371,7 @@ public class OutgoingMessagesView extends YYViewBackList {
                             });
                             main_activity.yy_auto_save_listener = new AnswerMachineActivity.onAutoSaveListener() {
                                 public void onAutoSave() {
+                                    main_activity.bRecordFlag = false;
                                     if( main_activity.yy_playing_msg_dlg != null ) {
                                         if( nMsgType == 0 ) {
                                             main_activity.yy_data_source.initOutgoingIsUseDefaultMessage0( false );
