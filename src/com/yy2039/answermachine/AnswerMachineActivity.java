@@ -294,20 +294,20 @@ public class AnswerMachineActivity extends FragmentActivity
 	protected void onResume() {
         super.onResume();
 
-        if( localAudioManager != null ) {
-            changeShengDao( true );
-        }
+        //if( localAudioManager != null ) {
+        //    changeShengDao( true );
+        //}
 
         acquireWakeLock();
     }
 
 	@Override
 	protected void onPause() {
-        if( yy_playing_msg_dlg != null && !bRecordFlag ) {
-            Intent intent = new Intent();  
-            intent.setAction( ANSWER_MACHINE_CHANGE_NORMAL );
-            sendBroadcast( intent );
-        }
+        //if( yy_playing_msg_dlg != null && !bRecordFlag ) {
+        //    Intent intent = new Intent();  
+        //    intent.setAction( ANSWER_MACHINE_CHANGE_NORMAL );
+        //    sendBroadcast( intent );
+        //}
 
         if( yy_current_view.bQuitPause ) {
             yy_schedule.scheduleOnceTime( 20, new YYSchedule.onScheduleAction() {
