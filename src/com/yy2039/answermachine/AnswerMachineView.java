@@ -18,6 +18,7 @@ import android.widget.TextView;
 import android.widget.ImageView;
 import android.util.Log;
 import android.widget.Toast;
+import android.text.format.DateFormat;
 
 public class AnswerMachineView extends YYViewBase {
 	private BroadcastReceiver amReceiver = new BroadcastReceiver() {
@@ -143,6 +144,8 @@ public class AnswerMachineView extends YYViewBase {
                                     //Toast.makeText( main_activity, text, Toast.LENGTH_LONG ).show();
                                 }
                                 else {
+                                    //data2 = "1,1,xxx,12345,201607031235";
+
                                     String[] results = data2.split( "," );
 
                                     main_activity.yy_data_source.msg_list = new ArrayList<YYDataSource.onMsgInfo>();
@@ -164,7 +167,7 @@ public class AnswerMachineView extends YYViewBase {
                                             final String year = msg_datetime.substring( 0, 4 );
                                             final String month = msg_datetime.substring( 4, 6 );
                                             final String day = msg_datetime.substring( 6, 8 );
-                                            final String hour = msg_datetime.substring( 8, 10 );
+                                            int hour_24 = Integer.valueOf( msg_datetime.substring( 8, 10 ) );
                                             final String min = msg_datetime.substring( 10 );
 
                                             String show_name = "";
@@ -181,15 +184,26 @@ public class AnswerMachineView extends YYViewBase {
                                                     show_name = pb_name;
                                                 }
                                             }
-
                                             final String show_msg_name = show_name;
+
+                                            final boolean is24 = android.text.format.DateFormat.is24HourFormat( main_activity );
+                                            String amFlag = "";
+                                            if( !is24 ) {
+                                                amFlag = hour_24 >= 12 ? "PM" : "AM";
+                                                if( hour_24 > 12 ) {
+                                                    hour_24 = hour_24 - 12;
+                                                }
+                                            }
+                                            final String show_hour = String.valueOf( hour_24 );
+                                            final String show_AM = amFlag;
+
                                             main_activity.yy_data_source.msg_list.add( new YYDataSource.onMsgInfo() {
                                                 public String getMsgIndex() { return msg_index; }
                                                 public int getMsgType() { return msg_type; }
                                                 public String getMsgName() { return show_msg_name; }
                                                 public String getPhoneBookName() { return pb_name; }
                                                 public String getMsgNumber() { return msg_number; }
-                                                public String getMsgDateTime() { return String.format( "%s/%s/%s %s:%s", month, day, year, hour, min ); }
+                                                public String getMsgDateTime() { return String.format( "%s/%s/%s %s:%s %s", month, day, year, show_hour, min, show_AM ); }
                                             });
                                         }
 
