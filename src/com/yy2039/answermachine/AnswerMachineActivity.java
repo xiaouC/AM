@@ -49,12 +49,18 @@ public class AnswerMachineActivity extends FragmentActivity
 
     public YYViewBase yy_current_view;
 
+    public boolean bPrivateFlag = false;
+    public boolean bPlayingMessageFlag = false;
     //private final static int NOTIFICATION_ID_ICON = 0x10000;
 	private BroadcastReceiver headsetPlugReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
             if( intent.hasExtra( "state" ) ) {
-                changeShengDao( true );
+                if( bPlayingMessageFlag ) {
+                    changeShengDao( bPrivateFlag );
+                } else {
+                    changeShengDao( true );
+                }
             }
         }
     };

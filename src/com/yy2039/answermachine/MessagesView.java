@@ -165,7 +165,6 @@ public class MessagesView extends YYViewBackList {
     public class MessageOperationView extends YYViewBackList {
         private int msg_index;
         private YYDataSource.onMsgInfo msg_info;
-        private boolean bPrivateFlag = true;
 
         public String getViewTitle() { return msg_info.getMsgName(); }
 
@@ -223,9 +222,12 @@ public class MessagesView extends YYViewBackList {
                                     String tips = String.format( "playing message from %s", name );
                                     int nResOK = R.drawable.alert_dialog_ok;
                                     int nResDelete = R.drawable.alert_dialog_loudspeaker;
-                                    bPrivateFlag = false;
+                                    main_activity.bPrivateFlag = false;
+                                    main_activity.bPlayingMessageFlag = true;
                                     main_activity.yy_playing_msg_dlg = main_activity.yy_show_alert_dialog.showImageTipsAlertDialog( title, R.drawable.play_message, tips, nResOK, nResDelete, new YYShowAlertDialog.onAlertDialogClickHandler() {
                                         public void onOK() {
+                                            main_activity.bPrivateFlag = false;
+                                            main_activity.bPlayingMessageFlag = false;
                                             main_activity.yy_playing_msg_dlg = null;
                                             main_activity.changeShengDao( true );
 
@@ -234,17 +236,17 @@ public class MessagesView extends YYViewBackList {
                                         public void onCancel() {
                                             ImageButton btn_cancel = (ImageButton)main_activity.yy_playing_msg_dlg.findViewById( R.id.ALERT_DIALOG_CANCEL );
                                             if( btn_cancel != null ) {
-                                                btn_cancel.setImageDrawable( main_activity.getResources().getDrawable( bPrivateFlag ? R.drawable.alert_dialog_loudspeaker : R.drawable.alert_dialog_private ) );
+                                                btn_cancel.setImageDrawable( main_activity.getResources().getDrawable( main_activity.bPrivateFlag ? R.drawable.alert_dialog_loudspeaker : R.drawable.alert_dialog_private ) );
                                             }
-                                            main_activity.changeShengDao( !bPrivateFlag );
+                                            main_activity.changeShengDao( !main_activity.bPrivateFlag );
 
-                                            bPrivateFlag = !bPrivateFlag;
+                                            main_activity.bPrivateFlag = !main_activity.bPrivateFlag;
                                         }
                                         public boolean getIsCancelEnable() { return false; }
                                         public int getKeybackIsCancel() { return 100; }
                                         public void onKeyback() {}
                                     });
-                                    main_activity.changeShengDao( bPrivateFlag );
+                                    main_activity.changeShengDao( main_activity.bPrivateFlag );
                                 }
                                 public void onFailure() {
                                 }
