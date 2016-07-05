@@ -118,6 +118,8 @@ public class MessagesView extends YYViewBackList {
             public void onCancel() {
                 main_activity.yy_data_source.treatMsg_test( YYDataSource.TREAT_MSG_OPERATION_DELETE_ALL, "0", new YYDataSource.onTreatMsgLinstener() {
                     public void onSuccessfully() {
+                        int nTempOldMessageCount = main_activity.yy_data_source.getMessageCount() - main_activity.yy_data_source.getNewMessageCount();
+
                         List<YYDataSource.onMsgInfo> new_msg_list = new ArrayList<YYDataSource.onMsgInfo>();
                         for( int i=0; i < main_activity.yy_data_source.msg_list.size(); ++i ) {
                             YYDataSource.onMsgInfo item_info = main_activity.yy_data_source.msg_list.get( i );
@@ -134,7 +136,7 @@ public class MessagesView extends YYViewBackList {
                         YYListAdapter.updateListViewTask task = new YYListAdapter.updateListViewTask();
                         task.execute();
 
-                        String title = "All old messages\r\ndeleted";
+                        String title = nTempOldMessageCount > 0 ? "All old messages\r\ndeleted" : "Error deleting old\r\nmessages";
                         String tips = "Press OK to finish";
                         int image_id = R.drawable.successfully;
                         main_activity.yy_show_alert_dialog.showSuccessfullImageTipsAlertDialog( title, image_id, tips, R.drawable.alert_dialog_ok, new YYShowAlertDialog.onAlertDialogClickHandler() {
