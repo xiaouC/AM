@@ -105,6 +105,10 @@ public class AnswerMachineActivity extends FragmentActivity
                 yy_record_prompt_dlg.hide();
                 yy_record_prompt_dlg = null;
             }
+            if( yy_playing_msg_dlg != null ) {
+                yy_playing_msg_dlg.hide();
+                yy_playing_msg_dlg = null;
+            }
 
             //String title = "Voice Prompt\r\nLoudspeaker Delivery";
             String title = "";
