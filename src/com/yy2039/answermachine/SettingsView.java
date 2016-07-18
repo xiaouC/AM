@@ -61,33 +61,30 @@ public class SettingsView extends YYViewBackList {
                                 }
                                 else {
                                     final String pin_type = data.equals( "01" ) ? "first" : "enter";
-                                    main_activity.yy_input_number_pin_view.showInputNumberView( "Confirm your PIN", "", yy_view_self.getViewBackHandler(), pin_type, new YYInputNumberPINView.onYYInputNumberPINHandler() {
-                                        public void onSuccessful( String number ) {
-                                            YYViewBase.onBackClick();
+                                    final String title = data.equals( "01" ) ? "Choose your PIN" : "Confirm your PIN";
+                                    if( pin_type.equals( "enter" ) ) {
+                                        showInputView( title, pin_type );
+                                    } else {
+                                        main_activity.yy_show_alert_dialog.showAlertDialog( R.layout.alert_attention, new YYShowAlertDialog.onAlertDialogHandler() {
+                                            public void onInit( AlertDialog ad, View view ) {
+                                                TextView tv_tips = (TextView)view.findViewById( R.id.attention_text );
+                                                tv_tips.setText( "You need to set your Access PIN\r\nbefore using call control.\r\nThe Access PIN is used for both\r\nremote access and call control." );
 
-                                            remote_access_view.setView( true, yy_view_self.getViewBackHandler() );
+                                                ImageButton btn_ok = (ImageButton)view.findViewById( R.id.ALERT_DIALOG_OK );
+                                                btn_ok.setImageDrawable( main_activity.getResources().getDrawable( R.drawable.alert_attention_ok ) );
 
-                                            if( pin_type.equals( "first" ) ) {
-                                                main_activity.yy_data_source.setIsFirstTimeUseRemoteAccess( false );
-
-                                                main_activity.yy_show_alert_dialog.showAlertDialog( R.layout.alert_attention_2, new YYShowAlertDialog.onAlertDialogHandler() {
-                                                    public void onInit( AlertDialog ad, View view ) {
-                                                        String text1 = "Please remember this Access PIN is used for both remote access and outgoing call control";
-                                                        TextView tv = (TextView)view.findViewById( R.id.attention_text );
-                                                        tv.setText( text1 );
-                                                    }
-                                                    public void onOK() { }
-                                                    public void onCancel() { }
-                                                    public boolean getIsCancelEnable() { return true; }
-                                                    public int getKeybackIsCancel() { return 1; }
-                                                    public void onKeyback() {}
-                                                });
+                                                ImageButton btn_cancel = (ImageButton)view.findViewById( R.id.ALERT_DIALOG_CANCEL );
+                                                btn_cancel.setImageDrawable( main_activity.getResources().getDrawable( R.drawable.alert_attention_back ) );
                                             }
-                                        }
-                                        public boolean onCheckNumber( String number ) {
-                                            return true;
-                                        }
-                                    });
+                                            public boolean getIsCancelEnable() { return true; }
+                                            public int getKeybackIsCancel() { return 1; }
+                                            public void onOK() {
+                                                showInputView( title, pin_type );
+                                            }
+                                            public void onCancel() { }
+                                            public void onKeyback() {}
+                                        });
+                                    }
                                 }
                             }
                             public void onFailure() {
@@ -364,6 +361,37 @@ public class SettingsView extends YYViewBackList {
 
         return ret_data;
     }
+
+    public void showInputView( final String title, final String pin_type ) {
+        main_activity.yy_input_number_pin_view.showInputNumberView( title, "", yy_view_self.getViewBackHandler(), pin_type, new YYInputNumberPINView.onYYInputNumberPINHandler() {
+            public void onSuccessful( String number ) {
+                YYViewBase.onBackClick();
+
+                remote_access_view.setView( true, yy_view_self.getViewBackHandler() );
+
+                if( pin_type.equals( "first" ) ) {
+                    main_activity.yy_data_source.setIsFirstTimeUseRemoteAccess( false );
+
+                    main_activity.yy_show_alert_dialog.showAlertDialog( R.layout.alert_attention_2, new YYShowAlertDialog.onAlertDialogHandler() {
+                        public void onInit( AlertDialog ad, View view ) {
+                            String text1 = "Please remember this Access PIN is used for both remote access and outgoing call control";
+                            TextView tv = (TextView)view.findViewById( R.id.attention_text );
+                            tv.setText( text1 );
+                        }
+                        public void onOK() { }
+                        public void onCancel() { }
+                        public boolean getIsCancelEnable() { return true; }
+                        public int getKeybackIsCancel() { return 1; }
+                        public void onKeyback() {}
+                    });
+                }
+            }
+            public boolean onCheckNumber( String number ) {
+                return true;
+            }
+        });
+    }
+
 
     public class RemoteAccessView extends YYViewBackList {
         public RemoteAccessView() {
