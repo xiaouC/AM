@@ -328,9 +328,9 @@ public class MessagesView extends YYViewBackList {
                 public void onInit( AlertDialog ad, View view ) {
                     String text1 = "";
                     if( msg_info.getMsgType() == 0 ) {
-                        text1 = String.format( "Are you sure that you want to delete\r\nthe message you have received from\r\n%s without listening\r\nto the message first?", msg_info.getMsgName() );
+                        text1 = String.format( "Are you sure that you want to\r\ndelete the message you have\r\nreceived from %s\r\nwithout listening to the message first?", msg_info.getMsgName() );
                     } else {
-                        text1 = String.format( "Are you sure that you want to delete\r\nthe message you have received from\r\n%s?", msg_info.getMsgName() );
+                        text1 = String.format( "Are you sure that you want to\r\ndelete the message you have\r\nreceived from %s?", msg_info.getMsgName() );
                     }
 
                     TextView tv = (TextView)view.findViewById( R.id.attention_text );
