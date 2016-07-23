@@ -138,7 +138,7 @@ public class MessagesView extends YYViewBackList {
 
                         String title = nTempOldMessageCount > 0 ? "All old messages\r\ndeleted" : "Error deleting old\r\nmessages";
                         String tips = "Press OK to finish";
-                        int image_id = R.drawable.successfully;
+                        int image_id = nTempOldMessageCount > 0 ? R.drawable.successfully : R.drawable.failure;
                         main_activity.yy_show_alert_dialog.showSuccessfullImageTipsAlertDialog( title, image_id, tips, R.drawable.alert_dialog_ok, new YYShowAlertDialog.onAlertDialogClickHandler() {
                             public void onOK() { }
                             public void onCancel() { }
