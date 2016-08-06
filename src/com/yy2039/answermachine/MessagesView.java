@@ -200,14 +200,15 @@ public class MessagesView extends YYViewBackList {
                                             final String pb_name = item_info.getPhoneBookName();
                                             final String msg_number = item_info.getMsgNumber();
                                             final String msg_date_time = item_info.getMsgDateTime();
-                                            new_msg_list.add( new YYDataSource.onMsgInfo() {
+                                            msg_info = new YYDataSource.onMsgInfo() {
                                                 public String getMsgIndex() { return msg_index; }
                                                 public int getMsgType() { return 1; }       // old msg
                                                 public String getMsgName() { return show_msg_name; }
                                                 public String getPhoneBookName() { return pb_name; }
                                                 public String getMsgNumber() { return msg_number; }
                                                 public String getMsgDateTime() { return msg_date_time; }
-                                            });
+                                            };
+                                            new_msg_list.add( msg_info );
                                         } else {
                                             new_msg_list.add( item_info );
 
