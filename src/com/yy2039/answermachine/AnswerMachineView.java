@@ -144,7 +144,7 @@ public class AnswerMachineView extends YYViewBase {
                                     //Toast.makeText( main_activity, text, Toast.LENGTH_LONG ).show();
                                 }
                                 else {
-                                    // data2 = "1,0,xxx,12345,201607031235,2,1,xxx,12345,201607031235";
+                                    // data2 = "1,0,xxx,kkkkkkkk12345,201607031235,2,1,xxx,kkkkkkkk12345,201607031235";
 
                                     String[] results = data2.split( "," );
 

@@ -32,9 +32,13 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="32px"
             android:layout_marginRight="10px"
+            android:paddingLeft="20px"
+            android:paddingRight="20px"
             android:textColor="#FFFFFF"
-            android:gravity="center"
             android:textSize="25px"
+            android:lines="5"
+            android:ellipsize="end"
+            android:gravity="left|top"
             />
     </LinearLayout>
     <LinearLayout
