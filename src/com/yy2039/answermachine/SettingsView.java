@@ -68,7 +68,7 @@ public class SettingsView extends YYViewBackList {
                                         main_activity.yy_show_alert_dialog.showAlertDialog( R.layout.alert_attention, new YYShowAlertDialog.onAlertDialogHandler() {
                                             public void onInit( AlertDialog ad, View view ) {
                                                 TextView tv_tips = (TextView)view.findViewById( R.id.attention_text );
-                                                tv_tips.setText( "You need to set your Access PIN\r\nbefore using call control.\r\nThe Access PIN is used for both\r\nremote access and call control." );
+                                                tv_tips.setText( "        You need to set your Access PIN before using call control. The Access PIN is used for both remote access and call control." );
 
                                                 ImageButton btn_ok = (ImageButton)view.findViewById( R.id.ALERT_DIALOG_OK );
                                                 btn_ok.setImageDrawable( main_activity.getResources().getDrawable( R.drawable.alert_attention_back ) );
@@ -375,7 +375,7 @@ public class SettingsView extends YYViewBackList {
 
                     main_activity.yy_show_alert_dialog.showAlertDialog( R.layout.alert_attention_2, new YYShowAlertDialog.onAlertDialogHandler() {
                         public void onInit( AlertDialog ad, View view ) {
-                            String text1 = "Please remember this Access PIN is used for both remote access and outgoing call control";
+                            String text1 = "        Please remember this Access PIN is used for both remote access and outgoing call control";
                             TextView tv = (TextView)view.findViewById( R.id.attention_text );
                             tv.setText( text1 );
                         }
@@ -472,7 +472,7 @@ public class SettingsView extends YYViewBackList {
 
                                     main_activity.yy_show_alert_dialog.showAlertDialog( R.layout.alert_attention_2, new YYShowAlertDialog.onAlertDialogHandler() {
                                         public void onInit( AlertDialog ad, View view ) {
-                                            String text1 = "Please remember this Access PIN is used for both remote access and outgoing call control";
+                                            String text1 = "        Please remember this Access PIN is used for both remote access and outgoing call control";
                                             TextView tv = (TextView)view.findViewById( R.id.attention_text );
                                             tv.setText( text1 );
                                         }

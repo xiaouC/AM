@@ -224,7 +224,7 @@ public class OutgoingMessagesView extends YYViewBackList {
         public void deleteMessage() {
             main_activity.yy_show_alert_dialog.showAlertDialog( R.layout.alert_attention, new YYShowAlertDialog.onAlertDialogHandler() {
                 public void onInit( AlertDialog ad, View view ) {
-                    String text1 = "Are you sure that you want to\r\ndelete the personalised\r\noutgoing message you have recorded?";
+                    String text1 = "        Are you sure that you want to delete the personalised outgoing message you have recorded?";
                     TextView tv = (TextView)view.findViewById( R.id.attention_text );
                     tv.setText( text1 );
 
@@ -273,7 +273,7 @@ public class OutgoingMessagesView extends YYViewBackList {
                         return;
                     }
 
-                    //String title = "Voice Prompt\r\nLoudspeaker Delivery";
+                    //String title = "Voice Prompt Loudspeaker Delivery";
                     String title = "";
                     String tips = "Please speak after the tone.\r\nTo end recording, press Save";
                     main_activity.yy_record_prompt_dlg = main_activity.yy_show_alert_dialog.showVoicePromptAlertDialog( title, R.drawable.play_message, tips, new YYShowAlertDialog.onAlertDialogClickHandler() {
